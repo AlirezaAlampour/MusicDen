@@ -8,25 +8,47 @@ import uuid
 from typing import Dict, Optional
 
 _jobs: Dict[str, dict] = {}
-_DEEMIX_CONFIG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".deemix_config")
+_PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
-def start_download(url: str, quality: str, output_path: str, arl_token: str = "") -> str:
+def _get_deemix_cmd(quality: str, output_path: str, url: str) -> list:
+    """Build deemix command, writing ARL into .deemix/config.json in project root."""
+    deemix_config_dir = os.path.join(_PROJECT_ROOT, ".deemix")
+    os.makedirs(deemix_config_dir, exist_ok=True)
+
+    config_path = os.path.join(_PROJECT_ROOT, "config.json")
+    with open(config_path) as f:
+        config = json.load(f)
+    arl = config.get("arl_token", "")
+    if not arl:
+        raise ValueError("ARL token not set")
+
+    with open(os.path.join(deemix_config_dir, "config.json"), "w") as f:
+        json.dump({"arl": arl}, f)
+
+    return [
+        sys.executable, "-m", "deemix",
+        "--portable",
+        "-b", quality,
+        "-p", output_path,
+        url,
+    ]
+
+
+def start_download(url: str, quality: str, output_path: str) -> str:
     """Start a deemix download subprocess. Callers must pre-validate all arguments."""
     job_id = str(uuid.uuid4())
     _jobs[job_id] = {"lines": [], "done": False, "exit_code": None, "process": None}
 
     def run():
-        # Write ARL to deemix config dir so deemix can authenticate
-        os.makedirs(_DEEMIX_CONFIG_DIR, exist_ok=True)
-        with open(os.path.join(_DEEMIX_CONFIG_DIR, "config.json"), "w") as cf:
-            json.dump({"arl": arl_token}, cf)
+        try:
+            cmd = _get_deemix_cmd(quality, output_path, url)
+        except Exception as e:
+            _jobs[job_id]["lines"].append(f"[ERROR] {e}")
+            _jobs[job_id]["exit_code"] = -1
+            _jobs[job_id]["done"] = True
+            return
 
-        cmd = [
-            sys.executable, "-m", "deemix", "--portable",
-            "--config-dir", _DEEMIX_CONFIG_DIR,
-            "-b", quality, "-p", output_path, url,
-        ]
         try:
             proc = subprocess.Popen(
                 cmd,
@@ -34,6 +56,7 @@ def start_download(url: str, quality: str, output_path: str, arl_token: str = ""
                 stderr=subprocess.STDOUT,
                 text=True,
                 bufsize=1,
+                cwd=_PROJECT_ROOT,
             )
             _jobs[job_id]["process"] = proc
             for line in proc.stdout:

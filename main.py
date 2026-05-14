@@ -250,6 +250,32 @@ def renormalize_energy():
     return {"ok": True}
 
 
+@app.post("/api/tracks/reanalyze-keys")
+async def reanalyze_keys():
+    with db.get_conn() as conn:
+        rows = conn.execute("SELECT id, file_path FROM tracks").fetchall()
+        tracks = [dict(r) for r in rows]
+
+    def _rekey_one(track):
+        try:
+            import librosa
+            y, sr = librosa.load(track["file_path"], sr=22050, mono=True, duration=60)
+            camelot = analyzer.detect_key(y, sr)
+            with db.get_conn() as conn:
+                conn.execute(
+                    "UPDATE tracks SET camelot_key=? WHERE id=?",
+                    (camelot, track["id"]),
+                )
+            return 1
+        except Exception:
+            return 0
+
+    loop = asyncio.get_event_loop()
+    futures = [loop.run_in_executor(_executor, _rekey_one, t) for t in tracks]
+    results = await asyncio.gather(*futures)
+    return {"updated": sum(results)}
+
+
 @app.get("/api/stream/{track_id}")
 def stream_track(track_id: int):
     track = db.get_track_by_id(track_id)
@@ -583,7 +609,7 @@ def start_download(payload: DownloadPayload):
     arl = cfg.get("arl_token", "").strip()
     if not arl:
         raise HTTPException(400, {"error": "ARL token not set. Add it in Settings."})
-    job_id = dl.start_download(payload.url, payload.quality, out, arl)
+    job_id = dl.start_download(payload.url, payload.quality, out)
     return {"job_id": job_id}
 
 

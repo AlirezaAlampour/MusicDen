@@ -7,6 +7,7 @@ musicden.db
 
 # Deemix config (contains ARL token)
 .deemix_config/
+.deemix/
 
 # Generated launcher files (created by launch_builder.py)
 MusicDen_launcher.vbs

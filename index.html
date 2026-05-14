@@ -148,7 +148,9 @@ input::placeholder{color:var(--text-muted)}
 .stat-count{font-size:11px;color:var(--text-muted);width:30px;flex-shrink:0}
 
 /* ── MINI PLAYER ── */
-.player-bar{position:fixed;bottom:0;left:0;right:0;height:72px;background:var(--surface);border-top:1px solid var(--border);display:none;align-items:center;gap:16px;padding:0 20px;z-index:150}
+.player-bar{position:fixed;bottom:0;left:0;right:0;height:72px;background:var(--surface);border-top:1px solid var(--border);display:none;align-items:center;gap:16px;padding:0 20px;z-index:1000}
+body.player-active .page.active{height:calc(100vh - 54px - 72px)}
+body.player-active .pagination{margin-bottom:0}
 .player-info{min-width:150px;max-width:210px;overflow:hidden}
 .player-title{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .player-artist{font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
@@ -250,7 +252,7 @@ tr.selected .col-check .row-play-btn{display:none!important}
   </div>
 
   <!-- Main -->
-  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+  <div class="main-content" style="flex:1;display:flex;flex-direction:column;overflow:hidden">
     <!-- Toolbar -->
     <div class="flex items-center justify-between gap-8" style="padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface)">
       <input type="text" id="search-input" placeholder="Search title or artist…" style="width:220px" oninput="debounceSearch()"/>
@@ -477,6 +479,16 @@ tr.selected .col-check .row-play-btn{display:none!important}
     </div>
 
     <div class="card">
+      <h3 style="margin-bottom:16px">Analysis</h3>
+      <div class="text-sm text-muted mb-8">Re-run analysis on existing tracks without re-scanning files.</div>
+      <div class="flex gap-8">
+        <button class="btn btn-secondary" onclick="reanalyzeKeys(this)">Re-analyze Keys</button>
+        <button class="btn btn-secondary" onclick="renormalizeEnergy()">Re-normalize Energy</button>
+      </div>
+      <div id="rekey-status" class="text-xs text-muted mt-8" style="display:none"></div>
+    </div>
+
+    <div class="card">
       <h3 style="margin-bottom:16px">Database</h3>
       <div class="text-sm text-muted mb-8" id="s-db-path"></div>
       <button class="btn btn-danger" onclick="clearDatabase()">Clear All Data</button>
@@ -516,7 +528,7 @@ tr.selected .col-check .row-play-btn{display:none!important}
   </div>
   <div class="player-vol">
     <span style="font-size:14px;opacity:.6">🔊</span>
-    <input type="range" id="vol-bar" min="0" max="1" step="0.02" value="1"/>
+    <input type="range" id="vol-bar" min="0" max="100" step="1" value="80"/>
   </div>
 </div>
 
@@ -1127,7 +1139,7 @@ const _audio = () => $('player-audio');
 
 function showPlayer() {
   $('player-bar').style.display = 'flex';
-  document.body.style.paddingBottom = '72px';
+  document.body.classList.add('player-active');
 }
 
 function playFromQueue(idx) {
@@ -1164,10 +1176,11 @@ function seekAudio(val) {
   const a = _audio();
   if (a.duration) a.currentTime = (val / 100) * a.duration;
 }
-function setVolume(val) { _audio().volume = parseFloat(val); }
-
 function initPlayer() {
   const a = _audio();
+  a.volume = 0.8;
+  $('vol-bar').value = 80;
+
   a.addEventListener('play', () => { $('play-btn').textContent = '⏸'; });
   a.addEventListener('pause', () => { $('play-btn').textContent = '▶'; });
   a.addEventListener('ended', () => nextTrack());
@@ -1181,13 +1194,45 @@ function initPlayer() {
   const sb = $('seek-bar');
   sb.addEventListener('mousedown', () => { P.seeking = true; });
   sb.addEventListener('change', e => { P.seeking = false; seekAudio(e.target.value); });
-  $('vol-bar').addEventListener('input', e => setVolume(e.target.value));
+  $('vol-bar').addEventListener('input', e => {
+    _audio().volume = parseFloat(e.target.value) / 100;
+  });
   document.addEventListener('keydown', e => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
     if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
     if (e.code === 'ArrowLeft') { const a = _audio(); a.currentTime = Math.max(0, a.currentTime - 10); }
     if (e.code === 'ArrowRight') { const a = _audio(); a.currentTime = Math.min(a.duration || 0, a.currentTime + 10); }
   });
+}
+
+// ── Analysis helpers ──────────────────────────────────────────────────────────
+async function reanalyzeKeys(btn) {
+  btn.disabled = true;
+  const orig = btn.textContent;
+  btn.textContent = 'Re-analyzing…';
+  $('rekey-status').style.display = 'block';
+  $('rekey-status').textContent = 'Running key detection on all tracks…';
+  try {
+    const r = await api('POST', '/api/tracks/reanalyze-keys');
+    $('rekey-status').textContent = `Done — ${r.updated} tracks updated.`;
+    loadTracks();
+    loadStats();
+  } catch (e) {
+    $('rekey-status').textContent = 'Error: ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = orig;
+  }
+}
+
+async function renormalizeEnergy() {
+  try {
+    await api('PUT', '/api/tracks/renormalize');
+    alert('Energy re-normalized across library.');
+    loadTracks();
+  } catch (e) {
+    alert('Error: ' + e.message);
+  }
 }
 
 // ── Download scan helper ───────────────────────────────────────────────────────

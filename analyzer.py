@@ -2,56 +2,48 @@ import os
 import time
 import numpy as np
 
-MAJOR_PROFILE = [6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29, 2.88]
-MINOR_PROFILE = [6.33, 2.68, 3.52, 5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17]
-NOTE_NAMES = ["C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
+NOTE_NAMES = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B']
 
 CAMELOT_MAP = {
-    ("C", "major"): "8B",  ("G", "major"): "9B",  ("D", "major"): "10B",
-    ("A", "major"): "11B", ("E", "major"): "12B", ("B", "major"): "1B",
-    ("F#", "major"): "2B", ("Db", "major"): "3B", ("Ab", "major"): "4B",
-    ("Eb", "major"): "5B", ("Bb", "major"): "6B", ("F", "major"): "7B",
-    ("A", "minor"): "8A",  ("E", "minor"): "9A",  ("B", "minor"): "10A",
-    ("F#", "minor"): "11A", ("Db", "minor"): "12A", ("Ab", "minor"): "1A",
-    ("Eb", "minor"): "2A", ("Bb", "minor"): "3A", ("F", "minor"): "4A",
-    ("C", "minor"): "5A",  ("G", "minor"): "6A",  ("D", "minor"): "7A",
+    ('C', 'major'): '8B',   ('G', 'major'): '9B',   ('D', 'major'): '10B',
+    ('A', 'major'): '11B',  ('E', 'major'): '12B',  ('B', 'major'): '1B',
+    ('F#', 'major'): '2B',  ('Db', 'major'): '3B',  ('Ab', 'major'): '4B',
+    ('Eb', 'major'): '5B',  ('Bb', 'major'): '6B',  ('F', 'major'): '7B',
+    ('A', 'minor'): '8A',   ('E', 'minor'): '9A',   ('B', 'minor'): '10A',
+    ('F#', 'minor'): '11A', ('Db', 'minor'): '12A', ('Ab', 'minor'): '1A',
+    ('Eb', 'minor'): '2A',  ('Bb', 'minor'): '3A',  ('F', 'minor'): '4A',
+    ('C', 'minor'): '5A',   ('G', 'minor'): '6A',   ('D', 'minor'): '7A',
 }
 
-
-def _correlate(profile, chroma_mean):
-    profile = np.array(profile)
-    profile -= profile.mean()
-    chroma = np.array(chroma_mean)
-    chroma -= chroma.mean()
-    denom = np.std(profile) * np.std(chroma)
-    if denom == 0:
-        return 0.0
-    return float(np.dot(profile, chroma) / (len(profile) * denom))
+# Temperley profiles — better for dance/electronic music
+_MAJOR_PROFILE = [5.0, 2.0, 3.5, 2.0, 4.5, 4.0, 2.0, 4.5, 2.0, 3.5, 1.5, 4.0]
+_MINOR_PROFILE = [5.0, 2.0, 3.5, 4.5, 2.0, 4.0, 2.0, 4.5, 3.5, 2.0, 1.5, 4.0]
 
 
-def detect_key(chroma_mean):
-    best_corr = -2.0
-    best_root = 0
-    best_mode = "major"
+def detect_key(y, sr) -> str:
+    """Detect musical key using CENS chroma + Temperley profiles. Returns Camelot string."""
+    import librosa
+    chroma = librosa.feature.chroma_cens(y=y, sr=sr)
+    chroma_mean = np.mean(chroma, axis=1)
 
-    for root in range(12):
-        rotated_major = np.roll(MAJOR_PROFILE, root)
-        rotated_minor = np.roll(MINOR_PROFILE, root)
+    best_corr = -np.inf
+    best_key = 'C'
+    best_mode = 'major'
 
-        c_major = _correlate(rotated_major, chroma_mean)
-        c_minor = _correlate(rotated_minor, chroma_mean)
+    for i in range(12):
+        rotated = np.roll(chroma_mean, -i)
+        major_corr = np.corrcoef(rotated, _MAJOR_PROFILE)[0, 1]
+        minor_corr = np.corrcoef(rotated, _MINOR_PROFILE)[0, 1]
+        if major_corr > best_corr:
+            best_corr = major_corr
+            best_key = NOTE_NAMES[i]
+            best_mode = 'major'
+        if minor_corr > best_corr:
+            best_corr = minor_corr
+            best_key = NOTE_NAMES[i]
+            best_mode = 'minor'
 
-        if c_major > best_corr:
-            best_corr = c_major
-            best_root = root
-            best_mode = "major"
-        if c_minor > best_corr:
-            best_corr = c_minor
-            best_root = root
-            best_mode = "minor"
-
-    note = NOTE_NAMES[best_root]
-    return note, best_mode
+    return CAMELOT_MAP.get((best_key, best_mode), '8A')
 
 
 def analyze_file(file_path: str) -> dict:
@@ -103,17 +95,13 @@ def analyze_file(file_path: str) -> dict:
         tempo, _ = librosa.beat.beat_track(y=y, sr=sr)
         result["bpm"] = round(float(tempo), 1)
 
-        # Key via Krumhansl-Schmuckler
-        chroma = librosa.feature.chroma_cqt(y=y, sr=sr)
-        chroma_mean = np.mean(chroma, axis=1)
-        note, mode = detect_key(chroma_mean)
-        result["camelot_key"] = CAMELOT_MAP.get((note, mode), "")
+        # Key via CENS chroma + Temperley profiles
+        result["camelot_key"] = detect_key(y, sr)
 
-        # Energy — store raw RMS; global normalization runs after each scan
-        rms = librosa.feature.rms(y=y)
-        result["energy"] = float(np.mean(rms))
+        # Energy — raw RMS; global min-max normalization runs after each scan
+        result["energy"] = float(np.mean(librosa.feature.rms(y=y)))
 
-    except Exception as e:
+    except Exception:
         result["bpm"] = None
         result["camelot_key"] = None
         result["energy"] = None

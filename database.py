@@ -308,13 +308,18 @@ def normalize_energy():
     """Rescale all track energies to [0, 1] using min-max over the whole library."""
     with get_conn() as conn:
         row = conn.execute(
-            "SELECT MIN(energy) as mn, MAX(energy) as mx FROM tracks WHERE energy IS NOT NULL"
+            "SELECT MIN(energy) as mn, MAX(energy) as mx FROM tracks WHERE energy > 0"
         ).fetchone()
         mn, mx = row["mn"], row["mx"]
-        if mn is None or mx is None or mx == mn:
+        if mn is None or mx is None:
+            return
+        if mx == mn:
+            conn.execute("UPDATE tracks SET energy = 0.5 WHERE energy IS NOT NULL")
             return
         conn.execute(
-            "UPDATE tracks SET energy = (energy - ?) / (? - ?) WHERE energy IS NOT NULL",
+            "UPDATE tracks SET energy = "
+            "CAST((energy - ?) AS REAL) / CAST((? - ?) AS REAL) "
+            "WHERE energy IS NOT NULL",
             (mn, mx, mn),
         )
 
