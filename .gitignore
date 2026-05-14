@@ -1,0 +1,29 @@
+# User config (contains ARL token and personal paths)
+config.json
+config/
+
+# Local database
+musicden.db
+
+# Deemix config (contains ARL token)
+.deemix_config/
+
+# Generated launcher files (created by launch_builder.py)
+MusicDen_launcher.vbs
+create_shortcut.ps1
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

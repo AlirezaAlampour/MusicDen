@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>MusicDen</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0f13;--surface:#1a1a24;--card:#22222f;--border:#2e2e3e;
+  --accent:#7c6dfa;--accent-dim:#5a4fd6;--success:#4ade80;--warning:#f59e0b;--danger:#f87171;
+  --text:#e2e2ee;--text-dim:#8888aa;--text-muted:#55556a;
+  --radius:12px;--radius-sm:8px;--radius-xs:5px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:14px}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#3e3e55}
+
+a{color:var(--accent);text-decoration:none}
+button{cursor:pointer;border:none;font-family:inherit;font-size:13px;transition:all .15s ease}
+input,select,textarea{font-family:inherit;font-size:13px;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:var(--radius-sm);padding:8px 12px;outline:none;transition:border-color .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+input::placeholder{color:var(--text-muted)}
+
+/* ── NAV ── */
+.nav{display:flex;align-items:center;gap:4px;padding:0 20px;height:54px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-logo{font-size:18px;font-weight:700;color:var(--accent);margin-right:16px;letter-spacing:-0.5px}
+.nav-tab{background:none;color:var(--text-dim);padding:8px 14px;border-radius:var(--radius-sm);font-weight:500;position:relative}
+.nav-tab:hover{color:var(--text);background:var(--card)}
+.nav-tab.active{color:var(--text)}
+.nav-tab.active::after{content:'';position:absolute;bottom:-1px;left:8px;right:8px;height:2px;background:var(--accent);border-radius:2px 2px 0 0}
+
+/* ── LAYOUT ── */
+.page{display:none;height:calc(100vh - 54px)}
+.page.active{display:flex}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius-sm);font-weight:500;transition:all .15s}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-dim));color:#fff}
+.btn-primary:hover{filter:brightness(1.15)}
+.btn-secondary{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.btn-danger{background:var(--card);color:var(--danger);border:1px solid var(--border)}
+.btn-danger:hover{background:rgba(248,113,113,.1);border-color:var(--danger)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-lg{padding:12px 28px;font-size:15px}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none!important}
+
+/* ── BADGES ── */
+.badge-camelot{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.5px}
+.energy-bar{display:flex;align-items:center;gap:6px}
+.energy-bar-inner{height:4px;border-radius:2px;background:var(--accent)}
+.energy-bg{height:4px;border-radius:2px;background:var(--border);width:50px;overflow:hidden}
+
+/* ── CARDS ── */
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:16px}
+
+/* ── SIDEBAR ── */
+.sidebar{width:280px;min-width:280px;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;gap:0}
+.sidebar-section{padding:16px;border-bottom:1px solid var(--border)}
+.sidebar-label{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+
+/* ── PROGRESS ── */
+.progress-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:8px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--success));border-radius:3px;transition:width .3s ease}
+
+/* ── TABLE ── */
+.track-table-wrap{flex:1;overflow:auto}
+.track-table{width:100%;border-collapse:collapse}
+.track-table th{position:sticky;top:0;background:var(--surface);padding:10px 12px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
+.track-table th:hover{color:var(--text)}
+.track-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04);white-space:nowrap}
+.track-table tr:hover td{background:rgba(124,109,250,.06)}
+.track-table tr.selected td{background:rgba(124,109,250,.12)}
+.track-table .col-check{width:32px}
+.track-table .col-title{max-width:200px;overflow:hidden;text-overflow:ellipsis}
+.track-table .col-artist{max-width:140px;overflow:hidden;text-overflow:ellipsis;color:var(--text-dim)}
+
+/* ── KEY GRID ── */
+.key-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:8px}
+.key-btn{padding:4px 2px;font-size:11px;font-weight:600;border-radius:4px;border:1px solid var(--border);background:var(--surface);color:var(--text-dim);transition:all .15s;text-align:center}
+.key-btn.active{border-color:transparent;color:#fff}
+.key-btn:hover{border-color:var(--accent)}
+
+/* ── DUAL SLIDER ── */
+.dual-slider{position:relative;height:20px;margin:8px 0}
+.dual-slider input[type=range]{position:absolute;width:100%;pointer-events:none;-webkit-appearance:none;height:4px;background:transparent;top:50%;transform:translateY(-50%)}
+.dual-slider input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);pointer-events:all;cursor:pointer}
+.slider-track{position:absolute;height:4px;background:var(--border);border-radius:2px;left:0;right:0;top:50%;transform:translateY(-50%)}
+.slider-range{position:absolute;height:4px;background:var(--accent);border-radius:2px;top:50%;transform:translateY(-50%)}
+.slider-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-top:4px}
+
+/* ── EMPTY STATE ── */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;flex:1;color:var(--text-muted);padding:40px}
+.empty-state svg{opacity:.3}
+.empty-state p{font-size:13px}
+
+/* ── PAGINATION ── */
+.pagination{display:flex;align-items:center;gap:8px;padding:12px 16px;border-top:1px solid var(--border);background:var(--surface)}
+.pagination span{color:var(--text-muted);font-size:12px}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:flex;align-items:center;justify-content:center}
+.modal{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:24px;min-width:360px;max-width:500px;width:90%}
+.modal h3{margin-bottom:16px;font-size:16px}
+
+/* ── PLAYLIST LIST ── */
+.pl-item{padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
+.pl-item:hover{background:var(--card)}
+.pl-item.active{background:rgba(124,109,250,.12);border-left:3px solid var(--accent)}
+.pl-item-name{font-weight:500;font-size:13px}
+.pl-item-meta{font-size:11px;color:var(--text-muted);margin-top:2px}
+
+/* ── DRAG HANDLE ── */
+.drag-handle{cursor:grab;color:var(--text-muted);padding:0 6px;opacity:.5}
+.drag-handle:hover{opacity:1}
+.drag-row.dragging{opacity:.4}
+.drag-row.drag-over{border-top:2px solid var(--accent)}
+
+/* ── TERMINAL LOG ── */
+.log-terminal{background:#0a0a0f;border-radius:var(--radius-sm);padding:14px;font-family:'Cascadia Code','Fira Code','Courier New',monospace;font-size:12px;line-height:1.6;color:#4ade80;max-height:320px;overflow-y:auto;border:1px solid var(--border)}
+
+/* ── TABS WITHIN TABS ── */
+.inner-tab-bar{display:flex;gap:4px;margin-bottom:16px}
+.inner-tab{padding:6px 14px;border-radius:var(--radius-sm);background:none;color:var(--text-dim);font-size:13px}
+.inner-tab.active{background:var(--card);color:var(--text)}
+
+/* ── FOLDER ITEM ── */
+.folder-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:6px;font-size:12px}
+.folder-item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;margin-right:8px;color:var(--text-dim)}
+
+/* ── PILL BUTTONS ── */
+.pill-group{display:flex;gap:4px}
+.pill{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--text-dim);font-size:12px;font-weight:500;transition:all .15s;cursor:pointer}
+.pill.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* ── ORGANIZE ── */
+.organize-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px;overflow:auto}
+.folder-preview{background:var(--surface);border-radius:var(--radius-sm);border:1px solid var(--border);padding:14px;font-size:12px;font-family:monospace;color:var(--text-dim);line-height:1.8;margin-top:8px}
+
+/* ── STATS BAR ── */
+.stat-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.stat-label{font-size:11px;color:var(--text-muted);width:40px;text-align:right;flex-shrink:0}
+.stat-bar-bg{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.stat-bar-fill{height:100%;border-radius:3px}
+.stat-count{font-size:11px;color:var(--text-muted);width:30px;flex-shrink:0}
+
+/* ── MINI PLAYER ── */
+.player-bar{position:fixed;bottom:0;left:0;right:0;height:72px;background:var(--surface);border-top:1px solid var(--border);display:none;align-items:center;gap:16px;padding:0 20px;z-index:150}
+.player-info{min-width:150px;max-width:210px;overflow:hidden}
+.player-title{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player-artist{font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.player-controls{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
+.player-btns{display:flex;align-items:center;gap:14px}
+.player-btn{background:none;border:none;color:var(--text);font-size:18px;cursor:pointer;padding:4px;opacity:.75;line-height:1;font-family:inherit}
+.player-btn:hover{opacity:1}
+.player-play-btn{width:34px;height:34px;background:var(--accent)!important;border-radius:50%;font-size:13px;color:#fff!important;display:flex;align-items:center;justify-content:center;opacity:1!important}
+.player-seek{display:flex;align-items:center;gap:8px;width:100%;max-width:480px}
+.player-seek input[type=range]{flex:1;cursor:pointer;height:4px;-webkit-appearance:none;background:var(--border);border-radius:2px;outline:none}
+.player-seek input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--accent);cursor:pointer}
+.player-time{font-size:11px;color:var(--text-muted);min-width:35px;font-variant-numeric:tabular-nums}
+.player-time:last-child{text-align:right}
+.player-vol{display:flex;align-items:center;gap:6px;min-width:100px}
+.player-vol input[type=range]{width:72px;cursor:pointer;height:4px;-webkit-appearance:none;background:var(--border);border-radius:2px;outline:none}
+.player-vol input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--accent);cursor:pointer}
+/* ── ROW PLAY BUTTON ── */
+.row-play-btn{width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;padding:0;line-height:1;font-family:inherit}
+tr:hover .col-check .row-play-btn{display:inline-flex}
+tr:hover .col-check input[type=checkbox]{display:none}
+tr.selected .col-check input[type=checkbox]{display:inline-block!important}
+tr.selected .col-check .row-play-btn{display:none!important}
+
+/* ── MISC ── */
+.flex{display:flex}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-between{justify-content:space-between}.gap-8{gap:8px}.gap-4{gap:4px}.gap-12{gap:12px}.flex-1{flex:1}.w-full{width:100%}
+.mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}.mb-8{margin-bottom:8px}.mb-4{margin-bottom:4px}
+.text-dim{color:var(--text-dim)}.text-muted{color:var(--text-muted)}.text-sm{font-size:12px}.text-xs{font-size:11px}.font-bold{font-weight:700}
+.overflow-hidden{overflow:hidden}.text-ellipsis{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+.separator{height:1px;background:var(--border);margin:12px 0}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-success{background:rgba(74,222,128,.15);color:var(--success)}
+.badge-danger{background:rgba(248,113,113,.15);color:var(--danger)}
+.badge-warning{background:rgba(245,158,11,.15);color:var(--warning)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <span class="nav-logo">🎵 MusicDen</span>
+  <button class="nav-tab active" onclick="showTab('library')">Library</button>
+  <button class="nav-tab" onclick="showTab('playlists')">Playlists</button>
+  <button class="nav-tab" onclick="showTab('download')">Download</button>
+  <button class="nav-tab" onclick="showTab('organize')">Organize</button>
+  <button class="nav-tab" onclick="showTab('settings')">Settings</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════ LIBRARY TAB -->
+<div id="page-library" class="page active" style="overflow:hidden">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Scan Library</div>
+      <div id="scan-folders"></div>
+      <div class="flex gap-4 mt-8">
+        <input id="folder-input" type="text" placeholder="Add folder path..." style="flex:1;font-size:12px"
+               onkeydown="if(event.key==='Enter')addScanFolder()"/>
+        <button class="btn btn-secondary btn-sm" onclick="addScanFolder()">+</button>
+      </div>
+      <button class="btn btn-primary w-full mt-8" onclick="startScan()">Scan</button>
+      <div id="scan-progress-wrap" style="display:none">
+        <div class="progress-bar mt-8"><div class="progress-fill" id="scan-bar" style="width:0%"></div></div>
+        <div id="scan-status" class="text-xs text-muted mt-8"></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">BPM Range</div>
+      <div class="dual-slider" id="bpm-slider">
+        <div class="slider-track"></div>
+        <div class="slider-range" id="bpm-range"></div>
+        <input type="range" id="bpm-min" min="60" max="200" value="60" oninput="updateBpmSlider()"/>
+        <input type="range" id="bpm-max" min="60" max="200" value="200" oninput="updateBpmSlider()"/>
+      </div>
+      <div class="slider-labels"><span id="bpm-min-lbl">60</span><span id="bpm-max-lbl">200</span></div>
+
+      <div class="sidebar-label mt-12">Camelot Key</div>
+      <div class="key-grid" id="key-grid"></div>
+
+      <div class="sidebar-label mt-12">Downloaded</div>
+      <div class="flex gap-4">
+        <input type="date" id="date-from" style="flex:1;font-size:11px" oninput="applyFilters()"/>
+        <input type="date" id="date-to" style="flex:1;font-size:11px" oninput="applyFilters()"/>
+      </div>
+
+      <div class="sidebar-label mt-12">Source Folder</div>
+      <select id="source-folder" style="width:100%" onchange="applyFilters()">
+        <option value="">All folders</option>
+      </select>
+
+      <div class="separator"></div>
+      <button class="btn btn-secondary btn-sm w-full" onclick="clearFilters()">Clear Filters</button>
+    </div>
+
+    <div class="sidebar-section" style="flex:1">
+      <div class="sidebar-label">Stats</div>
+      <div id="stats-panel" class="text-sm text-muted">Loading…</div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <!-- Toolbar -->
+    <div class="flex items-center justify-between gap-8" style="padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface)">
+      <input type="text" id="search-input" placeholder="Search title or artist…" style="width:220px" oninput="debounceSearch()"/>
+      <div class="flex items-center gap-8">
+        <span class="text-xs text-muted">Sort by</span>
+        <select id="sort-by" onchange="applyFilters()">
+          <option value="file_date">Date</option>
+          <option value="bpm">BPM</option>
+          <option value="camelot_key">Key</option>
+          <option value="energy">Energy</option>
+          <option value="title">Title</option>
+          <option value="artist">Artist</option>
+          <option value="duration_sec">Duration</option>
+        </select>
+        <button class="btn btn-secondary btn-sm" id="sort-dir-btn" onclick="toggleSortDir()">↓ Desc</button>
+        <button class="btn btn-secondary btn-sm" onclick="playAllFiltered()">▶ Play All</button>
+      </div>
+      <div id="selection-toolbar" style="display:none" class="flex items-center gap-8">
+        <span class="text-xs text-muted" id="sel-count"></span>
+        <select id="add-to-pl-select" style="font-size:12px">
+          <option value="">Add to playlist…</option>
+        </select>
+        <button class="btn btn-primary btn-sm" onclick="addSelectionToPlaylist()">Add</button>
+        <button class="btn btn-secondary btn-sm" onclick="clearSelection()">✕</button>
+      </div>
+    </div>
+
+    <!-- Track Table -->
+    <div class="track-table-wrap" id="track-table-wrap">
+      <div class="empty-state" id="track-empty" style="display:none">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        <p>No tracks found. Scan your library to get started.</p>
+      </div>
+      <table class="track-table" id="track-table">
+        <thead>
+          <tr>
+            <th class="col-check"><input type="checkbox" id="select-all" onchange="toggleSelectAll()"/></th>
+            <th>Title</th><th>Artist</th><th>BPM</th><th>Key</th><th>Energy</th><th>Duration</th><th>Date</th><th>Source</th>
+          </tr>
+        </thead>
+        <tbody id="track-tbody"></tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <button class="btn btn-secondary btn-sm" id="prev-btn" onclick="changePage(-1)">← Prev</button>
+      <span id="page-info">Page 1</span>
+      <button class="btn btn-secondary btn-sm" id="next-btn" onclick="changePage(1)">Next →</button>
+      <span id="total-info" class="text-muted text-xs"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PLAYLISTS TAB -->
+<div id="page-playlists" class="page" style="overflow:hidden">
+  <!-- Left panel -->
+  <div style="width:320px;min-width:320px;border-right:1px solid var(--border);display:flex;flex-direction:column">
+    <div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center">
+      <span style="font-weight:600;flex:1">Playlists</span>
+      <button class="btn btn-primary btn-sm" onclick="showNewPlaylistInput()">+ New</button>
+    </div>
+    <div id="new-playlist-row" style="display:none;padding:10px 16px;border-bottom:1px solid var(--border);gap:8px" class="flex">
+      <input id="new-pl-name" type="text" placeholder="Playlist name…" style="flex:1" onkeydown="if(event.key==='Enter')createPlaylist()"/>
+      <button class="btn btn-primary btn-sm" onclick="createPlaylist()">Create</button>
+      <button class="btn btn-secondary btn-sm" onclick="hideNewPlaylistInput()">✕</button>
+    </div>
+    <div id="pl-list" style="flex:1;overflow-y:auto"></div>
+  </div>
+
+  <!-- Right panel -->
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div id="pl-empty" class="empty-state">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <p>Select a playlist to view tracks</p>
+    </div>
+    <div id="pl-detail" style="display:none;flex:1;flex-direction:column;overflow:hidden">
+      <div style="padding:14px 16px;border-bottom:1px solid var(--border);background:var(--surface)">
+        <div class="flex items-center justify-between gap-8">
+          <div>
+            <div id="pl-detail-name" style="font-size:16px;font-weight:700"></div>
+            <div id="pl-detail-meta" class="text-xs text-muted mt-8"></div>
+          </div>
+          <div class="flex gap-4">
+            <button class="btn btn-secondary btn-sm" onclick="exportPlaylist('m3u')">M3U</button>
+            <button class="btn btn-secondary btn-sm" onclick="exportPlaylist('rekordbox')">Rekordbox</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteCurrentPlaylist()">Delete</button>
+          </div>
+        </div>
+        <div class="flex gap-4 mt-8 flex-wrap">
+          <button class="btn btn-secondary btn-sm" onclick="sortPlaylist('bpm','asc')">BPM ↑</button>
+          <button class="btn btn-secondary btn-sm" onclick="sortPlaylist('bpm','desc')">BPM ↓</button>
+          <button class="btn btn-secondary btn-sm" onclick="sortPlaylist('camelot_key','asc')">Key A-Z</button>
+          <button class="btn btn-secondary btn-sm" onclick="sortPlaylist('file_date','desc')">Date ↓</button>
+          <button class="btn btn-secondary btn-sm" onclick="sortPlaylist('energy','desc')">Energy ↓</button>
+          <button class="btn btn-secondary btn-sm" onclick="sortPlaylist('camelot_harmonic','asc')" style="color:var(--accent)">♾ Harmonic Flow</button>
+        </div>
+      </div>
+      <div id="pl-track-list" style="flex:1;overflow-y:auto">
+        <table class="track-table" style="width:100%">
+          <thead>
+            <tr><th style="width:32px"></th><th style="width:32px">#</th><th>Title</th><th>Artist</th><th>BPM</th><th>Key</th><th>Energy</th><th>Duration</th><th style="width:40px"></th></tr>
+          </thead>
+          <tbody id="pl-tbody"></tbody>
+        </table>
+      </div>
+      <div style="padding:10px 16px;border-top:1px solid var(--border);background:var(--surface)">
+        <div class="flex gap-8">
+          <input type="text" id="pl-add-search" placeholder="Search tracks to add…" style="flex:1" oninput="searchTracksForPlaylist()"/>
+        </div>
+        <div id="pl-add-results" style="max-height:180px;overflow-y:auto;margin-top:8px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ DOWNLOAD TAB -->
+<div id="page-download" class="page" style="align-items:center;justify-content:center;padding:40px">
+  <div style="width:100%;max-width:600px">
+    <div class="card">
+      <h2 style="margin-bottom:20px;font-size:18px">Download from Deezer</h2>
+
+      <div class="mb-8"><label class="text-xs text-muted">Deezer URL</label></div>
+      <input type="text" id="dl-url" placeholder="Paste Deezer playlist, album or track URL…" style="width:100%;margin-bottom:14px"/>
+
+      <div class="mb-8"><label class="text-xs text-muted">Quality</label></div>
+      <div class="pill-group mb-8" id="quality-pills">
+        <button class="pill active" onclick="setQuality('FLAC',this)">FLAC</button>
+        <button class="pill" onclick="setQuality('MP3_320',this)">MP3 320</button>
+        <button class="pill" onclick="setQuality('MP3_128',this)">MP3 128</button>
+      </div>
+
+      <div class="mb-8 mt-12"><label class="text-xs text-muted">Output Path</label></div>
+      <input type="text" id="dl-output" style="width:100%;margin-bottom:20px" placeholder="D:/Music/DeezerDownloads"/>
+
+      <button class="btn btn-primary btn-lg w-full" onclick="startDownload()">Download</button>
+    </div>
+
+    <div id="dl-log-wrap" style="display:none;margin-top:20px">
+      <div class="flex items-center justify-between mb-8">
+        <span class="text-sm font-bold">Download Log</span>
+        <span id="dl-status"></span>
+      </div>
+      <div class="log-terminal" id="dl-log"></div>
+      <button id="dl-scan-btn" class="btn btn-primary mt-8" style="display:none" onclick="scanDownloadFolder()">
+        ↩ Scan Downloaded Files
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ ORGANIZE TAB -->
+<div id="page-organize" class="page" style="padding:0;overflow:auto">
+  <div class="organize-layout">
+    <!-- Left: source -->
+    <div class="card">
+      <h3 style="margin-bottom:16px">Source</h3>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <label class="flex items-center gap-8"><input type="radio" name="org-source" value="selected" checked onchange="updateOrganizePreview()"/> Selected tracks from Library</label>
+        <label class="flex items-center gap-8"><input type="radio" name="org-source" value="playlist" onchange="updateOrganizePreview()"/> A playlist</label>
+        <label class="flex items-center gap-8"><input type="radio" name="org-source" value="all" onchange="updateOrganizePreview()"/> All analyzed tracks</label>
+      </div>
+      <div id="org-playlist-row" style="display:none;margin-top:12px">
+        <select id="org-playlist-sel" style="width:100%" onchange="updateOrganizePreview()">
+          <option value="">Select playlist…</option>
+        </select>
+      </div>
+      <div id="org-track-count" class="text-sm text-muted mt-12">Select source to preview</div>
+    </div>
+
+    <!-- Right: output -->
+    <div class="card">
+      <h3 style="margin-bottom:16px">Output</h3>
+      <label class="text-xs text-muted">Output Folder</label>
+      <input type="text" id="org-output" style="width:100%;margin-top:6px" placeholder="D:/MusicOrganized" oninput="updateOrganizePreview()"/>
+
+      <div class="folder-preview" id="org-preview" style="margin-top:16px">
+        📁 8A/<br>
+        &nbsp;&nbsp;🎵 Artist - Title (126.3bpm).flac<br>
+        📁 9B/<br>
+        &nbsp;&nbsp;🎵 Artist - Title (132.0bpm).wav
+      </div>
+
+      <button class="btn btn-primary btn-lg w-full mt-16" onclick="runOrganize()">Organize (Copy)</button>
+      <div id="org-progress-wrap" style="display:none;margin-top:12px">
+        <div class="progress-bar"><div class="progress-fill" id="org-bar" style="width:0%"></div></div>
+        <div id="org-status" class="text-xs text-muted mt-8"></div>
+      </div>
+      <div id="org-result" style="display:none;margin-top:12px" class="text-sm"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ SETTINGS TAB -->
+<div id="page-settings" class="page" style="padding:0;overflow:auto">
+  <div style="max-width:640px;padding:24px;margin:0 auto;display:flex;flex-direction:column;gap:20px">
+    <div class="card">
+      <h3 style="margin-bottom:16px">Downloads</h3>
+      <label class="text-xs text-muted">Default Download Path</label>
+      <input type="text" id="s-dl-path" style="width:100%;margin-top:6px;margin-bottom:14px"/>
+      <label class="text-xs text-muted">Default Quality</label>
+      <select id="s-quality" style="width:100%;margin-top:6px;margin-bottom:14px">
+        <option value="FLAC">FLAC</option>
+        <option value="MP3_320">MP3 320</option>
+        <option value="MP3_128">MP3 128</option>
+      </select>
+      <div class="flex items-center gap-8 mb-4">
+        <label class="text-xs text-muted">ARL Token</label>
+        <span style="position:relative;display:inline-block;cursor:help" onmouseenter="$('arl-tip').style.display='block'" onmouseleave="$('arl-tip').style.display='none'">
+          <span style="font-size:11px;color:var(--text-muted);border:1px solid var(--border);border-radius:50%;width:15px;height:15px;display:inline-flex;align-items:center;justify-content:center">?</span>
+          <div id="arl-tip" style="display:none;position:absolute;bottom:calc(100% + 6px);left:0;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:11px;color:var(--text-dim);width:280px;z-index:50;line-height:1.5">
+            In Chrome: go to <strong>deezer.com</strong> → press <strong>F12</strong> → <strong>Application</strong> tab → <strong>Cookies</strong> → find the <strong>arl</strong> cookie and copy its value.
+          </div>
+        </span>
+      </div>
+      <input type="password" id="s-arl" style="width:100%;font-family:monospace;letter-spacing:1px" placeholder="Paste your ARL token here…"/>
+      <button class="btn btn-primary btn-sm mt-12" onclick="saveSettings()">Save</button>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:16px">Server</h3>
+      <label class="text-xs text-muted">Port</label>
+      <input type="number" id="s-port" min="1024" max="65535" style="width:140px;margin-top:6px"/>
+      <div class="text-xs text-muted mt-8" style="color:var(--warning)">Restart required after changing port.</div>
+      <button class="btn btn-primary btn-sm mt-12" onclick="saveSettings()">Save</button>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:16px">Database</h3>
+      <div class="text-sm text-muted mb-8" id="s-db-path"></div>
+      <button class="btn btn-danger" onclick="clearDatabase()">Clear All Data</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ MODAL -->
+<div id="modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3 id="modal-title">Confirm</h3>
+    <p id="modal-body" class="text-dim text-sm mt-8"></p>
+    <div class="flex gap-8 mt-16 justify-between">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger" id="modal-confirm">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<audio id="player-audio"></audio>
+<div class="player-bar" id="player-bar">
+  <div class="player-info">
+    <div class="player-title" id="player-title">—</div>
+    <div class="player-artist" id="player-artist"></div>
+  </div>
+  <div class="player-controls">
+    <div class="player-btns">
+      <button class="player-btn" onclick="prevTrack()" title="Previous">⏮</button>
+      <button class="player-btn player-play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+      <button class="player-btn" onclick="nextTrack()" title="Next">⏭</button>
+    </div>
+    <div class="player-seek">
+      <span class="player-time" id="player-cur">0:00</span>
+      <input type="range" id="seek-bar" min="0" max="100" value="0" step="0.1"/>
+      <span class="player-time" id="player-dur">0:00</span>
+    </div>
+  </div>
+  <div class="player-vol">
+    <span style="font-size:14px;opacity:.6">🔊</span>
+    <input type="range" id="vol-bar" min="0" max="1" step="0.02" value="1"/>
+  </div>
+</div>
+
+<script>
+// ── State ────────────────────────────────────────────────────────────────────
+const S = {
+  tracks: [], total: 0, page: 1, perPage: 50,
+  sortBy: 'file_date', sortDir: 'desc',
+  selectedIds: new Set(),
+  bpmMin: 60, bpmMax: 200,
+  activeKeys: new Set(),
+  searchTimeout: null,
+  currentPlaylist: null,
+  quality: 'FLAC',
+  scanFolders: [],
+  dlJobId: null,
+  dlSse: null,
+  stats: null,
+};
+
+const CAMELOT_KEYS = [
+  '1A','2A','3A','4A','5A','6A','7A','8A','9A','10A','11A','12A',
+  '1B','2B','3B','4B','5B','6B','7B','8B','9B','10B','11B','12B',
+];
+
+// ── Utilities ────────────────────────────────────────────────────────────────
+const API = window.location.origin;
+const $ = id => document.getElementById(id);
+const api = async (method, path, body) => {
+  const opts = { method, headers: {} };
+  if (body !== undefined) {
+    opts.headers['Content-Type'] = 'application/json';
+    opts.body = JSON.stringify(body);
+  }
+  const r = await fetch(API + path, opts);
+  if (!r.ok) {
+    const err = await r.text();
+    throw new Error(`${r.status}: ${err}`);
+  }
+  return r.json();
+};
+
+function fmtDur(sec) {
+  if (!sec) return '--';
+  const m = Math.floor(sec / 60), s = Math.round(sec % 60);
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
+function fmtDate(ts) {
+  if (!ts) return '--';
+  return new Date(ts * 1000).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+function camelotColor(key) {
+  if (!key) return '#555';
+  const num = parseInt(key);
+  const letter = key.slice(-1);
+  if (!num) return '#555';
+  // map 1-12 to hue 0-300
+  const hue = Math.round((num - 1) * 30);
+  const l = letter === 'B' ? 55 : 45;
+  return `hsl(${hue},70%,${l}%)`;
+}
+function camelotBadge(key) {
+  if (!key) return '';
+  const c = camelotColor(key);
+  return `<span class="badge-camelot" style="background:${c}22;color:${c};border:1px solid ${c}44">${key}</span>`;
+}
+function energyBar(e) {
+  if (e == null) return '--';
+  const pct = Math.round((e || 0) * 100);
+  const hue = Math.round(240 - (e || 0) * 240);
+  const c = `hsl(${hue},80%,55%)`;
+  return `<div class="energy-bar"><div class="energy-bg"><div class="energy-bar-inner" style="width:${pct}%;background:${c}"></div></div><span class="text-xs text-muted">${pct}%</span></div>`;
+}
+function showModal(title, body, onConfirm) {
+  $('modal-title').textContent = title;
+  $('modal-body').textContent = body;
+  $('modal-confirm').onclick = () => { closeModal(); onConfirm(); };
+  $('modal').style.display = 'flex';
+}
+function closeModal() { $('modal').style.display = 'none'; }
+
+// ── Tab switching ─────────────────────────────────────────────────────────────
+function showTab(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  $(`page-${name}`).classList.add('active');
+  const tabs = ['library','playlists','download','organize','settings'];
+  document.querySelectorAll('.nav-tab')[tabs.indexOf(name)]?.classList.add('active');
+  if (name === 'playlists') loadPlaylists();
+  if (name === 'organize') initOrganize();
+  if (name === 'settings') loadSettings();
+  if (name === 'download') {
+    api('GET', '/api/settings').then(cfg => {
+      $('dl-output').value = cfg.default_download_path || '';
+    }).catch(() => {});
+  }
+}
+
+// ── Key Grid ─────────────────────────────────────────────────────────────────
+function buildKeyGrid() {
+  const g = $('key-grid');
+  CAMELOT_KEYS.forEach(k => {
+    const btn = document.createElement('button');
+    btn.className = 'key-btn';
+    btn.id = `key-btn-${k}`;
+    btn.style.borderColor = camelotColor(k) + '44';
+    btn.style.cssText += ';display:flex;flex-direction:column;align-items:center;padding:3px 2px;line-height:1.2';
+    btn.innerHTML = `<span>${k}</span><span class="key-count" style="font-size:8px;opacity:0;line-height:1.3"></span>`;
+    btn.onclick = () => toggleKey(k, btn);
+    g.appendChild(btn);
+  });
+}
+function toggleKey(k, btn) {
+  if (S.activeKeys.has(k)) { S.activeKeys.delete(k); btn.classList.remove('active'); btn.style.background = ''; }
+  else { S.activeKeys.add(k); btn.classList.add('active'); btn.style.background = camelotColor(k); }
+  applyFilters();
+}
+
+// ── BPM Slider ───────────────────────────────────────────────────────────────
+function updateBpmSlider() {
+  let lo = parseInt($('bpm-min').value), hi = parseInt($('bpm-max').value);
+  if (lo > hi) { [lo, hi] = [hi, lo]; }
+  S.bpmMin = lo; S.bpmMax = hi;
+  $('bpm-min-lbl').textContent = lo;
+  $('bpm-max-lbl').textContent = hi;
+  const total = 200 - 60;
+  const left = ((lo - 60) / total) * 100;
+  const right = ((hi - 60) / total) * 100;
+  $('bpm-range').style.left = left + '%';
+  $('bpm-range').style.width = (right - left) + '%';
+  applyFilters();
+}
+
+// ── Scan Folders ─────────────────────────────────────────────────────────────
+function renderScanFolders() {
+  const c = $('scan-folders');
+  c.innerHTML = S.scanFolders.map((f, i) => `
+    <div class="folder-item"><span title="${f}">${f}</span>
+    <button class="btn btn-secondary btn-sm" onclick="removeScanFolder(${i})">✕</button></div>`).join('');
+}
+function addScanFolder() {
+  const v = $('folder-input').value.trim();
+  if (v && !S.scanFolders.includes(v)) { S.scanFolders.push(v); renderScanFolders(); }
+  $('folder-input').value = '';
+}
+function removeScanFolder(i) { S.scanFolders.splice(i, 1); renderScanFolders(); }
+
+async function startScan() {
+  if (!S.scanFolders.length) { alert('Add at least one folder first.'); return; }
+  $('scan-progress-wrap').style.display = 'block';
+  $('scan-bar').style.width = '0%';
+  $('scan-status').textContent = 'Starting scan…';
+  await api('POST', '/api/scan', { folders: S.scanFolders, rescan: false });
+
+  const sse = new EventSource(API + '/api/scan/progress');
+  sse.onmessage = e => {
+    const d = JSON.parse(e.data);
+    const pct = d.total > 0 ? Math.round((d.processed / d.total) * 100) : 0;
+    $('scan-bar').style.width = pct + '%';
+    $('scan-status').textContent = d.done
+      ? `Done — ${d.new} new, ${d.skipped} skipped, ${d.errors} errors`
+      : `${d.processed}/${d.total} — ${d.current_file}`;
+    if (d.done) { sse.close(); loadTracks(); loadStats(); }
+  };
+  sse.onerror = () => sse.close();
+}
+
+// ── Tracks ────────────────────────────────────────────────────────────────────
+function applyFilters() { S.page = 1; loadTracks(); }
+function debounceSearch() {
+  clearTimeout(S.searchTimeout);
+  S.searchTimeout = setTimeout(applyFilters, 300);
+}
+function toggleSortDir() {
+  S.sortDir = S.sortDir === 'desc' ? 'asc' : 'desc';
+  $('sort-dir-btn').textContent = S.sortDir === 'desc' ? '↓ Desc' : '↑ Asc';
+  applyFilters();
+}
+
+async function loadTracks() {
+  const params = new URLSearchParams();
+  params.set('page', S.page);
+  params.set('per_page', S.perPage);
+  params.set('sort_by', $('sort-by').value);
+  params.set('sort_dir', S.sortDir);
+  if (S.bpmMin > 60) params.set('bpm_min', S.bpmMin);
+  if (S.bpmMax < 200) params.set('bpm_max', S.bpmMax);
+  if (S.activeKeys.size) params.set('camelot_key', [...S.activeKeys].join(','));
+  const df = $('date-from').value, dt = $('date-to').value;
+  if (df) params.set('date_from', new Date(df).getTime() / 1000);
+  if (dt) params.set('date_to', (new Date(dt).getTime() / 1000) + 86399);
+  const sf = $('source-folder').value;
+  if (sf) params.set('source_folder', sf);
+  const search = $('search-input').value.trim();
+  if (search) params.set('search', search);
+
+  try {
+    const data = await api('GET', `/api/tracks?${params}`);
+    S.tracks = data.tracks;
+    S.total = data.total;
+    renderTrackTable();
+  } catch (e) { console.error(e); }
+}
+
+function renderTrackTable() {
+  const tbody = $('track-tbody');
+  const empty = $('track-empty');
+  if (!S.tracks.length) { empty.style.display = 'flex'; tbody.innerHTML = ''; $('select-all').checked = false; return; }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = S.tracks.map((t, idx) => {
+    const sel = S.selectedIds.has(t.id);
+    const src = (t.source_folder || '').split(/[/\\]/).pop() || '--';
+    return `<tr class="${sel ? 'selected' : ''}" onclick="toggleTrack(${t.id},this)" ondblclick="rowPlayTrack(${t.id},${idx})">
+      <td class="col-check"><input type="checkbox" ${sel ? 'checked' : ''} onclick="event.stopPropagation();toggleTrack(${t.id},this.closest('tr'))"/><button class="row-play-btn" onclick="event.stopPropagation();rowPlayTrack(${t.id},${idx})">▶</button></td>
+      <td class="col-title text-ellipsis" title="${t.title||''}">${t.title || t.filename || '--'}</td>
+      <td class="col-artist text-ellipsis" title="${t.artist||''}">${t.artist || '--'}</td>
+      <td>${t.bpm != null ? t.bpm.toFixed(1) : '--'}</td>
+      <td>${camelotBadge(t.camelot_key)}</td>
+      <td>${energyBar(t.energy)}</td>
+      <td>${fmtDur(t.duration_sec)}</td>
+      <td>${fmtDate(t.file_date)}</td>
+      <td class="text-muted text-xs text-ellipsis" style="max-width:100px" title="${t.source_folder||''}">${src}</td>
+    </tr>`;
+  }).join('');
+
+  // page info
+  const totalPages = Math.ceil(S.total / S.perPage);
+  $('page-info').textContent = `Page ${S.page} of ${totalPages || 1}`;
+  $('total-info').textContent = `${S.total} tracks`;
+  $('prev-btn').disabled = S.page <= 1;
+  $('next-btn').disabled = S.page >= totalPages;
+  updateSelectionToolbar();
+}
+
+function toggleTrack(id, row) {
+  if (S.selectedIds.has(id)) { S.selectedIds.delete(id); row.classList.remove('selected'); }
+  else { S.selectedIds.add(id); row.classList.add('selected'); }
+  updateSelectionToolbar();
+}
+function toggleSelectAll() {
+  const allChecked = $('select-all').checked;
+  S.tracks.forEach(t => allChecked ? S.selectedIds.add(t.id) : S.selectedIds.delete(t.id));
+  renderTrackTable();
+}
+function clearSelection() { S.selectedIds.clear(); renderTrackTable(); }
+
+function updateSelectionToolbar() {
+  const n = S.selectedIds.size;
+  const tb = $('selection-toolbar');
+  tb.style.display = n > 0 ? 'flex' : 'none';
+  $('sel-count').textContent = `${n} selected`;
+}
+
+function changePage(d) { S.page = Math.max(1, S.page + d); loadTracks(); }
+
+function clearFilters() {
+  $('bpm-min').value = 60; $('bpm-max').value = 200;
+  S.bpmMin = 60; S.bpmMax = 200; $('bpm-min-lbl').textContent = 60; $('bpm-max-lbl').textContent = 200;
+  $('bpm-range').style.left = '0%'; $('bpm-range').style.width = '100%';
+  S.activeKeys.clear();
+  document.querySelectorAll('.key-btn').forEach(b => { b.classList.remove('active'); b.style.background = ''; });
+  $('date-from').value = ''; $('date-to').value = '';
+  $('source-folder').value = ''; $('search-input').value = '';
+  applyFilters();
+}
+
+// ── Stats ────────────────────────────────────────────────────────────────────
+async function loadStats() {
+  try {
+    const s = await api('GET', '/api/tracks/stats');
+    S.stats = s;
+    const mins = Math.floor((s.total_duration_sec || 0) / 60);
+    const hrs = Math.floor(mins / 60);
+    $('stats-panel').innerHTML = `
+      <div class="mb-8"><strong>${s.total_tracks.toLocaleString()}</strong> tracks</div>
+      <div class="mb-8 text-muted">${hrs}h ${mins % 60}m total</div>
+      ${s.key_distribution.slice(0, 8).map(k => {
+        const max = s.key_distribution[0]?.count || 1;
+        const pct = Math.round((k.count / max) * 100);
+        const c = camelotColor(k.key);
+        return `<div class="stat-row">
+          <span class="stat-label" style="color:${c}">${k.key}</span>
+          <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:${pct}%;background:${c}"></div></div>
+          <span class="stat-count">${k.count}</span></div>`;
+      }).join('')}`;
+
+    // update key button counts
+    const keyMap = {};
+    s.key_distribution.forEach(kd => { keyMap[kd.key] = kd.count; });
+    CAMELOT_KEYS.forEach(k => {
+      const btn = $(`key-btn-${k}`);
+      if (!btn) return;
+      const cnt = keyMap[k] || 0;
+      const span = btn.querySelector('.key-count');
+      if (span) { span.textContent = cnt || ''; span.style.opacity = cnt ? '.7' : '0'; }
+    });
+
+    // populate source folder dropdown
+    const sel = $('source-folder');
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">All folders</option>' +
+      s.source_folders.map(f => `<option value="${f.folder}">${f.folder.split(/[/\\]/).pop()} (${f.count})</option>`).join('');
+    sel.value = cur;
+  } catch (e) { console.error(e); }
+}
+
+// ── Playlist toolbar: add selection ──────────────────────────────────────────
+async function loadPlaylistsDropdown() {
+  try {
+    const pls = await api('GET', '/api/playlists');
+    const sel = $('add-to-pl-select');
+    sel.innerHTML = '<option value="">Add to playlist…</option>' +
+      pls.map(p => `<option value="${p.id}">${p.name}</option>`).join('') +
+      '<option value="__new__">+ New playlist…</option>';
+  } catch (e) {}
+}
+async function addSelectionToPlaylist() {
+  const sel = $('add-to-pl-select').value;
+  if (!sel) return;
+  const ids = [...S.selectedIds];
+  if (!ids.length) return;
+  let pid = sel;
+  if (sel === '__new__') {
+    const name = prompt('New playlist name:');
+    if (!name) return;
+    const pl = await api('POST', '/api/playlists', { name });
+    pid = pl.id;
+  }
+  await api('POST', `/api/playlists/${pid}/tracks`, { track_ids: ids });
+  clearSelection();
+  await loadPlaylistsDropdown();
+  alert(`Added ${ids.length} tracks to playlist.`);
+}
+
+// ── Playlists ─────────────────────────────────────────────────────────────────
+async function loadPlaylists() {
+  try {
+    const pls = await api('GET', '/api/playlists');
+    $('pl-list').innerHTML = pls.map(p => `
+      <div class="pl-item ${S.currentPlaylist?.id === p.id ? 'active' : ''}" onclick="selectPlaylist(${p.id})">
+        <div>
+          <div class="pl-item-name">${p.name}</div>
+          <div class="pl-item-meta">${p.track_count} tracks · ${fmtDate(p.created_at)}</div>
+        </div>
+      </div>`).join('') || '<div class="text-muted text-sm" style="padding:16px">No playlists yet</div>';
+    await loadPlaylistsDropdown();
+  } catch (e) { console.error(e); }
+}
+function showNewPlaylistInput() { $('new-playlist-row').style.display = 'flex'; $('new-pl-name').focus(); }
+function hideNewPlaylistInput() { $('new-playlist-row').style.display = 'none'; }
+async function createPlaylist() {
+  const name = $('new-pl-name').value.trim();
+  if (!name) return;
+  await api('POST', '/api/playlists', { name });
+  $('new-pl-name').value = '';
+  hideNewPlaylistInput();
+  await loadPlaylists();
+}
+async function selectPlaylist(id) {
+  try {
+    const pl = await api('GET', `/api/playlists/${id}`);
+    S.currentPlaylist = pl;
+    $('pl-empty').style.display = 'none';
+    $('pl-detail').style.display = 'flex';
+    renderPlaylistDetail(pl);
+    loadPlaylists();
+  } catch (e) { console.error(e); }
+}
+function renderPlaylistDetail(pl) {
+  $('pl-detail-name').textContent = pl.name;
+  const dur = (pl.tracks || []).reduce((a, t) => a + (t.duration_sec || 0), 0);
+  $('pl-detail-meta').textContent = `${pl.tracks?.length || 0} tracks · ${fmtDur(dur)}`;
+
+  const tbody = $('pl-tbody');
+  tbody.innerHTML = (pl.tracks || []).map((t, i) => `
+    <tr class="drag-row" draggable="true" data-id="${t.id}"
+        ondragstart="dragStart(event,${t.id})" ondragover="dragOver(event)" ondrop="dropTrack(event,${t.id})" ondragleave="dragLeave(event)">
+      <td class="drag-handle">⠿</td>
+      <td class="text-muted text-xs">${i + 1}</td>
+      <td class="text-ellipsis" style="max-width:160px" title="${t.title||''}">${t.title || t.filename || '--'}</td>
+      <td class="text-ellipsis text-dim" style="max-width:120px">${t.artist || '--'}</td>
+      <td>${t.bpm != null ? t.bpm.toFixed(1) : '--'}</td>
+      <td>${camelotBadge(t.camelot_key)}</td>
+      <td>${energyBar(t.energy)}</td>
+      <td>${fmtDur(t.duration_sec)}</td>
+      <td><button class="btn btn-secondary btn-sm" style="padding:2px 6px" onclick="removeFromPlaylist(${t.id})">✕</button></td>
+    </tr>`).join('');
+}
+
+async function removeFromPlaylist(trackId) {
+  await api('DELETE', `/api/playlists/${S.currentPlaylist.id}/tracks/${trackId}`);
+  await selectPlaylist(S.currentPlaylist.id);
+}
+async function sortPlaylist(sortBy, sortDir) {
+  const pl = await api('POST', `/api/playlists/${S.currentPlaylist.id}/sort`, { sort_by: sortBy, sort_dir: sortDir });
+  S.currentPlaylist = pl;
+  renderPlaylistDetail(pl);
+}
+
+// Drag reorder
+let _dragId = null;
+function dragStart(e, id) { _dragId = id; e.currentTarget.classList.add('dragging'); }
+function dragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function dragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+async function dropTrack(e, targetId) {
+  e.preventDefault();
+  document.querySelectorAll('.drag-row').forEach(r => r.classList.remove('drag-over','dragging'));
+  if (_dragId === targetId) return;
+  const rows = [...document.querySelectorAll('#pl-tbody .drag-row')];
+  const ids = rows.map(r => parseInt(r.dataset.id));
+  const fromIdx = ids.indexOf(_dragId);
+  const toIdx = ids.indexOf(targetId);
+  if (fromIdx < 0 || toIdx < 0) return;
+  ids.splice(fromIdx, 1);
+  ids.splice(toIdx, 0, _dragId);
+  await api('PUT', `/api/playlists/${S.currentPlaylist.id}/tracks/reorder`, { track_ids: ids });
+  await selectPlaylist(S.currentPlaylist.id);
+}
+
+async function deleteCurrentPlaylist() {
+  showModal('Delete Playlist', `Delete "${S.currentPlaylist.name}"? This cannot be undone.`, async () => {
+    await api('DELETE', `/api/playlists/${S.currentPlaylist.id}`);
+    S.currentPlaylist = null;
+    $('pl-empty').style.display = 'flex';
+    $('pl-detail').style.display = 'none';
+    await loadPlaylists();
+  });
+}
+
+async function exportPlaylist(type) {
+  const path = prompt('Output folder path:');
+  if (!path) return;
+  try {
+    const r = await api('POST', `/api/playlists/${S.currentPlaylist.id}/export/${type}`, { output_path: path });
+    alert(`Exported to: ${r.path}`);
+  } catch (e) { alert('Export failed: ' + e.message); }
+}
+
+// Add tracks to playlist search
+let _addSearchTimeout = null;
+async function searchTracksForPlaylist() {
+  clearTimeout(_addSearchTimeout);
+  _addSearchTimeout = setTimeout(async () => {
+    const q = $('pl-add-search').value.trim();
+    if (!q) { $('pl-add-results').innerHTML = ''; return; }
+    try {
+      const data = await api('GET', `/api/tracks?search=${encodeURIComponent(q)}&per_page=20`);
+      $('pl-add-results').innerHTML = data.tracks.map(t => `
+        <div class="flex items-center justify-between" style="padding:6px 4px;border-bottom:1px solid var(--border)">
+          <div>
+            <span class="text-sm">${t.title || t.filename}</span>
+            <span class="text-muted text-xs"> — ${t.artist || ''}</span>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="addTrackToCurrentPlaylist(${t.id})">+</button>
+        </div>`).join('') || '<div class="text-muted text-xs" style="padding:8px">No results</div>';
+    } catch (e) {}
+  }, 300);
+}
+async function addTrackToCurrentPlaylist(trackId) {
+  await api('POST', `/api/playlists/${S.currentPlaylist.id}/tracks`, { track_ids: [trackId] });
+  await selectPlaylist(S.currentPlaylist.id);
+}
+
+// ── Download ──────────────────────────────────────────────────────────────────
+function setQuality(q, btn) {
+  S.quality = q;
+  document.querySelectorAll('#quality-pills .pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+}
+async function startDownload() {
+  const url = $('dl-url').value.trim();
+  const output = $('dl-output').value.trim();
+  if (!url) { alert('Please enter a Deezer URL.'); return; }
+  if (!output) { alert('Please enter an output path.'); return; }
+
+  if (S.dlSse) { S.dlSse.close(); S.dlSse = null; }
+  $('dl-log').textContent = '';
+  $('dl-log-wrap').style.display = 'block';
+  $('dl-status').innerHTML = '<span class="badge badge-warning">Running…</span>';
+  $('dl-scan-btn').style.display = 'none';
+
+  try {
+    const r = await api('POST', '/api/download', { url, quality: S.quality, output_path: output });
+    S.dlJobId = r.job_id;
+    const sse = new EventSource(`${API}/api/download/${S.dlJobId}/stream`);
+    S.dlSse = sse;
+    sse.onmessage = e => {
+      const d = JSON.parse(e.data);
+      if (d.line) {
+        const div = document.createElement('div');
+        div.textContent = d.line;
+        $('dl-log').appendChild(div);
+        $('dl-log').scrollTop = $('dl-log').scrollHeight;
+      }
+      if (d.done) {
+        sse.close();
+        const ok = d.exit_code === 0;
+        $('dl-status').innerHTML = ok
+          ? '<span class="badge badge-success">Done ✓</span>'
+          : '<span class="badge badge-danger">Error ✗</span>';
+        $('dl-scan-btn').style.display = 'inline-flex';
+      }
+    };
+    sse.onerror = () => { sse.close(); $('dl-status').innerHTML = '<span class="badge badge-danger">Connection error</span>'; };
+  } catch (e) { alert('Failed to start download: ' + e.message); }
+}
+
+// ── Organize ──────────────────────────────────────────────────────────────────
+async function initOrganize() {
+  try {
+    const pls = await api('GET', '/api/playlists');
+    const sel = $('org-playlist-sel');
+    sel.innerHTML = '<option value="">Select playlist…</option>' +
+      pls.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+
+    // also populate from stats
+    const s = await api('GET', '/api/tracks/stats');
+    $('org-track-count').textContent = `${s.total_tracks} total tracks in library`;
+  } catch (e) {}
+
+  document.querySelectorAll('[name=org-source]').forEach(r => {
+    r.onchange = () => {
+      $('org-playlist-row').style.display = r.value === 'playlist' ? 'block' : 'none';
+      updateOrganizePreview();
+    };
+  });
+  const cfg = await api('GET', '/api/settings').catch(() => ({}));
+  if (cfg.default_download_path) $('org-output').value = cfg.default_download_path.replace('DeezerDownloads', 'Organized');
+}
+function updateOrganizePreview() {
+  const out = $('org-output').value || 'D:/MusicOrganized';
+  $('org-preview').innerHTML = `📁 ${out}/8A/<br>&nbsp;&nbsp;🎵 Artist - Title (126.3bpm).flac<br>📁 ${out}/9B/<br>&nbsp;&nbsp;🎵 Artist - Title (132.0bpm).wav`;
+}
+async function runOrganize() {
+  const src = document.querySelector('[name=org-source]:checked')?.value;
+  const output_folder = $('org-output').value.trim();
+  if (!output_folder) { alert('Enter an output folder.'); return; }
+
+  let body = { output_folder };
+  if (src === 'selected') {
+    if (!S.selectedIds.size) { alert('No tracks selected in Library.'); return; }
+    body.track_ids = [...S.selectedIds];
+  } else if (src === 'playlist') {
+    const pid = $('org-playlist-sel').value;
+    if (!pid) { alert('Select a playlist.'); return; }
+    body.playlist_id = parseInt(pid);
+  } else {
+    // all tracks
+    const data = await api('GET', '/api/tracks?per_page=10000');
+    body.track_ids = data.tracks.map(t => t.id);
+  }
+
+  $('org-progress-wrap').style.display = 'block';
+  $('org-bar').style.width = '50%';
+  $('org-status').textContent = 'Copying files…';
+  $('org-result').style.display = 'none';
+
+  try {
+    const r = await api('POST', '/api/organize', body);
+    $('org-bar').style.width = '100%';
+    $('org-status').textContent = 'Done';
+    $('org-result').style.display = 'block';
+    $('org-result').innerHTML = `<span class="badge badge-success">✓ ${r.copied} copied</span> <span class="badge badge-warning">${r.skipped} skipped</span>` +
+      (r.errors?.length ? `<br><span class="text-xs text-danger">${r.errors.length} errors</span>` : '');
+  } catch (e) {
+    $('org-status').textContent = 'Error: ' + e.message;
+  }
+}
+
+// ── Settings ──────────────────────────────────────────────────────────────────
+async function loadSettings() {
+  try {
+    const cfg = await api('GET', '/api/settings');
+    $('s-dl-path').value = cfg.default_download_path || '';
+    $('s-quality').value = cfg.default_quality || 'FLAC';
+    $('s-port').value = cfg.port || 7337;
+    $('s-arl').value = cfg.arl_token || '';
+    window._savedPort = cfg.port || 7337;
+    $('s-db-path').textContent = 'Database: musicden.db in project root';
+  } catch (e) {}
+}
+async function saveSettings() {
+  const port = parseInt($('s-port').value) || 7337;
+  if (port < 1024 || port > 65535) { alert('Port must be between 1024 and 65535.'); return; }
+  const prevPort = window._savedPort || 7337;
+  await api('PUT', '/api/settings', {
+    default_download_path: $('s-dl-path').value,
+    default_quality: $('s-quality').value,
+    port,
+    arl_token: $('s-arl').value,
+  });
+  window._savedPort = port;
+  const msg = port !== prevPort ? 'Settings saved. Restart required for port change to take effect.' : 'Settings saved.';
+  alert(msg);
+}
+async function clearDatabase() {
+  showModal('Clear Database', 'This will delete all tracks and playlists. Cannot be undone.', async () => {
+    await api('DELETE', '/api/database');
+    await loadTracks();
+    await loadStats();
+  });
+}
+
+// ── Player ────────────────────────────────────────────────────────────────────
+const P = { queue: [], idx: 0, seeking: false };
+const _audio = () => $('player-audio');
+
+function showPlayer() {
+  $('player-bar').style.display = 'flex';
+  document.body.style.paddingBottom = '72px';
+}
+
+function playFromQueue(idx) {
+  if (idx < 0 || idx >= P.queue.length) return;
+  P.idx = idx;
+  const t = P.queue[idx];
+  $('player-title').textContent = t.title || t.filename || 'Unknown';
+  $('player-artist').textContent = t.artist || '';
+  const a = _audio();
+  a.src = `${API}/api/stream/${t.id}`;
+  a.load();
+  a.play().catch(() => {});
+  showPlayer();
+}
+
+function rowPlayTrack(id, idx) {
+  P.queue = [...S.tracks];
+  playFromQueue(idx);
+}
+
+function playAllFiltered() {
+  if (!S.tracks.length) return;
+  P.queue = [...S.tracks];
+  playFromQueue(0);
+}
+
+function togglePlay() {
+  const a = _audio();
+  if (a.paused) a.play().catch(() => {}); else a.pause();
+}
+function prevTrack() { playFromQueue(P.idx - 1); }
+function nextTrack() { playFromQueue(P.idx + 1); }
+function seekAudio(val) {
+  const a = _audio();
+  if (a.duration) a.currentTime = (val / 100) * a.duration;
+}
+function setVolume(val) { _audio().volume = parseFloat(val); }
+
+function initPlayer() {
+  const a = _audio();
+  a.addEventListener('play', () => { $('play-btn').textContent = '⏸'; });
+  a.addEventListener('pause', () => { $('play-btn').textContent = '▶'; });
+  a.addEventListener('ended', () => nextTrack());
+  a.addEventListener('timeupdate', () => {
+    if (P.seeking) return;
+    const pct = a.duration ? (a.currentTime / a.duration) * 100 : 0;
+    $('seek-bar').value = pct;
+    $('player-cur').textContent = fmtDur(a.currentTime);
+    $('player-dur').textContent = a.duration ? fmtDur(a.duration) : '0:00';
+  });
+  const sb = $('seek-bar');
+  sb.addEventListener('mousedown', () => { P.seeking = true; });
+  sb.addEventListener('change', e => { P.seeking = false; seekAudio(e.target.value); });
+  $('vol-bar').addEventListener('input', e => setVolume(e.target.value));
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+    if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+    if (e.code === 'ArrowLeft') { const a = _audio(); a.currentTime = Math.max(0, a.currentTime - 10); }
+    if (e.code === 'ArrowRight') { const a = _audio(); a.currentTime = Math.min(a.duration || 0, a.currentTime + 10); }
+  });
+}
+
+// ── Download scan helper ───────────────────────────────────────────────────────
+function scanDownloadFolder() {
+  const folder = $('dl-output').value.trim();
+  if (folder && !S.scanFolders.includes(folder)) {
+    S.scanFolders.push(folder);
+    renderScanFolders();
+  }
+  showTab('library');
+  setTimeout(startScan, 150);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+buildKeyGrid();
+updateBpmSlider();
+loadTracks();
+loadStats();
+loadPlaylistsDropdown();
+initPlayer();
+</script>
+</body>
+</html>
