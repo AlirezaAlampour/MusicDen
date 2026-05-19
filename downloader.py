@@ -12,20 +12,7 @@ _PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 def _get_deemix_cmd(quality: str, output_path: str, url: str) -> list:
-    """Build deemix command, writing ARL into .deemix/config.json in project root."""
-    deemix_config_dir = os.path.join(_PROJECT_ROOT, ".deemix")
-    os.makedirs(deemix_config_dir, exist_ok=True)
-
-    config_path = os.path.join(_PROJECT_ROOT, "config.json")
-    with open(config_path) as f:
-        config = json.load(f)
-    arl = config.get("arl_token", "")
-    if not arl:
-        raise ValueError("ARL token not set")
-
-    with open(os.path.join(deemix_config_dir, "config.json"), "w") as f:
-        json.dump({"arl": arl}, f)
-
+    """Build deemix command."""
     return [
         sys.executable, "-m", "deemix",
         "--portable",
@@ -35,7 +22,7 @@ def _get_deemix_cmd(quality: str, output_path: str, url: str) -> list:
     ]
 
 
-def start_download(url: str, quality: str, output_path: str) -> str:
+def start_download(url: str, quality: str, output_path: str, arl: str) -> str:
     """Start a deemix download subprocess. Callers must pre-validate all arguments."""
     job_id = str(uuid.uuid4())
     _jobs[job_id] = {"lines": [], "done": False, "exit_code": None, "process": None}
@@ -52,15 +39,26 @@ def start_download(url: str, quality: str, output_path: str) -> str:
         try:
             proc = subprocess.Popen(
                 cmd,
+                stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 text=True,
-                bufsize=1,
                 cwd=_PROJECT_ROOT,
+                bufsize=1,
             )
             _jobs[job_id]["process"] = proc
-            for line in proc.stdout:
-                _jobs[job_id]["lines"].append(line.rstrip())
+
+            try:
+                proc.stdin.write(arl + "\n")
+                proc.stdin.flush()
+                proc.stdin.close()
+            except Exception:
+                pass
+
+            for line in iter(proc.stdout.readline, ''):
+                stripped = line.rstrip()
+                if stripped:
+                    _jobs[job_id]["lines"].append(stripped)
             proc.wait()
             _jobs[job_id]["exit_code"] = proc.returncode
         except Exception as e:
@@ -83,6 +81,8 @@ async def stream_job_lines(job_id: str):
         yield f"data: {json.dumps({'line': 'Job not found', 'done': True})}\n\n"
         return
 
+    yield f"data: {json.dumps({'line': '▶ deemix started...', 'done': False})}\n\n"
+
     sent = 0
     while True:
         while sent < len(job["lines"]):
@@ -90,7 +90,8 @@ async def stream_job_lines(job_id: str):
             sent += 1
 
         if job["done"] and sent >= len(job["lines"]):
-            yield f"data: {json.dumps({'line': '', 'done': True, 'exit_code': job['exit_code']})}\n\n"
+            exit_code = job["exit_code"]
+            yield f"data: {json.dumps({'line': f'Exit code: {exit_code}', 'done': True, 'exit_code': exit_code})}\n\n"
             break
 
         await asyncio.sleep(0.1)

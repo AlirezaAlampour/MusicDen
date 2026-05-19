@@ -18,6 +18,7 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
+*.embedding
 .Python
 venv/
 env/

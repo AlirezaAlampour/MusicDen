@@ -31,6 +31,9 @@ input::placeholder{color:var(--text-muted)}
 .nav-tab:hover{color:var(--text);background:var(--card)}
 .nav-tab.active{color:var(--text)}
 .nav-tab.active::after{content:'';position:absolute;bottom:-1px;left:8px;right:8px;height:2px;background:var(--accent);border-radius:2px 2px 0 0}
+.nav-actions{margin-left:auto;display:flex;align-items:center;gap:8px}
+.nav-icon-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:16px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.nav-icon-btn:hover{border-color:var(--accent);color:var(--accent)}
 
 /* ── LAYOUT ── */
 .page{display:none;height:calc(100vh - 54px)}
@@ -61,6 +64,8 @@ input::placeholder{color:var(--text-muted)}
 .sidebar{width:280px;min-width:280px;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;gap:0}
 .sidebar-section{padding:16px;border-bottom:1px solid var(--border)}
 .sidebar-label{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+.sidebar-toggle{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;background:none;color:inherit;padding:0}
+.sidebar-toggle:hover .sidebar-label{color:var(--text)}
 
 /* ── PROGRESS ── */
 .progress-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:8px}
@@ -74,9 +79,29 @@ input::placeholder{color:var(--text-muted)}
 .track-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04);white-space:nowrap}
 .track-table tr:hover td{background:rgba(124,109,250,.06)}
 .track-table tr.selected td{background:rgba(124,109,250,.12)}
+.track-table .col-cover{width:52px}
 .track-table .col-check{width:32px}
 .track-table .col-title{max-width:200px;overflow:hidden;text-overflow:ellipsis}
 .track-table .col-artist{max-width:140px;overflow:hidden;text-overflow:ellipsis;color:var(--text-dim)}
+.track-table .col-actions{width:110px}
+.track-title-cell{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}
+.track-title-main{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.track-badges{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.row-actions{display:flex;align-items:center;justify-content:flex-end}
+.track-cover,.similar-cover,.player-cover{object-fit:cover;border-radius:4px;background:var(--card);border:1px solid rgba(255,255,255,.06)}
+.track-cover{width:40px;height:40px}
+.similar-cover{width:32px;height:32px}
+.badge-vibe{background:rgba(124,109,250,.16);color:#cfc7ff;border:1px solid rgba(124,109,250,.35)}
+.semantic-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(124,109,250,.08),rgba(124,109,250,0));flex-wrap:wrap}
+.semantic-input{min-width:240px;flex:1}
+.semantic-summary{font-size:12px;color:var(--text-dim)}
+.duplicates-panel{padding:12px 16px 0}
+.duplicates-groups{display:flex;flex-direction:column;gap:12px;max-height:420px;overflow:auto}
+.duplicate-group{border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:rgba(255,255,255,.02)}
+.duplicate-group-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border)}
+.duplicate-badge-btn{padding:4px 10px;border-radius:999px;border:1px solid transparent;background:var(--card);font-size:11px;font-weight:700;letter-spacing:.4px}
+.duplicate-badge-btn.keep{color:var(--success);border-color:rgba(74,222,128,.35);background:rgba(74,222,128,.12)}
+.duplicate-badge-btn.remove{color:var(--danger);border-color:rgba(248,113,113,.35);background:rgba(248,113,113,.12)}
 
 /* ── KEY GRID ── */
 .key-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:8px}
@@ -102,9 +127,36 @@ input::placeholder{color:var(--text-muted)}
 .pagination span{color:var(--text-muted);font-size:12px}
 
 /* ── MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:flex;align-items:center;justify-content:center}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1200;display:flex;align-items:center;justify-content:center}
 .modal{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:24px;min-width:360px;max-width:500px;width:90%}
 .modal h3{margin-bottom:16px;font-size:16px}
+.modal-lg{width:min(1040px,94vw);max-width:1040px;max-height:82vh;padding:0;display:flex;flex-direction:column;overflow:hidden}
+.modal-folder{width:min(840px,94vw);max-width:840px;max-height:80vh;padding:0;display:flex;flex-direction:column;overflow:hidden}
+.modal-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px 24px 16px;border-bottom:1px solid var(--border)}
+.modal-close{background:none;color:var(--text-dim);font-size:22px;line-height:1;padding:0}
+.modal-close:hover{color:var(--text)}
+.similar-modal-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 24px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02);flex-wrap:wrap}
+.similar-view-tabs{display:flex;gap:6px}
+.similar-view{display:none}
+.similar-view.active{display:block}
+.similar-reference{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 24px;border-bottom:1px solid var(--border);background:rgba(124,109,250,.05);flex-wrap:wrap}
+.similar-reference-wave{display:flex;align-items:center;gap:10px}
+.similar-waveform{width:200px;height:30px;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06)}
+.similar-list-wrap{overflow:auto;max-height:calc(82vh - 140px)}
+.similar-table th{top:0}
+.similar-table td{vertical-align:middle}
+.similar-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.similar-map-view{padding:20px 24px;overflow:auto;max-height:calc(82vh - 220px)}
+.similar-map-wrap{position:relative;border:1px solid var(--border);border-radius:var(--radius);background:linear-gradient(180deg,rgba(124,109,250,.05),rgba(255,255,255,.01));padding:16px}
+.similarity-map{display:block;width:100%;max-width:600px;height:auto;margin:0 auto;border-radius:12px;background:rgba(9,10,18,.85);border:1px solid rgba(255,255,255,.05)}
+.similar-map-tooltip{position:absolute;pointer-events:none;min-width:180px;max-width:240px;padding:10px 12px;border-radius:10px;background:rgba(16,17,26,.96);border:1px solid var(--border);font-size:12px;color:var(--text);box-shadow:0 10px 28px rgba(0,0,0,.28);display:none;z-index:5}
+.similar-map-legend{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--text-dim)}
+.similar-map-detail{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:16px;padding:14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:rgba(255,255,255,.03)}
+.similar-map-detail-copy{display:flex;align-items:center;gap:12px;min-width:0}
+.similar-map-detail-text{min-width:0}
+.similar-map-detail-title{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.similar-map-detail-meta{font-size:12px;color:var(--text-dim);margin-top:4px}
+.similar-map-empty{padding:28px 12px;text-align:center;color:var(--text-dim)}
 
 /* ── PLAYLIST LIST ── */
 .pl-item{padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
@@ -130,6 +182,34 @@ input::placeholder{color:var(--text-muted)}
 /* ── FOLDER ITEM ── */
 .folder-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:6px;font-size:12px}
 .folder-item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;margin-right:8px;color:var(--text-dim)}
+.path-input-row{display:flex;align-items:center;gap:8px}
+.path-input-row input{flex:1}
+.path-browse-btn{width:38px;min-width:38px;height:36px;padding:0;justify-content:center}
+.history-list{display:flex;flex-direction:column;gap:8px}
+.history-item{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);cursor:pointer;transition:all .15s}
+.history-item:hover{border-color:var(--accent);background:rgba(124,109,250,.08)}
+.history-cover{width:32px;height:32px;border-radius:6px;object-fit:cover;border:1px solid rgba(255,255,255,.08);background:var(--card);flex-shrink:0}
+.history-copy{min-width:0;flex:1}
+.history-title{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.history-artist{font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.history-empty{font-size:12px;color:var(--text-muted)}
+.browse-breadcrumbs{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--text-dim);margin-top:8px}
+.browse-crumb{background:none;color:inherit;padding:0}
+.browse-crumb:hover{color:var(--accent)}
+.browse-body{padding:0 24px;overflow:auto;flex:1}
+.browse-loading,.browse-error,.browse-empty{padding:20px 0;font-size:13px;color:var(--text-dim)}
+.browse-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer}
+.browse-row:hover{color:var(--accent)}
+.browse-row-main{display:flex;align-items:center;gap:10px;min-width:0}
+.browse-row-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.browse-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:rgba(124,109,250,.12);border:1px solid rgba(124,109,250,.28);color:#d3ccff;font-size:11px}
+.browse-footer{padding:16px 24px 20px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:12px}
+.shortcut-list{display:flex;flex-direction:column;gap:10px}
+.shortcut-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.shortcut-key{display:inline-flex;align-items:center;justify-content:center;min-width:52px;padding:6px 10px;border-radius:8px;background:var(--surface);border:1px solid var(--border);font-family:'Cascadia Code','Fira Code','Courier New',monospace;font-size:12px}
+.playlist-stat-grid{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.playlist-stat-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--border);font-size:12px;color:var(--text-dim)}
+.playlist-key-spread{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 
 /* ── PILL BUTTONS ── */
 .pill-group{display:flex;gap:4px}
@@ -138,7 +218,12 @@ input::placeholder{color:var(--text-muted)}
 
 /* ── ORGANIZE ── */
 .organize-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px;overflow:auto}
+.usb-layout{display:grid;grid-template-columns:minmax(320px,1fr) minmax(360px,1fr);gap:20px;padding:20px;overflow:auto}
 .folder-preview{background:var(--surface);border-radius:var(--radius-sm);border:1px solid var(--border);padding:14px;font-size:12px;font-family:monospace;color:var(--text-dim);line-height:1.8;margin-top:8px}
+.source-checklist{display:flex;flex-direction:column;gap:8px;max-height:210px;overflow:auto;margin-top:12px;padding-right:4px}
+.source-check-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.usb-preview-box{padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);font-size:12px;color:var(--text-dim)}
+.usb-structure-preview{background:var(--surface);border-radius:var(--radius-sm);border:1px solid var(--border);padding:14px;font-size:12px;line-height:1.8;color:var(--text-dim);margin-top:10px}
 
 /* ── STATS BAR ── */
 .stat-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
@@ -151,6 +236,7 @@ input::placeholder{color:var(--text-muted)}
 .player-bar{position:fixed;bottom:0;left:0;right:0;height:72px;background:var(--surface);border-top:1px solid var(--border);display:none;align-items:center;gap:16px;padding:0 20px;z-index:1000}
 body.player-active .page.active{height:calc(100vh - 54px - 72px)}
 body.player-active .pagination{margin-bottom:0}
+.player-cover{width:56px;height:56px;border-radius:8px;flex-shrink:0}
 .player-info{min-width:150px;max-width:210px;overflow:hidden}
 .player-title{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .player-artist{font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
@@ -159,14 +245,16 @@ body.player-active .pagination{margin-bottom:0}
 .player-btn{background:none;border:none;color:var(--text);font-size:18px;cursor:pointer;padding:4px;opacity:.75;line-height:1;font-family:inherit}
 .player-btn:hover{opacity:1}
 .player-play-btn{width:34px;height:34px;background:var(--accent)!important;border-radius:50%;font-size:13px;color:#fff!important;display:flex;align-items:center;justify-content:center;opacity:1!important}
-.player-seek{display:flex;align-items:center;gap:8px;width:100%;max-width:480px}
-.player-seek input[type=range]{flex:1;cursor:pointer;height:4px;-webkit-appearance:none;background:var(--border);border-radius:2px;outline:none}
-.player-seek input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--accent);cursor:pointer}
+.player-seek{display:flex;align-items:center;gap:8px;width:100%;max-width:520px}
 .player-time{font-size:11px;color:var(--text-muted);min-width:35px;font-variant-numeric:tabular-nums}
 .player-time:last-child{text-align:right}
+.player-waveform{flex:1;height:40px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);cursor:pointer}
 .player-vol{display:flex;align-items:center;gap:6px;min-width:100px}
+.player-vol-btn{background:none;border:none;color:var(--text);font-size:14px;opacity:.7;line-height:1;padding:0}
+.player-vol-btn:hover{opacity:1}
 .player-vol input[type=range]{width:72px;cursor:pointer;height:4px;-webkit-appearance:none;background:var(--border);border-radius:2px;outline:none}
 .player-vol input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--accent);cursor:pointer}
+.player-vol-label{font-size:11px;color:var(--text-muted);min-width:34px;text-align:right;font-variant-numeric:tabular-nums}
 /* ── ROW PLAY BUTTON ── */
 .row-play-btn{width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;padding:0;line-height:1;font-family:inherit}
 tr:hover .col-check .row-play-btn{display:inline-flex}
@@ -174,10 +262,14 @@ tr:hover .col-check input[type=checkbox]{display:none}
 tr.selected .col-check input[type=checkbox]{display:inline-block!important}
 tr.selected .col-check .row-play-btn{display:none!important}
 
+/* ── PLAYING ROW ── */
+tr.playing-row{background:linear-gradient(90deg,rgba(124,109,250,.18) 0%,transparent 100%);border-left:3px solid #7c6dfa}
+tr.playing-row td{color:#fff}
+
 /* ── MISC ── */
-.flex{display:flex}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-between{justify-content:space-between}.gap-8{gap:8px}.gap-4{gap:4px}.gap-12{gap:12px}.flex-1{flex:1}.w-full{width:100%}
+.flex{display:flex}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-between{justify-content:space-between}.gap-8{gap:8px}.gap-4{gap:4px}.gap-12{gap:12px}.flex-1{flex:1}.w-full{width:100%}.flex-wrap{flex-wrap:wrap}
 .mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}.mb-8{margin-bottom:8px}.mb-4{margin-bottom:4px}
-.text-dim{color:var(--text-dim)}.text-muted{color:var(--text-muted)}.text-sm{font-size:12px}.text-xs{font-size:11px}.font-bold{font-weight:700}
+.text-dim{color:var(--text-dim)}.text-muted{color:var(--text-muted)}.text-sm{font-size:12px}.text-xs{font-size:11px}.font-bold{font-weight:700}.text-danger{color:var(--danger)}
 .overflow-hidden{overflow:hidden}.text-ellipsis{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
 .separator{height:1px;background:var(--border);margin:12px 0}
 .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
@@ -195,7 +287,11 @@ tr.selected .col-check .row-play-btn{display:none!important}
   <button class="nav-tab" onclick="showTab('playlists')">Playlists</button>
   <button class="nav-tab" onclick="showTab('download')">Download</button>
   <button class="nav-tab" onclick="showTab('organize')">Organize</button>
+  <button class="nav-tab" onclick="showTab('usb')">USB Export</button>
   <button class="nav-tab" onclick="showTab('settings')">Settings</button>
+  <div class="nav-actions">
+    <button class="nav-icon-btn" onclick="openShortcutsModal()" title="Keyboard shortcuts">?</button>
+  </div>
 </nav>
 
 <!-- ═══════════════════════════════════════════════════════ LIBRARY TAB -->
@@ -205,9 +301,10 @@ tr.selected .col-check .row-play-btn{display:none!important}
     <div class="sidebar-section">
       <div class="sidebar-label">Scan Library</div>
       <div id="scan-folders"></div>
-      <div class="flex gap-4 mt-8">
+      <div class="path-input-row mt-8">
         <input id="folder-input" type="text" placeholder="Add folder path..." style="flex:1;font-size:12px"
                onkeydown="if(event.key==='Enter')addScanFolder()"/>
+        <button class="btn btn-secondary btn-sm path-browse-btn" onclick="openFolderBrowser('folder-input')" title="Browse folders">&#128193;</button>
         <button class="btn btn-secondary btn-sm" onclick="addScanFolder()">+</button>
       </div>
       <button class="btn btn-primary w-full mt-8" onclick="startScan()">Scan</button>
@@ -249,6 +346,16 @@ tr.selected .col-check .row-play-btn{display:none!important}
       <div class="sidebar-label">Stats</div>
       <div id="stats-panel" class="text-sm text-muted">Loading…</div>
     </div>
+
+    <div class="sidebar-section">
+      <button class="sidebar-toggle" onclick="toggleHistorySection()">
+        <span class="sidebar-label" style="margin-bottom:0">Recently Played</span>
+        <span id="history-toggle-indicator" class="text-xs text-muted">▼</span>
+      </button>
+      <div id="history-section-body" class="mt-12">
+        <div id="history-list" class="history-list"></div>
+      </div>
+    </div>
   </div>
 
   <!-- Main -->
@@ -266,9 +373,11 @@ tr.selected .col-check .row-play-btn{display:none!important}
           <option value="title">Title</option>
           <option value="artist">Artist</option>
           <option value="duration_sec">Duration</option>
+          <option value="similarity">Similarity</option>
         </select>
         <button class="btn btn-secondary btn-sm" id="sort-dir-btn" onclick="toggleSortDir()">↓ Desc</button>
         <button class="btn btn-secondary btn-sm" onclick="playAllFiltered()">▶ Play All</button>
+        <button class="btn btn-secondary btn-sm" id="duplicates-toggle-btn" onclick="toggleDuplicatesPanel()">Duplicates</button>
       </div>
       <div id="selection-toolbar" style="display:none" class="flex items-center gap-8">
         <span class="text-xs text-muted" id="sel-count"></span>
@@ -277,6 +386,36 @@ tr.selected .col-check .row-play-btn{display:none!important}
         </select>
         <button class="btn btn-primary btn-sm" onclick="addSelectionToPlaylist()">Add</button>
         <button class="btn btn-secondary btn-sm" onclick="clearSelection()">✕</button>
+      </div>
+    </div>
+
+    <div class="semantic-bar">
+      <div class="flex items-center gap-8 flex-1" style="min-width:300px">
+        <input type="text" id="semantic-search-input" class="semantic-input" placeholder="Describe a vibe, texture, or sceneâ€¦" onkeydown="if(event.key==='Enter')runSemanticSearch()"/>
+        <button class="btn btn-primary btn-sm" onclick="runSemanticSearch()">Vibe Search</button>
+        <button class="btn btn-secondary btn-sm" onclick="clearSemanticSearch()">Clear</button>
+      </div>
+      <div id="semantic-summary" class="semantic-summary">Semantic search ready</div>
+    </div>
+
+    <div class="duplicates-panel">
+      <div class="card" id="duplicates-panel" style="display:none">
+        <div class="flex items-center justify-between gap-8 flex-wrap">
+          <div>
+            <div style="font-weight:700">Duplicates</div>
+            <div class="text-xs text-muted mt-8">Find and remove duplicate entries from MusicDen without touching your files.</div>
+          </div>
+          <div class="flex items-center gap-8 flex-wrap">
+            <button class="btn btn-primary btn-sm" id="find-duplicates-btn" onclick="findDuplicates()">Find Duplicates</button>
+            <button class="btn btn-secondary btn-sm" onclick="toggleDuplicatesPanel()">Hide</button>
+          </div>
+        </div>
+        <div id="duplicates-summary" class="text-sm text-muted mt-12">No duplicate scan run yet.</div>
+        <div id="duplicates-results" class="duplicates-groups mt-12" style="display:none"></div>
+        <div id="duplicates-actions" style="display:none;margin-top:12px">
+          <div class="text-xs text-muted mb-8">This only removes tracks from MusicDen — your files are not deleted.</div>
+          <button class="btn btn-danger" onclick="removeSelectedDuplicates()">Remove Selected from Library</button>
+        </div>
       </div>
     </div>
 
@@ -289,8 +428,9 @@ tr.selected .col-check .row-play-btn{display:none!important}
       <table class="track-table" id="track-table">
         <thead>
           <tr>
+            <th class="col-cover"></th>
             <th class="col-check"><input type="checkbox" id="select-all" onchange="toggleSelectAll()"/></th>
-            <th>Title</th><th>Artist</th><th>BPM</th><th>Key</th><th>Energy</th><th>Duration</th><th>Date</th><th>Source</th>
+            <th>Title</th><th>Artist</th><th>BPM</th><th>Key</th><th>Energy</th><th>Duration</th><th>Date</th><th>Source</th><th class="col-actions">Actions</th>
           </tr>
         </thead>
         <tbody id="track-tbody"></tbody>
@@ -333,6 +473,7 @@ tr.selected .col-check .row-play-btn{display:none!important}
           <div>
             <div id="pl-detail-name" style="font-size:16px;font-weight:700"></div>
             <div id="pl-detail-meta" class="text-xs text-muted mt-8"></div>
+            <div id="pl-detail-stats" class="playlist-stat-grid"></div>
           </div>
           <div class="flex gap-4">
             <button class="btn btn-secondary btn-sm" onclick="exportPlaylist('m3u')">M3U</button>
@@ -384,9 +525,17 @@ tr.selected .col-check .row-play-btn{display:none!important}
       </div>
 
       <div class="mb-8 mt-12"><label class="text-xs text-muted">Output Path</label></div>
-      <input type="text" id="dl-output" style="width:100%;margin-bottom:20px" placeholder="D:/Music/DeezerDownloads"/>
+      <div class="path-input-row" style="margin-bottom:20px">
+        <input type="text" id="dl-output" style="width:100%" placeholder="D:/Music/DeezerDownloads"/>
+        <button class="btn btn-secondary btn-sm path-browse-btn" onclick="openFolderBrowser('dl-output')" title="Browse folders">&#128193;</button>
+      </div>
 
-      <button class="btn btn-primary btn-lg w-full" onclick="startDownload()">Download</button>
+      <label class="flex items-center gap-8 mt-12" style="font-size:13px;cursor:pointer">
+        <input type="checkbox" id="dl-organize-date" checked/>
+        Organize into date subfolders after download
+      </label>
+
+      <button class="btn btn-primary btn-lg w-full mt-16" onclick="startDownload()">Download</button>
     </div>
 
     <div id="dl-log-wrap" style="display:none;margin-top:20px">
@@ -394,7 +543,7 @@ tr.selected .col-check .row-play-btn{display:none!important}
         <span class="text-sm font-bold">Download Log</span>
         <span id="dl-status"></span>
       </div>
-      <div class="log-terminal" id="dl-log"></div>
+      <div id="dl-log" style="min-height:200px;max-height:400px;overflow-y:auto;background:#0f0f13;color:#4ade80;font-family:'Cascadia Code','Fira Code','Courier New',monospace;padding:12px;font-size:13px;border-radius:8px;border:1px solid var(--border)"></div>
       <button id="dl-scan-btn" class="btn btn-primary mt-8" style="display:none" onclick="scanDownloadFolder()">
         ↩ Scan Downloaded Files
       </button>
@@ -425,7 +574,10 @@ tr.selected .col-check .row-play-btn{display:none!important}
     <div class="card">
       <h3 style="margin-bottom:16px">Output</h3>
       <label class="text-xs text-muted">Output Folder</label>
-      <input type="text" id="org-output" style="width:100%;margin-top:6px" placeholder="D:/MusicOrganized" oninput="updateOrganizePreview()"/>
+      <div class="path-input-row" style="margin-top:6px">
+        <input type="text" id="org-output" style="width:100%" placeholder="D:/MusicOrganized" oninput="updateOrganizePreview()"/>
+        <button class="btn btn-secondary btn-sm path-browse-btn" onclick="openFolderBrowser('org-output')" title="Browse folders">&#128193;</button>
+      </div>
 
       <div class="folder-preview" id="org-preview" style="margin-top:16px">
         📁 8A/<br>
@@ -441,16 +593,143 @@ tr.selected .col-check .row-play-btn{display:none!important}
       </div>
       <div id="org-result" style="display:none;margin-top:12px" class="text-sm"></div>
     </div>
+
+    <div class="card" style="grid-column:1 / -1">
+      <div class="flex items-center justify-between gap-8 flex-wrap">
+        <div>
+          <h3 style="margin-bottom:8px">Consolidate Sources</h3>
+          <div class="text-sm text-muted">Copy selected library sources into one output folder without moving originals.</div>
+        </div>
+        <div class="flex gap-8">
+          <button class="btn btn-secondary btn-sm" onclick="selectAllConsolidateSources()">Select All</button>
+          <button class="btn btn-secondary btn-sm" onclick="deselectAllConsolidateSources()">Deselect All</button>
+        </div>
+      </div>
+
+      <div id="org-consolidate-sources" class="source-checklist"></div>
+      <div id="org-consolidate-count" class="text-xs text-muted mt-8">Loading sources…</div>
+
+      <label class="text-xs text-muted" style="display:block;margin-top:16px">Output Folder</label>
+      <div class="path-input-row" style="margin-top:6px">
+        <input type="text" id="consolidate-output" style="width:100%" placeholder="D:/Music/Consolidated" oninput="updateConsolidatePreview()"/>
+        <button class="btn btn-secondary btn-sm path-browse-btn" onclick="openFolderBrowser('consolidate-output')" title="Browse folders">&#128193;</button>
+      </div>
+
+      <div class="text-xs text-muted" style="margin-top:16px">Mode</div>
+      <div class="pill-group mt-8" id="consolidate-mode-pills">
+        <button class="pill active" id="consolidate-mode-flat" onclick="setConsolidateMode('flat', this)">Flat</button>
+        <button class="pill" id="consolidate-mode-by_source" onclick="setConsolidateMode('by_source', this)">By Source</button>
+        <button class="pill" id="consolidate-mode-organized" onclick="setConsolidateMode('organized', this)">Organized</button>
+      </div>
+
+      <div class="folder-preview" id="consolidate-preview">
+        📁 Consolidated/<br>&nbsp;&nbsp;🎵 Artist - Title.flac
+      </div>
+
+      <button class="btn btn-primary btn-lg mt-16" onclick="runConsolidate()" style="width:100%;max-width:360px">Consolidate (Copy)</button>
+
+      <div id="consolidate-progress-wrap" style="display:none;margin-top:12px">
+        <div class="progress-bar"><div class="progress-fill" id="consolidate-bar" style="width:0%"></div></div>
+        <div id="consolidate-status" class="text-xs text-muted mt-8"></div>
+      </div>
+      <div id="consolidate-result" class="text-sm mt-12" style="display:none"></div>
+      <div id="consolidate-actions" class="flex gap-8 mt-12 flex-wrap" style="display:none">
+        <button class="btn btn-secondary" onclick="addConsolidatedFolderToLibrary()">Add consolidated folder to library</button>
+        <button class="btn btn-primary" onclick="scanConsolidatedFolderNow()">Scan now</button>
+      </div>
+    </div>
+
+    <!-- Organize Downloads by Date -->
+    <div class="card" style="grid-column:1 / -1">
+      <h3 style="margin-bottom:12px">Organize Downloads by Date</h3>
+      <div class="text-sm text-muted mb-12">Copies .flac and .wav files from a folder into YYYY-MM subfolders based on file modification date.</div>
+      <div class="path-input-row">
+        <input type="text" id="org-date-folder" style="flex:1" placeholder="D:/Music/DeezerDownloads" value="D:/Music/DeezerDownloads"/>
+        <button class="btn btn-secondary btn-sm path-browse-btn" onclick="openFolderBrowser('org-date-folder')" title="Browse folders">&#128193;</button>
+        <button class="btn btn-primary" onclick="runOrganizeByDate()">Run</button>
+      </div>
+      <div id="org-date-result" class="text-sm mt-8" style="display:none"></div>
+    </div>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ SETTINGS TAB -->
+<div id="page-usb" class="page" style="padding:0;overflow:auto">
+  <div class="usb-layout">
+    <div class="card">
+      <h3 style="margin-bottom:16px">Source</h3>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <label class="flex items-center gap-8"><input type="radio" name="usb-source" value="playlist" checked onchange="setUsbSourceMode('playlist')"/> Active Playlist</label>
+        <label class="flex items-center gap-8"><input type="radio" name="usb-source" value="filter" onchange="setUsbSourceMode('filter')"/> Current Library Filter</label>
+        <label class="flex items-center gap-8"><input type="radio" name="usb-source" value="selected" onchange="setUsbSourceMode('selected')"/> Selected Tracks</label>
+      </div>
+
+      <div id="usb-playlist-row" style="margin-top:14px">
+        <label class="text-xs text-muted">Playlist</label>
+        <select id="usb-playlist-select" style="width:100%;margin-top:6px" onchange="refreshUsbPreview()">
+          <option value="">Select playlist…</option>
+        </select>
+      </div>
+
+      <div class="usb-preview-box mt-16">
+        <div id="usb-track-count" style="font-weight:600">0 tracks selected</div>
+        <div id="usb-size-estimate" class="text-xs text-muted mt-8">0 GB estimated</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:16px">Destination</h3>
+      <label class="text-xs text-muted">Select Drive</label>
+      <select id="usb-drive" style="width:100%;margin-top:6px" onchange="updateUsbPathPreview();updateUsbExportButton()">
+        <option value="">Select drive…</option>
+      </select>
+
+      <label class="text-xs text-muted" style="display:block;margin-top:16px">Folder Name</label>
+      <input type="text" id="usb-folder-name" value="MusicDen_Export" style="width:100%;margin-top:6px" oninput="updateUsbPathPreview()"/>
+
+      <div class="usb-preview-box mt-12">
+        <div class="text-xs text-muted">Full path</div>
+        <div id="usb-path-preview" class="mt-8" style="font-weight:600">—</div>
+      </div>
+
+      <div class="text-xs text-muted" style="margin-top:16px">Structure</div>
+      <div class="pill-group mt-8" id="usb-structure-pills">
+        <button class="pill active" onclick="setUsbStructure('organized', this)">Organized</button>
+        <button class="pill" onclick="setUsbStructure('by_key', this)">By Key</button>
+        <button class="pill" onclick="setUsbStructure('flat', this)">Flat</button>
+      </div>
+
+      <label class="flex items-center gap-8 mt-16" style="font-size:13px;cursor:pointer">
+        <input type="checkbox" id="usb-include-xml" checked onchange="updateUsbExportButton()"/>
+        Include Rekordbox XML
+      </label>
+      <div class="text-xs text-muted mt-8">Allows Pioneer gear to read track metadata directly from USB.</div>
+
+      <div id="usb-structure-preview" class="usb-structure-preview">
+        📁 8A/ → 🎵 Artist - Title (126bpm).flac
+      </div>
+
+      <button class="btn btn-primary btn-lg w-full mt-16" id="usb-export-btn" onclick="startUsbExport()" disabled>Export to USB</button>
+
+      <div id="usb-progress-wrap" style="display:none;margin-top:16px">
+        <div class="progress-bar"><div class="progress-fill" id="usb-progress-bar" style="width:0%"></div></div>
+        <div id="usb-progress-status" class="text-xs text-muted mt-8"></div>
+        <div id="usb-progress-eta" class="text-xs text-muted mt-8"></div>
+        <div id="usb-progress-result" class="text-sm mt-12"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="page-settings" class="page" style="padding:0;overflow:auto">
   <div style="max-width:640px;padding:24px;margin:0 auto;display:flex;flex-direction:column;gap:20px">
     <div class="card">
       <h3 style="margin-bottom:16px">Downloads</h3>
       <label class="text-xs text-muted">Default Download Path</label>
-      <input type="text" id="s-dl-path" style="width:100%;margin-top:6px;margin-bottom:14px"/>
+      <div class="path-input-row" style="margin-top:6px;margin-bottom:14px">
+        <input type="text" id="s-dl-path" style="width:100%"/>
+        <button class="btn btn-secondary btn-sm path-browse-btn" onclick="openFolderBrowser('s-dl-path')" title="Browse folders">&#128193;</button>
+      </div>
       <label class="text-xs text-muted">Default Quality</label>
       <select id="s-quality" style="width:100%;margin-top:6px;margin-bottom:14px">
         <option value="FLAC">FLAC</option>
@@ -471,6 +750,16 @@ tr.selected .col-check .row-play-btn{display:none!important}
     </div>
 
     <div class="card">
+      <h3 style="margin-bottom:16px">Library</h3>
+      <label class="flex items-center gap-8" style="font-size:13px;cursor:pointer">
+        <input type="checkbox" id="s-auto-scan" checked/>
+        Auto-scan on startup
+      </label>
+      <div class="text-xs text-muted mt-8">When enabled, MusicDen re-scans saved library folders in the background when the app starts.</div>
+      <button class="btn btn-primary btn-sm mt-12" onclick="saveSettings()">Save</button>
+    </div>
+
+    <div class="card">
       <h3 style="margin-bottom:16px">Server</h3>
       <label class="text-xs text-muted">Port</label>
       <input type="number" id="s-port" min="1024" max="65535" style="width:140px;margin-top:6px"/>
@@ -481,17 +770,53 @@ tr.selected .col-check .row-play-btn{display:none!important}
     <div class="card">
       <h3 style="margin-bottom:16px">Analysis</h3>
       <div class="text-sm text-muted mb-8">Re-run analysis on existing tracks without re-scanning files.</div>
-      <div class="flex gap-8">
+      <div class="flex gap-8 flex-wrap">
         <button class="btn btn-secondary" onclick="reanalyzeKeys(this)">Re-analyze Keys</button>
+        <button class="btn btn-secondary" onclick="reanalyzeEnergy(this)">Re-analyze Energy</button>
         <button class="btn btn-secondary" onclick="renormalizeEnergy()">Re-normalize Energy</button>
       </div>
       <div id="rekey-status" class="text-xs text-muted mt-8" style="display:none"></div>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:16px">Database</h3>
-      <div class="text-sm text-muted mb-8" id="s-db-path"></div>
-      <button class="btn btn-danger" onclick="clearDatabase()">Clear All Data</button>
+      <h3 style="margin-bottom:16px">Embeddings</h3>
+      <div class="text-sm text-muted mb-8">Required for Find Similar to work.</div>
+      <div id="embeddings-summary" class="text-sm mb-8">0 / 0 tracks have embeddings</div>
+      <div class="progress-bar"><div class="progress-fill" id="embeddings-bar" style="width:0%"></div></div>
+      <div id="embeddings-status" class="text-xs text-muted mt-8">Waiting for library stats…</div>
+      <button class="btn btn-primary btn-sm mt-12" id="compute-embeddings-btn" onclick="computeEmbeddings()">Compute Embeddings</button>
+    </div>
+
+    <div class="card" id="sources-card">
+      <h3 style="margin-bottom:16px">Library Sources</h3>
+      <div id="sources-table-wrap">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead>
+            <tr style="border-bottom:1px solid var(--border)">
+              <th style="text-align:left;padding:6px 8px;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--text-muted)">Folder</th>
+              <th style="text-align:right;padding:6px 8px;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--text-muted);width:80px">Tracks</th>
+              <th style="text-align:left;padding:6px 8px;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--text-muted);width:130px">Last Scanned</th>
+              <th style="width:140px"></th>
+            </tr>
+          </thead>
+          <tbody id="sources-tbody"></tbody>
+        </table>
+        <div id="sources-empty" class="text-sm text-muted" style="padding:12px 8px;display:none">No library sources. Scan a folder to add tracks.</div>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:rgba(248,113,113,.3)">
+      <h3 style="margin-bottom:8px;color:var(--danger)">Reset Library</h3>
+      <div class="text-sm text-muted mb-12">These actions cannot be undone. Your audio files are never deleted.</div>
+      <div class="flex gap-8">
+        <button class="btn btn-danger" onclick="resetLibrary('tracks_only')">Clear All Tracks</button>
+        <button class="btn btn-danger" onclick="resetLibrary('everything')">Clear Everything</button>
+      </div>
+      <div class="text-xs text-muted mt-8">
+        <strong>Clear All Tracks</strong> — removes all tracks and playlist links but keeps playlists.<br>
+        <strong>Clear Everything</strong> — removes all tracks, playlists, and settings.
+      </div>
+      <div id="s-db-path" class="text-xs text-muted mt-8"></div>
     </div>
   </div>
 </div>
@@ -508,8 +833,111 @@ tr.selected .col-check .row-play-btn{display:none!important}
   </div>
 </div>
 
+<div id="similar-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeSimilarModal()">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div>
+        <h3 id="similar-modal-title" style="margin-bottom:6px">Similar Tracks</h3>
+        <div id="similar-modal-subtitle" class="text-xs text-muted">0 tracks</div>
+      </div>
+      <button class="modal-close" onclick="closeSimilarModal()" aria-label="Close">X</button>
+    </div>
+    <div class="similar-modal-toolbar">
+      <div class="flex items-center gap-8 flex-wrap">
+        <button class="btn btn-primary btn-sm" onclick="playAllSimilar()">Play All Similar</button>
+        <select id="similar-playlist-select" style="min-width:190px">
+          <option value="">Select playlist…</option>
+        </select>
+      </div>
+      <div class="similar-view-tabs">
+        <button class="pill active" id="similar-view-list-btn" onclick="setSimilarView('list')">List View</button>
+        <button class="pill" id="similar-view-map-btn" onclick="setSimilarView('map')">Map View</button>
+      </div>
+      <div id="similar-modal-status" class="text-xs text-muted">Choose a track to play or add.</div>
+    </div>
+    <div class="similar-reference">
+      <div class="text-xs text-muted">Reference track waveform</div>
+      <div class="similar-reference-wave">
+        <canvas id="similar-source-waveform" class="similar-waveform" width="200" height="30"></canvas>
+      </div>
+    </div>
+    <div id="similar-list-view" class="similar-view active">
+      <div class="similar-list-wrap">
+        <table class="track-table similar-table">
+          <thead>
+            <tr>
+              <th class="col-cover"></th>
+              <th>Title</th>
+              <th>Artist</th>
+              <th>BPM</th>
+              <th>Key</th>
+              <th>Similarity</th>
+              <th class="col-actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="similar-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div id="similar-map-view" class="similar-view similar-map-view">
+      <div class="similar-map-wrap">
+        <canvas id="similarityMap" class="similarity-map" width="600" height="400"></canvas>
+        <div id="similarityMapTooltip" class="similar-map-tooltip"></div>
+      </div>
+      <div class="similar-map-legend">
+        <span>⭐ Current track</span>
+        <span>● Similar tracks colored by key</span>
+        <span>Darker = less similar, brighter = more similar</span>
+      </div>
+      <div id="similar-map-detail" class="similar-map-detail">
+        <div class="text-sm text-muted">Click a dot to inspect a similar track.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="folder-browser-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeFolderBrowser()">
+  <div class="modal modal-folder">
+    <div class="modal-header">
+      <div style="min-width:0;flex:1">
+        <h3 style="margin-bottom:0">Select Folder</h3>
+        <div id="folder-browser-breadcrumbs" class="browse-breadcrumbs"></div>
+      </div>
+      <button class="modal-close" onclick="closeFolderBrowser()" aria-label="Close">X</button>
+    </div>
+    <div class="browse-body">
+      <div id="folder-browser-body" class="browse-loading">Loading folders...</div>
+    </div>
+    <div class="browse-footer">
+      <input type="text" id="folder-browser-current" readonly placeholder="No folder selected"/>
+      <div class="flex gap-8 justify-between">
+        <button class="btn btn-secondary" onclick="closeFolderBrowser()">Cancel</button>
+        <button class="btn btn-primary" id="folder-browser-select-btn" onclick="confirmFolderBrowserSelection()">Select This Folder</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="shortcuts-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeShortcutsModal()">
+  <div class="modal">
+    <div class="flex items-center justify-between gap-8">
+      <h3 style="margin-bottom:0">Keyboard Shortcuts</h3>
+      <button class="modal-close" onclick="closeShortcutsModal()" aria-label="Close">X</button>
+    </div>
+    <div class="shortcut-list mt-16">
+      <div class="shortcut-row"><span class="shortcut-key">Space</span><span class="text-dim">Play / Pause</span></div>
+      <div class="shortcut-row"><span class="shortcut-key">← →</span><span class="text-dim">Seek ±10s</span></div>
+      <div class="shortcut-row"><span class="shortcut-key">N</span><span class="text-dim">Next track</span></div>
+      <div class="shortcut-row"><span class="shortcut-key">P</span><span class="text-dim">Previous track</span></div>
+      <div class="shortcut-row"><span class="shortcut-key">F</span><span class="text-dim">Focus search bar</span></div>
+      <div class="shortcut-row"><span class="shortcut-key">Esc</span><span class="text-dim">Close modal / deselect</span></div>
+    </div>
+  </div>
+</div>
+
 <audio id="player-audio"></audio>
 <div class="player-bar" id="player-bar">
+  <img class="player-cover" id="player-cover" src="" alt="Cover art"/>
   <div class="player-info">
     <div class="player-title" id="player-title">—</div>
     <div class="player-artist" id="player-artist"></div>
@@ -522,13 +950,14 @@ tr.selected .col-check .row-play-btn{display:none!important}
     </div>
     <div class="player-seek">
       <span class="player-time" id="player-cur">0:00</span>
-      <input type="range" id="seek-bar" min="0" max="100" value="0" step="0.1"/>
+      <canvas id="waveformCanvas" class="player-waveform" width="400" height="40"></canvas>
       <span class="player-time" id="player-dur">0:00</span>
     </div>
   </div>
   <div class="player-vol">
-    <span style="font-size:14px;opacity:.6">🔊</span>
-    <input type="range" id="vol-bar" min="0" max="100" step="1" value="80"/>
+    <button class="player-vol-btn" id="vol-toggle" onclick="toggleMute()" title="Mute">🔊</button>
+    <input type="range" id="vol-bar" min="0" max="100" step="1" value="70"/>
+    <span class="player-vol-label" id="vol-pct">70%</span>
   </div>
 </div>
 
@@ -536,7 +965,7 @@ tr.selected .col-check .row-play-btn{display:none!important}
 // ── State ────────────────────────────────────────────────────────────────────
 const S = {
   tracks: [], total: 0, page: 1, perPage: 50,
-  sortBy: 'file_date', sortDir: 'desc',
+  sortDir: 'desc',
   selectedIds: new Set(),
   bpmMin: 60, bpmMax: 200,
   activeKeys: new Set(),
@@ -545,8 +974,54 @@ const S = {
   quality: 'FLAC',
   scanFolders: [],
   dlJobId: null,
-  dlSse: null,
+  dlStreamAbort: null,
+  scanStreamAbort: null,
   stats: null,
+  authToken: '',
+  authReady: null,
+  semanticMode: null,
+  semanticResults: [],
+  semanticQuery: '',
+  semanticSourceTrackId: null,
+  similarTracks: [],
+  similarSourceTrack: null,
+  embeddingComputeActive: false,
+  embeddingStatusMessage: '',
+  embeddingPollId: null,
+  duplicatesOpen: false,
+  duplicateGroups: [],
+  duplicateSummary: null,
+  librarySources: [],
+  consolidateMode: 'flat',
+  consolidateSourceFolders: new Set(),
+  consolidateInitialized: false,
+  consolidateJobId: null,
+  consolidateStreamAbort: null,
+  consolidateOutputFolder: '',
+  recentHistory: [],
+  historyCollapsed: false,
+  browseTargetInputId: '',
+  browsePath: '',
+  browseParent: null,
+  browseItems: [],
+  browseLoading: false,
+  browseError: '',
+  autoScanStartup: true,
+  waveformCache: {},
+  currentWaveformTrackId: null,
+  currentWaveform: [],
+  similarView: 'list',
+  similarMapData: null,
+  similarMapPoints: [],
+  similarMapSelectedTrackId: null,
+  usbInitialized: false,
+  usbSourceMode: 'playlist',
+  usbStructure: 'organized',
+  usbDrives: [],
+  usbPreviewTracks: [],
+  usbExportJobId: null,
+  usbExportStreamAbort: null,
+  usbExportStartedAt: 0,
 };
 
 const CAMELOT_KEYS = [
@@ -557,28 +1032,151 @@ const CAMELOT_KEYS = [
 // ── Utilities ────────────────────────────────────────────────────────────────
 const API = window.location.origin;
 const $ = id => document.getElementById(id);
+const FALLBACK_COVER = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><rect width="40" height="40" rx="6" fill="#7c6dfa"/><path fill="#ffffff" d="M26 8v18.4a5.4 5.4 0 1 1-2-4.2V14.7l-10 2.2v10.5a5.4 5.4 0 1 1-2-4.2V11.5L26 8Z"/></svg>'
+);
+window.FALLBACK_COVER = FALLBACK_COVER;
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function escapeJsString(value) {
+  return String(value ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
+function trackCoverUrl(trackId) {
+  return `${API}/api/tracks/${trackId}/cover?token=${encodeURIComponent(S.authToken)}`;
+}
+
+function coverImgHtml(trackId, size, className = 'track-cover') {
+  return `<img src="${trackCoverUrl(trackId)}" alt="" class="${className}" style="width:${size}px;height:${size}px" onerror="this.onerror=null;this.src=window.FALLBACK_COVER">`;
+}
+
+function setImageToTrackCover(img, trackId) {
+  if (!img) return;
+  img.onerror = function() {
+    this.onerror = null;
+    this.src = FALLBACK_COVER;
+  };
+  img.src = trackId ? trackCoverUrl(trackId) : FALLBACK_COVER;
+}
+
+async function readError(response) {
+  const text = await response.text();
+  try {
+    const data = JSON.parse(text);
+    return data.error || data.detail || text || response.statusText;
+  } catch {
+    return text || response.statusText;
+  }
+}
+
+async function initAuth() {
+  if (S.authToken) return S.authToken;
+  if (!S.authReady) {
+    S.authReady = (async () => {
+      const response = await fetch(`${API}/token`, { cache: 'no-store' });
+      if (!response.ok) throw new Error(await readError(response));
+      const data = await response.json();
+      S.authToken = data.token || '';
+      if (!S.authToken) throw new Error('Missing MusicDen auth token');
+      return S.authToken;
+    })().catch(error => {
+      S.authReady = null;
+      throw error;
+    });
+  }
+  return S.authReady;
+}
+
+async function authorizedFetch(path, options = {}) {
+  await initAuth();
+  const headers = new Headers(options.headers || {});
+  headers.set('X-MusicDen-Token', S.authToken);
+  return fetch(API + path, { ...options, headers });
+}
+
 const api = async (method, path, body) => {
   const opts = { method, headers: {} };
   if (body !== undefined) {
     opts.headers['Content-Type'] = 'application/json';
     opts.body = JSON.stringify(body);
   }
-  const r = await fetch(API + path, opts);
-  if (!r.ok) {
-    const err = await r.text();
-    throw new Error(`${r.status}: ${err}`);
+  const response = await authorizedFetch(path, opts);
+  if (!response.ok) {
+    throw new Error(`${response.status}: ${await readError(response)}`);
   }
-  return r.json();
+  const contentType = response.headers.get('content-type') || '';
+  return contentType.includes('application/json') ? response.json() : response.text();
 };
+
+function openEventStream(path, onMessage, onError) {
+  const controller = new AbortController();
+  (async () => {
+    const response = await authorizedFetch(path, {
+      method: 'GET',
+      headers: { Accept: 'text/event-stream' },
+      signal: controller.signal,
+    });
+    if (!response.ok) throw new Error(`${response.status}: ${await readError(response)}`);
+    if (!response.body) throw new Error('Streaming response body unavailable');
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true }).replace(/\r/g, '');
+      let idx = buffer.indexOf('\n\n');
+      while (idx !== -1) {
+        const chunk = buffer.slice(0, idx);
+        buffer = buffer.slice(idx + 2);
+        const dataLines = chunk
+          .split('\n')
+          .filter(line => line.startsWith('data:'))
+          .map(line => line.slice(5).trimStart());
+        if (dataLines.length) onMessage(JSON.parse(dataLines.join('\n')));
+        idx = buffer.indexOf('\n\n');
+      }
+    }
+  })().catch(error => {
+    if (error.name !== 'AbortError' && onError) onError(error);
+  });
+  return controller;
+}
 
 function fmtDur(sec) {
   if (!sec) return '--';
   const m = Math.floor(sec / 60), s = Math.round(sec % 60);
   return `${m}:${s.toString().padStart(2,'0')}`;
 }
+function fmtLongDuration(sec) {
+  const totalMinutes = Math.round((sec || 0) / 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  if (hours && minutes) return `${hours}h ${minutes}m`;
+  if (hours) return `${hours}h`;
+  return `${minutes}m`;
+}
 function fmtDate(ts) {
   if (!ts) return '--';
   return new Date(ts * 1000).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+function fmtBytes(bytes) {
+  const value = Number(bytes || 0);
+  if (!value) return '--';
+  if (value >= 1024 * 1024 * 1024) return `${(value / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+  if (value >= 1024 * 1024) return `${(value / (1024 * 1024)).toFixed(2)} MB`;
+  if (value >= 1024) return `${(value / 1024).toFixed(1)} KB`;
+  return `${value} B`;
 }
 function camelotColor(key) {
   if (!key) return '#555';
@@ -602,6 +1200,91 @@ function energyBar(e) {
   const c = `hsl(${hue},80%,55%)`;
   return `<div class="energy-bar"><div class="energy-bg"><div class="energy-bar-inner" style="width:${pct}%;background:${c}"></div></div><span class="text-xs text-muted">${pct}%</span></div>`;
 }
+
+function similarityPercent(value) {
+  return Math.max(0, Math.min(100, Math.round((value || 0) * 100)));
+}
+
+function parseApiErrorMessage(error) {
+  return String(error?.message || error || 'Unknown error').replace(/^\d+:\s*/, '');
+}
+
+function fmtEta(seconds) {
+  const total = Math.max(0, Math.round(seconds || 0));
+  const mins = Math.floor(total / 60);
+  const secs = total % 60;
+  if (mins >= 60) {
+    const hours = Math.floor(mins / 60);
+    const remMins = mins % 60;
+    return `${hours}h ${remMins}m`;
+  }
+  return `${mins}m ${secs}s`;
+}
+
+function trackWaveformUrl(trackId, points) {
+  return `/api/tracks/${trackId}/waveform?points=${points}`;
+}
+
+async function fetchWaveform(trackId, points = 400) {
+  const cacheKey = `${trackId}:${points}`;
+  if (S.waveformCache[cacheKey]) return S.waveformCache[cacheKey];
+  const data = await api('GET', trackWaveformUrl(trackId, points));
+  const waveform = Array.isArray(data.waveform) ? data.waveform : [];
+  S.waveformCache[cacheKey] = waveform;
+  return waveform;
+}
+
+function drawWaveformBars(canvas, waveform, progress = 0, playedColor = '#7c6dfa', unplayedColor = '#3a3a5c') {
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const width = canvas.width;
+  const height = canvas.height;
+  ctx.clearRect(0, 0, width, height);
+  if (!Array.isArray(waveform) || !waveform.length) return;
+
+  const bars = waveform.length;
+  if (bars <= 0) return;
+  const progressBars = Math.max(0, Math.min(bars, Math.round(progress * bars)));
+  const spacing = width / bars;
+  const barWidth = Math.max(1, spacing * 0.75);
+
+  for (let index = 0; index < bars; index++) {
+    const value = Math.max(0, Math.min(1, Number(waveform[index]) || 0));
+    const barHeight = Math.max(1, value * height);
+    const x = index * spacing;
+    const y = (height - barHeight) / 2;
+    ctx.fillStyle = index < progressBars ? playedColor : unplayedColor;
+    ctx.fillRect(x, y, barWidth, barHeight);
+  }
+}
+
+function renderPlayerWaveform() {
+  const canvas = $('waveformCanvas');
+  if (!canvas) return;
+  const audio = _audio();
+  const progress = audio.duration ? audio.currentTime / audio.duration : 0;
+  drawWaveformBars(canvas, S.currentWaveform, progress);
+}
+
+async function loadPlayerWaveform(trackId) {
+  S.currentWaveformTrackId = trackId;
+  try {
+    const waveform = await fetchWaveform(trackId, 400);
+    if (S.currentWaveformTrackId !== trackId) return;
+    S.currentWaveform = waveform;
+    renderPlayerWaveform();
+  } catch (error) {
+    S.currentWaveform = [];
+    renderPlayerWaveform();
+  }
+}
+
+function volumeToAudioLevel(value) {
+  const val = parseFloat(value);
+  if (val === 0) return 0;
+  return (Math.exp(val / 100) - 1) / (Math.E - 1);
+}
+
 function showModal(title, body, onConfirm) {
   $('modal-title').textContent = title;
   $('modal-body').textContent = body;
@@ -609,6 +1292,404 @@ function showModal(title, body, onConfirm) {
   $('modal').style.display = 'flex';
 }
 function closeModal() { $('modal').style.display = 'none'; }
+
+function setInputValueAndNotify(inputId, value) {
+  const input = $(inputId);
+  if (!input) return;
+  input.value = value;
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+  input.dispatchEvent(new Event('change', { bubbles: true }));
+}
+
+function openShortcutsModal() {
+  $('shortcuts-modal').style.display = 'flex';
+}
+
+function closeShortcutsModal() {
+  $('shortcuts-modal').style.display = 'none';
+}
+
+function renderFolderBrowserBreadcrumbs(path) {
+  const el = $('folder-browser-breadcrumbs');
+  if (!path) {
+    el.innerHTML = '<span class="text-muted">This PC</span>';
+    return;
+  }
+
+  const normalized = String(path).replace(/\\/g, '/');
+  const segments = normalized.split('/').filter(Boolean);
+  let current = '';
+  const crumbs = [];
+
+  segments.forEach((segment, index) => {
+    if (index === 0 && /^[A-Za-z]:$/.test(segment)) {
+      current = `${segment}/`;
+    } else {
+      current = `${current.replace(/\/$/, '')}/${segment}`;
+    }
+    crumbs.push(
+      `<button class="browse-crumb" onclick="browseToFolder('${escapeJsString(current)}')">${escapeHtml(segment)}</button>`
+    );
+  });
+
+  el.innerHTML = crumbs.join('<span class="text-muted">/</span>');
+}
+
+function renderFolderBrowser() {
+  const body = $('folder-browser-body');
+  const currentValue = S.browsePath || '';
+  $('folder-browser-current').value = currentValue;
+  $('folder-browser-select-btn').disabled = !currentValue;
+  renderFolderBrowserBreadcrumbs(currentValue);
+
+  if (S.browseLoading) {
+    body.className = 'browse-loading';
+    body.textContent = 'Loading folders...';
+    return;
+  }
+
+  if (S.browseError) {
+    body.className = 'browse-error';
+    body.textContent = S.browseError;
+    return;
+  }
+
+  const rows = [];
+  if (S.browseParent) {
+    rows.push(`
+      <div class="browse-row" onclick="browseToFolder('${escapeJsString(S.browseParent)}')">
+        <div class="browse-row-main">
+          <span aria-hidden="true">..</span>
+          <span class="browse-row-name">Up</span>
+        </div>
+      </div>
+    `);
+  }
+
+  rows.push(...S.browseItems.map(item => `
+    <div class="browse-row" onclick="browseToFolder('${escapeJsString(item.path)}')" ondblclick="confirmFolderBrowserSelection('${escapeJsString(item.path)}')">
+      <div class="browse-row-main">
+        <span aria-hidden="true">&#128193;</span>
+        <span class="browse-row-name">${escapeHtml(item.name)}</span>
+      </div>
+      ${item.has_audio ? '<span class="browse-badge">&#127925; Audio</span>' : ''}
+    </div>
+  `));
+
+  if (!rows.length) {
+    body.className = 'browse-empty';
+    body.textContent = 'No folders here.';
+    return;
+  }
+
+  body.className = '';
+  body.innerHTML = rows.join('');
+}
+
+async function browseToFolder(path = '') {
+  $('folder-browser-modal').style.display = 'flex';
+  S.browseLoading = true;
+  S.browseError = '';
+  renderFolderBrowser();
+  try {
+    const query = path ? `?path=${encodeURIComponent(path)}` : '';
+    const data = await api('GET', `/api/browse${query}`);
+    S.browsePath = data.path || '';
+    S.browseParent = data.parent || null;
+    S.browseItems = data.items || [];
+  } catch (error) {
+    S.browseError = 'Cannot access this folder';
+  } finally {
+    S.browseLoading = false;
+    renderFolderBrowser();
+  }
+}
+
+function openFolderBrowser(targetInputId) {
+  S.browseTargetInputId = targetInputId;
+  const currentPath = ($(targetInputId)?.value || '').trim();
+  browseToFolder(currentPath);
+}
+
+function confirmFolderBrowserSelection(selectedPath = null) {
+  const targetId = S.browseTargetInputId;
+  const path = selectedPath || S.browsePath;
+  if (!targetId || !path) return;
+  setInputValueAndNotify(targetId, path);
+  closeFolderBrowser();
+}
+
+function closeFolderBrowser() {
+  $('folder-browser-modal').style.display = 'none';
+}
+
+function closeTopModalOrSelection() {
+  if ($('folder-browser-modal').style.display === 'flex') {
+    closeFolderBrowser();
+    return true;
+  }
+  if ($('similar-modal').style.display === 'flex') {
+    closeSimilarModal();
+    return true;
+  }
+  if ($('shortcuts-modal').style.display === 'flex') {
+    closeShortcutsModal();
+    return true;
+  }
+  if ($('modal').style.display === 'flex') {
+    closeModal();
+    return true;
+  }
+  if (S.selectedIds.size) {
+    clearSelection();
+    return true;
+  }
+  return false;
+}
+
+function toggleDuplicatesPanel(forceOpen = null) {
+  S.duplicatesOpen = forceOpen == null ? !S.duplicatesOpen : !!forceOpen;
+  $('duplicates-panel').style.display = S.duplicatesOpen ? 'block' : 'none';
+  $('duplicates-toggle-btn').textContent = S.duplicatesOpen ? 'Hide Duplicates' : 'Duplicates';
+}
+
+function normalizeDuplicateGroups(groups) {
+  return (groups || []).map(group => ({
+    match_type: group.match_type,
+    tracks: (group.tracks || []).map(track => ({
+      ...track,
+      selected_remove: track.recommendation === 'remove',
+    })),
+  }));
+}
+
+function getSelectedDuplicateIds() {
+  return S.duplicateGroups.flatMap(group =>
+    group.tracks.filter(track => track.selected_remove).map(track => track.id)
+  );
+}
+
+function toggleDuplicateSelection(groupIndex, trackIndex) {
+  const track = S.duplicateGroups[groupIndex]?.tracks?.[trackIndex];
+  if (!track) return;
+  track.selected_remove = !track.selected_remove;
+  renderDuplicateResults();
+}
+
+function renderDuplicateResults() {
+  const results = $('duplicates-results');
+  const actions = $('duplicates-actions');
+  const summary = $('duplicates-summary');
+  const selectedCount = getSelectedDuplicateIds().length;
+  const data = S.duplicateSummary;
+
+  if (!S.duplicateGroups.length) {
+    results.style.display = 'none';
+    actions.style.display = 'none';
+    summary.textContent = data
+      ? `Found ${data.exact_count} exact duplicates, ${data.fuzzy_count} fuzzy matches across ${data.group_count} groups`
+      : 'No duplicate scan run yet.';
+    if (data && data.group_count === 0) {
+      summary.textContent = 'No duplicates found.';
+    }
+    return;
+  }
+
+  summary.textContent = `Found ${data.exact_count} exact duplicates, ${data.fuzzy_count} fuzzy matches across ${data.group_count} groups`;
+  results.style.display = 'flex';
+  actions.style.display = 'block';
+
+  results.innerHTML = S.duplicateGroups.map((group, groupIndex) => `
+    <div class="duplicate-group">
+      <div class="duplicate-group-head">
+        <div>
+          <strong>${group.match_type === 'exact' ? 'Exact duplicate' : 'Fuzzy match'}</strong>
+          <span class="text-xs text-muted"> • ${group.tracks.length} tracks</span>
+        </div>
+        <span class="badge ${group.match_type === 'exact' ? 'badge-danger' : 'badge-warning'}">${group.match_type.toUpperCase()}</span>
+      </div>
+      <table class="track-table">
+        <thead>
+          <tr>
+            <th class="col-check"></th>
+            <th>Title</th>
+            <th>Artist</th>
+            <th>BPM</th>
+            <th>Key</th>
+            <th>Duration</th>
+            <th>File Size</th>
+            <th>Format</th>
+            <th>Source Folder</th>
+            <th>Recommendation</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${group.tracks.map((track, trackIndex) => `
+            <tr>
+              <td class="col-check">
+                <input type="checkbox" ${track.selected_remove ? 'checked' : ''} onchange="toggleDuplicateSelection(${groupIndex}, ${trackIndex})"/>
+              </td>
+              <td class="col-title" title="${escapeHtml(track.title || track.filename || '--')}">${escapeHtml(track.title || track.filename || '--')}</td>
+              <td class="col-artist" title="${escapeHtml(track.artist || '')}">${escapeHtml(track.artist || '--')}</td>
+              <td>${track.bpm != null ? Number(track.bpm).toFixed(1) : '--'}</td>
+              <td>${camelotBadge(track.camelot_key)}</td>
+              <td>${fmtDur(track.duration_sec)}</td>
+              <td>${fmtBytes(track.file_size)}</td>
+              <td>${escapeHtml(track.format || '--')}</td>
+              <td class="text-xs text-muted" title="${escapeHtml(track.source_folder || '')}">${escapeHtml((track.source_folder || '').split(/[/\\]/).pop() || '--')}</td>
+              <td><button class="duplicate-badge-btn ${track.selected_remove ? 'remove' : 'keep'}" onclick="toggleDuplicateSelection(${groupIndex}, ${trackIndex})">${track.selected_remove ? 'REMOVE' : 'KEEP'}</button></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `).join('');
+
+  const removeButton = actions.querySelector('.btn-danger');
+  removeButton.textContent = `Remove Selected from Library (${selectedCount})`;
+  removeButton.disabled = selectedCount === 0;
+}
+
+async function findDuplicates() {
+  toggleDuplicatesPanel(true);
+  $('find-duplicates-btn').disabled = true;
+  $('duplicates-summary').textContent = 'Scanning for duplicates...';
+  try {
+    const data = await api('GET', '/api/duplicates');
+    S.duplicateSummary = data;
+    S.duplicateGroups = normalizeDuplicateGroups(data.groups);
+    renderDuplicateResults();
+  } catch (error) {
+    $('duplicates-summary').textContent = 'Unable to scan for duplicates.';
+    $('duplicates-results').style.display = 'none';
+    $('duplicates-actions').style.display = 'none';
+    alert(`Duplicate scan failed: ${parseApiErrorMessage(error)}`);
+  } finally {
+    $('find-duplicates-btn').disabled = false;
+  }
+}
+
+async function removeSelectedDuplicates() {
+  const trackIds = getSelectedDuplicateIds();
+  if (!trackIds.length) {
+    alert('Select at least one track to remove.');
+    return;
+  }
+
+  showModal(
+    'Remove Duplicate Tracks',
+    'Remove the selected tracks from MusicDen? This only updates the library database and does not delete your files.',
+    async () => {
+      const result = await api('POST', '/api/duplicates/remove', { track_ids: trackIds });
+      await loadTracks();
+      await loadStats();
+      await loadSources();
+      await findDuplicates();
+      alert(`Removed ${result.removed} track(s) from the library.`);
+    }
+  );
+}
+
+function renderEmbeddingsCard(stats = S.stats) {
+  const summary = $('embeddings-summary');
+  const bar = $('embeddings-bar');
+  const status = $('embeddings-status');
+  const button = $('compute-embeddings-btn');
+  if (!summary || !bar || !status || !button) return;
+
+  const total = stats?.total_tracks || 0;
+  const embedded = stats?.tracks_with_embeddings || 0;
+  const pct = total ? Math.round((embedded / total) * 100) : 0;
+  summary.textContent = `${embedded} / ${total} tracks have embeddings`;
+  bar.style.width = `${pct}%`;
+
+  if (S.embeddingComputeActive) {
+    status.textContent = `Computing embeddings... ${embedded} / ${total}`;
+  } else if (S.embeddingStatusMessage) {
+    status.textContent = S.embeddingStatusMessage;
+  } else if (!total) {
+    status.textContent = 'No tracks in the library yet.';
+  } else if (embedded >= total) {
+    status.textContent = 'Embeddings are up to date.';
+  } else {
+    status.textContent = 'Required for Find Similar to work.';
+  }
+
+  button.disabled = S.embeddingComputeActive || total === 0 || embedded >= total;
+  button.textContent = S.embeddingComputeActive
+    ? 'Computing…'
+    : (total > 0 && embedded >= total ? 'Up to Date' : 'Compute Embeddings');
+}
+
+function startEmbeddingPolling() {
+  stopEmbeddingPolling();
+  S.embeddingPollId = setInterval(() => {
+    loadStats();
+  }, 1000);
+}
+
+function stopEmbeddingPolling() {
+  if (S.embeddingPollId) {
+    clearInterval(S.embeddingPollId);
+    S.embeddingPollId = null;
+  }
+}
+
+function closeSimilarModal() {
+  $('similar-modal').style.display = 'none';
+  $('similarityMapTooltip').style.display = 'none';
+}
+
+async function populateSimilarPlaylistSelect(selectedValue = null) {
+  const select = $('similar-playlist-select');
+  if (!select) return;
+
+  try {
+    const playlists = await api('GET', '/api/playlists');
+    const preferred = String(selectedValue ?? S.currentPlaylist?.id ?? '');
+    select.innerHTML = '<option value="">Select playlist…</option>' +
+      playlists.map(playlist => `<option value="${playlist.id}">${escapeHtml(playlist.name)}</option>`).join('') +
+      '<option value="__new__">+ New playlist…</option>';
+    if (preferred && select.querySelector(`option[value="${preferred}"]`)) {
+      select.value = preferred;
+    }
+  } catch {
+    select.innerHTML = '<option value="">Select playlist…</option><option value="__new__">+ New playlist…</option>';
+  }
+}
+
+function renderSimilarModal() {
+  const tbody = $('similar-tbody');
+  tbody.innerHTML = S.similarTracks.map(track => {
+    const title = track.title || track.filename || '--';
+    return `<tr>
+      <td class="col-cover">${coverImgHtml(track.id, 32, 'similar-cover')}</td>
+      <td class="col-title" title="${escapeHtml(title)}">${escapeHtml(title)}</td>
+      <td class="col-artist text-ellipsis" title="${escapeHtml(track.artist || '')}">${escapeHtml(track.artist || '--')}</td>
+      <td>${track.bpm != null ? track.bpm.toFixed(1) : '--'}</td>
+      <td>${camelotBadge(track.camelot_key)}</td>
+      <td>${similarityPercent(track.similarity)}%</td>
+      <td class="similar-actions">
+        <button class="btn btn-secondary btn-sm" onclick="playSimilarTrack(${track.id})">▶ Play</button>
+        <button class="btn btn-secondary btn-sm" onclick="addSimilarTrackToPlaylist(${track.id})">+ Add to playlist</button>
+      </td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="7" class="text-sm text-muted" style="padding:16px">No similar tracks found.</td></tr>';
+
+  const sourceTitle = S.similarSourceTrack?.title || S.similarSourceTrack?.filename || 'this track';
+  $('similar-modal-title').textContent = `Similar to ${sourceTitle}`;
+  $('similar-modal-subtitle').textContent = `${S.similarTracks.length} similar tracks`;
+  $('similar-modal-status').textContent = S.similarTracks.length
+    ? 'Choose a track to play or add.'
+    : 'No similar tracks found yet.';
+}
+
+function openSimilarModal(sourceTrack, tracks) {
+  S.similarSourceTrack = sourceTrack || null;
+  S.similarTracks = tracks || [];
+  renderSimilarModal();
+  $('similar-modal').style.display = 'flex';
+}
 
 // ── Tab switching ─────────────────────────────────────────────────────────────
 function showTab(name) {
@@ -628,6 +1709,302 @@ function showTab(name) {
 }
 
 // ── Key Grid ─────────────────────────────────────────────────────────────────
+function closeSimilarModal() {
+  $('similar-modal').style.display = 'none';
+  $('similarityMapTooltip').style.display = 'none';
+  S.similarMapSelectedTrackId = null;
+}
+
+function setSimilarView(view) {
+  S.similarView = view === 'map' ? 'map' : 'list';
+  $('similar-list-view').classList.toggle('active', S.similarView === 'list');
+  $('similar-map-view').classList.toggle('active', S.similarView === 'map');
+  $('similar-view-list-btn').classList.toggle('active', S.similarView === 'list');
+  $('similar-view-map-btn').classList.toggle('active', S.similarView === 'map');
+  if (S.similarView === 'map') renderSimilarityMap();
+}
+
+function drawStar(ctx, x, y, radius, fillStyle) {
+  const innerRadius = radius * 0.5;
+  ctx.beginPath();
+  for (let point = 0; point < 10; point++) {
+    const angle = (Math.PI / 5) * point - Math.PI / 2;
+    const currentRadius = point % 2 === 0 ? radius : innerRadius;
+    const px = x + Math.cos(angle) * currentRadius;
+    const py = y + Math.sin(angle) * currentRadius;
+    if (point === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  }
+  ctx.closePath();
+  ctx.fillStyle = fillStyle;
+  ctx.fill();
+}
+
+function buildSimilarMapPoints(canvas) {
+  if (!canvas || !S.similarMapData?.target) {
+    S.similarMapPoints = [];
+    return [];
+  }
+
+  const padding = 40;
+  const entries = [
+    { ...S.similarMapData.target, type: 'target' },
+    ...(S.similarMapData.similar || []).map(track => ({ ...track, type: 'similar' })),
+  ];
+  const xs = entries.map(item => Number(item.x) || 0);
+  const ys = entries.map(item => Number(item.y) || 0);
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+  const spanX = Math.max(1e-6, maxX - minX);
+  const spanY = Math.max(1e-6, maxY - minY);
+
+  S.similarMapPoints = entries.map(item => {
+    const normX = (item.x - minX) / spanX;
+    const normY = (item.y - minY) / spanY;
+    return {
+      ...item,
+      px: padding + normX * (canvas.width - padding * 2),
+      py: padding + (1 - normY) * (canvas.height - padding * 2),
+      radius: item.type === 'target' ? 14 : 8,
+    };
+  });
+  return S.similarMapPoints;
+}
+
+function renderSimilarMapDetail() {
+  const container = $('similar-map-detail');
+  const selected = (S.similarMapData?.similar || []).find(track => track.track_id === S.similarMapSelectedTrackId);
+  if (!selected) {
+    container.innerHTML = '<div class="text-sm text-muted">Click a dot to inspect a similar track.</div>';
+    return;
+  }
+
+  container.innerHTML = `
+    ${coverImgHtml(selected.track_id, 48, 'similar-cover')}
+    <div class="similar-map-detail-copy">
+      <div class="similar-map-detail-text">
+        <div class="similar-map-detail-title">${escapeHtml(selected.title || '--')}</div>
+        <div class="similar-map-detail-meta">${escapeHtml(selected.artist || '--')} · ${selected.bpm != null ? Number(selected.bpm).toFixed(1) + ' BPM' : 'BPM --'} · ${escapeHtml(selected.camelot_key || '--')} · ${similarityPercent(selected.similarity)}%</div>
+      </div>
+      <div class="flex gap-8 flex-wrap">
+        <button class="btn btn-secondary btn-sm" onclick="playSimilarMapTrack(${selected.track_id})">Play</button>
+        <button class="btn btn-secondary btn-sm" onclick="addSimilarTrackToPlaylist(${selected.track_id})">+ Add to Playlist</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderSimilarityMap() {
+  const canvas = $('similarityMap');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (!S.similarMapData?.target || !(S.similarMapData.similar || []).length) {
+    ctx.fillStyle = 'rgba(229, 231, 235, 0.55)';
+    ctx.font = '14px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Similarity map unavailable for this track.', canvas.width / 2, canvas.height / 2);
+    renderSimilarMapDetail();
+    S.similarMapPoints = [];
+    return;
+  }
+
+  const points = buildSimilarMapPoints(canvas);
+  const targetPoint = points.find(point => point.type === 'target');
+  const linkedPoints = points
+    .filter(point => point.type === 'similar')
+    .sort((a, b) => (b.similarity || 0) - (a.similarity || 0))
+    .slice(0, 5);
+
+  if (targetPoint) {
+    ctx.strokeStyle = 'rgba(124, 109, 250, 0.22)';
+    ctx.lineWidth = 1;
+    linkedPoints.forEach(point => {
+      ctx.beginPath();
+      ctx.moveTo(targetPoint.px, targetPoint.py);
+      ctx.lineTo(point.px, point.py);
+      ctx.stroke();
+    });
+  }
+
+  points.forEach(point => {
+    if (point.type === 'target') return;
+    ctx.globalAlpha = Math.max(0.4, Math.min(1, Number(point.similarity) || 0));
+    ctx.beginPath();
+    ctx.arc(point.px, point.py, point.radius, 0, Math.PI * 2);
+    ctx.fillStyle = camelotColor(point.camelot_key);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    if (S.similarMapSelectedTrackId === point.track_id) {
+      ctx.beginPath();
+      ctx.arc(point.px, point.py, point.radius + 4, 0, Math.PI * 2);
+      ctx.strokeStyle = '#f5f3ff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+  });
+
+  if (targetPoint) drawStar(ctx, targetPoint.px, targetPoint.py, targetPoint.radius, '#7c6dfa');
+  renderSimilarMapDetail();
+}
+
+function getSimilarMapPointAtEvent(event) {
+  const canvas = $('similarityMap');
+  if (!canvas || !S.similarMapPoints.length) return null;
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const x = (event.clientX - rect.left) * scaleX;
+  const y = (event.clientY - rect.top) * scaleY;
+  let bestPoint = null;
+  let bestDistance = Infinity;
+
+  S.similarMapPoints.forEach(point => {
+    const dx = x - point.px;
+    const dy = y - point.py;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    if (distance <= point.radius + 6 && distance < bestDistance) {
+      bestPoint = point;
+      bestDistance = distance;
+    }
+  });
+  return bestPoint;
+}
+
+function handleSimilarityMapMove(event) {
+  const tooltip = $('similarityMapTooltip');
+  const canvas = $('similarityMap');
+  const point = getSimilarMapPointAtEvent(event);
+  if (!point || !canvas) {
+    tooltip.style.display = 'none';
+    return;
+  }
+
+  const label = point.type === 'target' ? 'Reference track' : `${similarityPercent(point.similarity)}% similar`;
+  tooltip.innerHTML = `${escapeHtml(point.title || '--')}<br><span class="text-xs text-muted">${escapeHtml(point.artist || '--')} · ${escapeHtml(point.camelot_key || '--')} · ${escapeHtml(label)}</span>`;
+  tooltip.style.display = 'block';
+
+  const rect = canvas.getBoundingClientRect();
+  const wrap = canvas.parentElement.getBoundingClientRect();
+  const left = event.clientX - wrap.left + 14;
+  const top = event.clientY - wrap.top + 14;
+  const tooltipWidth = tooltip.offsetWidth || 180;
+  const tooltipHeight = tooltip.offsetHeight || 48;
+  tooltip.style.left = `${Math.max(8, Math.min(rect.width - tooltipWidth - 8, left))}px`;
+  tooltip.style.top = `${Math.max(8, Math.min(rect.height - tooltipHeight - 8, top))}px`;
+}
+
+function handleSimilarityMapLeave() {
+  $('similarityMapTooltip').style.display = 'none';
+}
+
+function handleSimilarityMapClick(event) {
+  const point = getSimilarMapPointAtEvent(event);
+  if (!point || point.type !== 'similar') return;
+  S.similarMapSelectedTrackId = point.track_id;
+  renderSimilarityMap();
+}
+
+async function renderSimilarReferenceWaveform() {
+  const canvas = $('similar-source-waveform');
+  const trackId = S.similarSourceTrack?.id;
+  drawWaveformBars(canvas, [], 0);
+  if (!trackId) return;
+
+  try {
+    const waveform = await fetchWaveform(trackId, 200);
+    if (S.similarSourceTrack?.id !== trackId) return;
+    drawWaveformBars(canvas, waveform, 1, '#7c6dfa', 'rgba(124, 109, 250, 0.25)');
+  } catch (error) {
+    drawWaveformBars(canvas, [], 0);
+  }
+}
+
+async function loadSimilarVisuals() {
+  const trackId = S.similarSourceTrack?.id;
+  S.similarMapData = null;
+  S.similarMapPoints = [];
+  renderSimilarityMap();
+  renderSimilarReferenceWaveform();
+  if (!trackId) return;
+
+  try {
+    const mapData = await api('GET', `/api/tracks/embedding-map?track_id=${trackId}&limit=50`);
+    if (S.similarSourceTrack?.id !== trackId) return;
+    S.similarMapData = mapData;
+    if (!S.similarMapSelectedTrackId && mapData.similar?.length) {
+      S.similarMapSelectedTrackId = mapData.similar[0].track_id;
+    }
+    if (S.similarView === 'map') renderSimilarityMap();
+  } catch (error) {
+    console.error(error);
+    if (S.similarSourceTrack?.id !== trackId) return;
+    S.similarMapData = null;
+    S.similarMapPoints = [];
+    renderSimilarityMap();
+  }
+}
+
+function renderSimilarModal() {
+  const tbody = $('similar-tbody');
+  tbody.innerHTML = S.similarTracks.map(track => {
+    const title = track.title || track.filename || '--';
+    return `<tr>
+      <td class="col-cover">${coverImgHtml(track.id, 32, 'similar-cover')}</td>
+      <td class="col-title" title="${escapeHtml(title)}">${escapeHtml(title)}</td>
+      <td class="col-artist text-ellipsis" title="${escapeHtml(track.artist || '')}">${escapeHtml(track.artist || '--')}</td>
+      <td>${track.bpm != null ? Number(track.bpm).toFixed(1) : '--'}</td>
+      <td>${camelotBadge(track.camelot_key)}</td>
+      <td>${similarityPercent(track.similarity)}%</td>
+      <td class="similar-actions">
+        <button class="btn btn-secondary btn-sm" onclick="playSimilarTrack(${track.id})">Play</button>
+        <button class="btn btn-secondary btn-sm" onclick="addSimilarTrackToPlaylist(${track.id})">+ Add to playlist</button>
+      </td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="7" class="text-sm text-muted" style="padding:16px">No similar tracks found.</td></tr>';
+
+  const sourceTitle = S.similarSourceTrack?.title || S.similarSourceTrack?.filename || 'this track';
+  $('similar-modal-title').textContent = `Similar to ${sourceTitle}`;
+  $('similar-modal-subtitle').textContent = `${S.similarTracks.length} similar tracks`;
+  $('similar-modal-status').textContent = S.similarTracks.length
+    ? 'Choose a track to play, add to a playlist, or explore the map.'
+    : 'No similar tracks found yet.';
+  renderSimilarMapDetail();
+}
+
+function openSimilarModal(sourceTrack, tracks) {
+  S.similarSourceTrack = sourceTrack || null;
+  S.similarTracks = tracks || [];
+  S.similarView = 'list';
+  S.similarMapSelectedTrackId = tracks?.[0]?.id || null;
+  $('similarityMapTooltip').style.display = 'none';
+  renderSimilarModal();
+  setSimilarView('list');
+  $('similar-modal').style.display = 'flex';
+  loadSimilarVisuals();
+}
+
+function showTab(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  $(`page-${name}`).classList.add('active');
+  const tabs = ['library', 'playlists', 'download', 'organize', 'usb', 'settings'];
+  document.querySelectorAll('.nav-tab')[tabs.indexOf(name)]?.classList.add('active');
+  if (name === 'playlists') loadPlaylists();
+  if (name === 'organize') initOrganize();
+  if (name === 'usb') initUsbExport();
+  if (name === 'settings') loadSettings();
+  if (name === 'download') {
+    api('GET', '/api/settings').then(cfg => {
+      $('dl-output').value = cfg.default_download_path || '';
+    }).catch(() => {});
+  }
+}
+
 function buildKeyGrid() {
   const g = $('key-grid');
   CAMELOT_KEYS.forEach(k => {
@@ -681,19 +2058,31 @@ async function startScan() {
   $('scan-progress-wrap').style.display = 'block';
   $('scan-bar').style.width = '0%';
   $('scan-status').textContent = 'Starting scan…';
-  await api('POST', '/api/scan', { folders: S.scanFolders, rescan: false });
+  try {
+    await api('POST', '/api/scan', { folders: S.scanFolders, rescan: false });
+  } catch (error) {
+    $('scan-status').textContent = `Scan could not start: ${parseApiErrorMessage(error)}`;
+    alert(`Scan could not start: ${parseApiErrorMessage(error)}`);
+    return;
+  }
 
-  const sse = new EventSource(API + '/api/scan/progress');
-  sse.onmessage = e => {
-    const d = JSON.parse(e.data);
+  if (S.scanStreamAbort) S.scanStreamAbort.abort();
+  S.scanStreamAbort = openEventStream('/api/scan/progress', d => {
     const pct = d.total > 0 ? Math.round((d.processed / d.total) * 100) : 0;
     $('scan-bar').style.width = pct + '%';
     $('scan-status').textContent = d.done
       ? `Done — ${d.new} new, ${d.skipped} skipped, ${d.errors} errors`
-      : `${d.processed}/${d.total} — ${d.current_file}`;
-    if (d.done) { sse.close(); loadTracks(); loadStats(); }
-  };
-  sse.onerror = () => sse.close();
+      : `${d.processed}/${d.total} — ${d.current_file || 'Preparing…'}${d.embedding_status ? ` — ${d.embedding_status}` : ''}`;
+    if (d.done) {
+      S.scanStreamAbort = null;
+      loadTracks();
+      loadStats();
+      loadSources();
+    }
+  }, error => {
+    S.scanStreamAbort = null;
+    $('scan-status').textContent = `Scan stream error: ${error.message}`;
+  });
 }
 
 // ── Tracks ────────────────────────────────────────────────────────────────────
@@ -708,7 +2097,79 @@ function toggleSortDir() {
   applyFilters();
 }
 
+function getActiveDateRange() {
+  const from = $('date-from').value ? new Date($('date-from').value).getTime() / 1000 : null;
+  const to = $('date-to').value ? (new Date($('date-to').value).getTime() / 1000) + 86399 : null;
+  return { from, to };
+}
+
+function filterSemanticResults(tracks) {
+  const { from, to } = getActiveDateRange();
+  const sourceFolder = $('source-folder').value;
+  const search = $('search-input').value.trim().toLowerCase();
+  return tracks.filter(track => {
+    if (S.bpmMin > 60 && (track.bpm == null || track.bpm < S.bpmMin)) return false;
+    if (S.bpmMax < 200 && (track.bpm == null || track.bpm > S.bpmMax)) return false;
+    if (S.activeKeys.size && !S.activeKeys.has(track.camelot_key)) return false;
+    if (from != null && (track.file_date == null || track.file_date < from)) return false;
+    if (to != null && (track.file_date == null || track.file_date > to)) return false;
+    if (sourceFolder && track.source_folder !== sourceFolder) return false;
+    if (search) {
+      const haystack = `${track.title || ''} ${track.artist || ''}`.toLowerCase();
+      if (!haystack.includes(search)) return false;
+    }
+    return true;
+  });
+}
+
+function sortTracksClientSide(tracks) {
+  const sortBy = $('sort-by').value;
+  const direction = S.sortDir === 'asc' ? 1 : -1;
+  return [...tracks].sort((a, b) => {
+    const av = a[sortBy];
+    const bv = b[sortBy];
+    if (av == null && bv == null) return 0;
+    if (av == null) return 1;
+    if (bv == null) return -1;
+    if (typeof av === 'string' || typeof bv === 'string') {
+      return String(av).localeCompare(String(bv)) * direction;
+    }
+    return (av - bv) * direction;
+  });
+}
+
+function updateSemanticSummary(filteredCount = null) {
+  const summary = $('semantic-summary');
+  if (!S.semanticMode) {
+    summary.textContent = 'Semantic search ready';
+    return;
+  }
+  const total = S.semanticResults.length;
+  const shown = filteredCount == null ? total : filteredCount;
+  if (S.semanticMode === 'query') {
+    summary.textContent = `Showing ${shown} of ${total} vibe matches for "${S.semanticQuery}"`;
+  } else {
+    summary.textContent = `Showing ${shown} of ${total} similar tracks`;
+  }
+}
+
 async function loadTracks() {
+  if (S.semanticMode) {
+    const filtered = sortTracksClientSide(filterSemanticResults(S.semanticResults));
+    S.total = filtered.length;
+    const start = (S.page - 1) * S.perPage;
+    S.tracks = filtered.slice(start, start + S.perPage);
+    updateSemanticSummary(filtered.length);
+    renderTrackTable();
+    return;
+  }
+
+  if ($('sort-by').value === 'similarity') {
+    $('sort-by').value = 'file_date';
+    S.sortDir = 'desc';
+    $('sort-dir-btn').textContent = '↓ Desc';
+  }
+
   const params = new URLSearchParams();
   params.set('page', S.page);
   params.set('per_page', S.perPage);
@@ -717,11 +2178,11 @@ async function loadTracks() {
   if (S.bpmMin > 60) params.set('bpm_min', S.bpmMin);
   if (S.bpmMax < 200) params.set('bpm_max', S.bpmMax);
   if (S.activeKeys.size) params.set('camelot_key', [...S.activeKeys].join(','));
-  const df = $('date-from').value, dt = $('date-to').value;
-  if (df) params.set('date_from', new Date(df).getTime() / 1000);
-  if (dt) params.set('date_to', (new Date(dt).getTime() / 1000) + 86399);
-  const sf = $('source-folder').value;
-  if (sf) params.set('source_folder', sf);
+  const { from, to } = getActiveDateRange();
+  if (from != null) params.set('date_from', from);
+  if (to != null) params.set('date_to', to);
+  const sourceFolder = $('source-folder').value;
+  if (sourceFolder) params.set('source_folder', sourceFolder);
   const search = $('search-input').value.trim();
   if (search) params.set('search', search);
 
@@ -729,6 +2190,7 @@ async function loadTracks() {
     const data = await api('GET', `/api/tracks?${params}`);
     S.tracks = data.tracks;
     S.total = data.total;
+    updateSemanticSummary();
     renderTrackTable();
   } catch (e) { console.error(e); }
 }
@@ -736,32 +2198,100 @@ async function loadTracks() {
 function renderTrackTable() {
   const tbody = $('track-tbody');
   const empty = $('track-empty');
-  if (!S.tracks.length) { empty.style.display = 'flex'; tbody.innerHTML = ''; $('select-all').checked = false; return; }
+  if (!S.tracks.length) {
+    empty.style.display = 'flex';
+    tbody.innerHTML = '';
+    $('select-all').checked = false;
+    $('page-info').textContent = 'Page 1 of 1';
+    $('total-info').textContent = `${S.total} tracks`;
+    $('prev-btn').disabled = true;
+    $('next-btn').disabled = true;
+    return;
+  }
   empty.style.display = 'none';
 
   tbody.innerHTML = S.tracks.map((t, idx) => {
     const sel = S.selectedIds.has(t.id);
     const src = (t.source_folder || '').split(/[/\\]/).pop() || '--';
-    return `<tr class="${sel ? 'selected' : ''}" onclick="toggleTrack(${t.id},this)" ondblclick="rowPlayTrack(${t.id},${idx})">
+    const title = t.title || t.filename || '--';
+    const badge = t.similarity != null
+      ? `<span class="badge badge-vibe">Vibe ${similarityPercent(t.similarity)}%</span>`
+      : '';
+    return `<tr class="${sel ? 'selected' : ''}" data-track-id="${t.id}" onclick="toggleTrack(${t.id},this)" ondblclick="rowPlayTrack(${t.id},${idx})">
+      <td class="col-cover">${coverImgHtml(t.id, 40, 'track-cover')}</td>
       <td class="col-check"><input type="checkbox" ${sel ? 'checked' : ''} onclick="event.stopPropagation();toggleTrack(${t.id},this.closest('tr'))"/><button class="row-play-btn" onclick="event.stopPropagation();rowPlayTrack(${t.id},${idx})">▶</button></td>
-      <td class="col-title text-ellipsis" title="${t.title||''}">${t.title || t.filename || '--'}</td>
-      <td class="col-artist text-ellipsis" title="${t.artist||''}">${t.artist || '--'}</td>
+      <td class="col-title" title="${escapeHtml(title)}"><div class="track-title-cell"><span class="track-title-main">${escapeHtml(title)}</span><span class="track-badges">${badge}</span></div></td>
+      <td class="col-artist text-ellipsis" title="${escapeHtml(t.artist||'')}">${escapeHtml(t.artist || '--')}</td>
       <td>${t.bpm != null ? t.bpm.toFixed(1) : '--'}</td>
       <td>${camelotBadge(t.camelot_key)}</td>
       <td>${energyBar(t.energy)}</td>
       <td>${fmtDur(t.duration_sec)}</td>
       <td>${fmtDate(t.file_date)}</td>
-      <td class="text-muted text-xs text-ellipsis" style="max-width:100px" title="${t.source_folder||''}">${src}</td>
+      <td class="text-muted text-xs text-ellipsis" style="max-width:100px" title="${escapeHtml(t.source_folder||'')}">${escapeHtml(src)}</td>
+      <td class="row-actions"><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();findSimilarTracks(${t.id})">Find Similar</button></td>
     </tr>`;
   }).join('');
 
   // page info
-  const totalPages = Math.ceil(S.total / S.perPage);
+  const totalPages = Math.max(1, Math.ceil(S.total / S.perPage));
   $('page-info').textContent = `Page ${S.page} of ${totalPages || 1}`;
   $('total-info').textContent = `${S.total} tracks`;
   $('prev-btn').disabled = S.page <= 1;
   $('next-btn').disabled = S.page >= totalPages;
   updateSelectionToolbar();
+  highlightPlayingRow();
+}
+
+async function runSemanticSearch() {
+  const query = $('semantic-search-input').value.trim();
+  if (!query) {
+    clearSemanticSearch();
+    return;
+  }
+  $('semantic-summary').textContent = 'Searching vibe matches...';
+  try {
+    const data = await api('POST', '/api/tracks/search/semantic', { query, limit: 200 });
+    S.semanticMode = 'query';
+    S.semanticResults = data.tracks || [];
+    S.semanticQuery = data.query || query;
+    S.semanticSourceTrackId = null;
+    S.page = 1;
+    $('sort-by').value = 'similarity';
+    S.sortDir = 'desc';
+    $('sort-dir-btn').textContent = '↓ Desc';
+    loadTracks();
+  } catch (error) {
+    $('semantic-summary').textContent = 'Semantic search unavailable';
+    alert(`Semantic search failed: ${error.message}`);
+  }
+}
+
+function clearSemanticSearch() {
+  S.semanticMode = null;
+  S.semanticResults = [];
+  S.semanticQuery = '';
+  S.semanticSourceTrackId = null;
+  if ($('sort-by').value === 'similarity') {
+    $('sort-by').value = 'file_date';
+    S.sortDir = 'desc';
+    $('sort-dir-btn').textContent = '↓ Desc';
+  }
+  updateSemanticSummary();
+  loadTracks();
+}
+
+async function findSimilarTracks(trackId) {
+  const sourceTrack = S.tracks.find(track => track.id === trackId) || null;
+  $('semantic-summary').textContent = 'Finding similar tracks...';
+  try {
+    const data = await api('GET', `/api/tracks/${trackId}/similar?limit=20`);
+    await populateSimilarPlaylistSelect();
+    openSimilarModal(sourceTrack, data.tracks || []);
+    $('semantic-summary').textContent = `Found ${(data.tracks || []).length} similar tracks`;
+  } catch (error) {
+    $('semantic-summary').textContent = 'Unable to find similar tracks';
+    alert(parseApiErrorMessage(error));
+  }
 }
 
 function toggleTrack(id, row) {
@@ -833,7 +2363,50 @@ async function loadStats() {
     sel.innerHTML = '<option value="">All folders</option>' +
       s.source_folders.map(f => `<option value="${f.folder}">${f.folder.split(/[/\\]/).pop()} (${f.count})</option>`).join('');
     sel.value = cur;
+    renderEmbeddingsCard(s);
   } catch (e) { console.error(e); }
+}
+
+function toggleHistorySection() {
+  S.historyCollapsed = !S.historyCollapsed;
+  $('history-section-body').style.display = S.historyCollapsed ? 'none' : 'block';
+  $('history-toggle-indicator').textContent = S.historyCollapsed ? '▶' : '▼';
+}
+
+function renderHistory() {
+  const list = $('history-list');
+  if (!list) return;
+  if (!S.recentHistory.length) {
+    list.innerHTML = '<div class="history-empty">No tracks played yet.</div>';
+    return;
+  }
+
+  list.innerHTML = S.recentHistory.map(track => `
+    <div class="history-item" onclick="playHistoryTrack(${track.id})">
+      ${coverImgHtml(track.id, 32, 'history-cover')}
+      <div class="history-copy">
+        <div class="history-title" title="${escapeHtml(track.title || track.filename || '--')}">${escapeHtml(track.title || track.filename || '--')}</div>
+        <div class="history-artist" title="${escapeHtml(track.artist || '')}">${escapeHtml(track.artist || '--')}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function loadHistory(limit = 20) {
+  try {
+    const data = await api('GET', `/api/history?limit=${limit}`);
+    S.recentHistory = data.tracks || [];
+    renderHistory();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function playHistoryTrack(trackId) {
+  const track = S.recentHistory.find(item => item.id === trackId);
+  if (!track) return;
+  P.queue = [track];
+  playFromQueue(0);
 }
 
 // ── Playlist toolbar: add selection ──────────────────────────────────────────
@@ -846,6 +2419,43 @@ async function loadPlaylistsDropdown() {
       '<option value="__new__">+ New playlist…</option>';
   } catch (e) {}
 }
+function playAllSimilar() {
+  if (!S.similarTracks.length) return;
+  P.queue = [...S.similarTracks];
+  playFromQueue(0);
+}
+
+function playSimilarTrack(trackId) {
+  const idx = S.similarTracks.findIndex(track => track.id === trackId);
+  if (idx < 0) return;
+  P.queue = [...S.similarTracks];
+  playFromQueue(idx);
+}
+
+async function addSimilarTrackToPlaylist(trackId) {
+  const select = $('similar-playlist-select');
+  let playlistId = select?.value || '';
+  if (!playlistId) {
+    alert('Select a playlist first.');
+    return;
+  }
+
+  if (playlistId === '__new__') {
+    const name = prompt('New playlist name:');
+    if (!name) return;
+    const created = await api('POST', '/api/playlists', { name });
+    playlistId = String(created.id);
+    await populateSimilarPlaylistSelect(playlistId);
+  }
+
+  await api('POST', `/api/playlists/${playlistId}/tracks`, { track_ids: [trackId] });
+  $('similar-modal-status').textContent = 'Track added to playlist.';
+  await loadPlaylistsDropdown();
+  if (S.currentPlaylist && String(S.currentPlaylist.id) === String(playlistId)) {
+    await selectPlaylist(S.currentPlaylist.id);
+  }
+}
+
 async function addSelectionToPlaylist() {
   const sel = $('add-to-pl-select').value;
   if (!sel) return;
@@ -900,11 +2510,35 @@ async function selectPlaylist(id) {
 }
 function renderPlaylistDetail(pl) {
   $('pl-detail-name').textContent = pl.name;
-  const dur = (pl.tracks || []).reduce((a, t) => a + (t.duration_sec || 0), 0);
-  $('pl-detail-meta').textContent = `${pl.tracks?.length || 0} tracks · ${fmtDur(dur)}`;
+  const tracks = pl.tracks || [];
+  const dur = tracks.reduce((a, t) => a + (t.duration_sec || 0), 0);
+  const bpmValues = tracks.map(track => Number(track.bpm)).filter(Number.isFinite);
+  const bpmRange = bpmValues.length
+    ? `${Math.round(Math.min(...bpmValues))} – ${Math.round(Math.max(...bpmValues))} BPM`
+    : 'BPM unavailable';
+  const keyCounts = {};
+  tracks.forEach(track => {
+    if (track.camelot_key) {
+      keyCounts[track.camelot_key] = (keyCounts[track.camelot_key] || 0) + 1;
+    }
+  });
+  const keySpread = Object.entries(keyCounts)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, 4);
+
+  $('pl-detail-meta').textContent = `${tracks.length || 0} tracks · ${fmtLongDuration(dur)} total`;
+  $('pl-detail-stats').innerHTML = `
+    <span class="playlist-stat-pill">Total duration: ${fmtLongDuration(dur)}</span>
+    <span class="playlist-stat-pill">BPM range: ${bpmRange}</span>
+    <span class="playlist-stat-pill playlist-key-spread">Key spread: ${
+      keySpread.length
+        ? keySpread.map(([key, count]) => `${camelotBadge(key)} <span class="text-xs text-muted">${count}</span>`).join(' ')
+        : '<span class="text-xs text-muted">No keys yet</span>'
+    }</span>
+  `;
 
   const tbody = $('pl-tbody');
-  tbody.innerHTML = (pl.tracks || []).map((t, i) => `
+  tbody.innerHTML = tracks.map((t, i) => `
     <tr class="drag-row" draggable="true" data-id="${t.id}"
         ondragstart="dragStart(event,${t.id})" ondragover="dragOver(event)" ondrop="dropTrack(event,${t.id})" ondragleave="dragLeave(event)">
       <td class="drag-handle">⠿</td>
@@ -1005,39 +2639,207 @@ async function startDownload() {
   if (!url) { alert('Please enter a Deezer URL.'); return; }
   if (!output) { alert('Please enter an output path.'); return; }
 
-  if (S.dlSse) { S.dlSse.close(); S.dlSse = null; }
-  $('dl-log').textContent = '';
+  if (S.dlStreamAbort) { S.dlStreamAbort.abort(); S.dlStreamAbort = null; }
+  const logDiv = $('dl-log');
+  logDiv.innerHTML = '';
   $('dl-log-wrap').style.display = 'block';
   $('dl-status').innerHTML = '<span class="badge badge-warning">Running…</span>';
   $('dl-scan-btn').style.display = 'none';
 
+  let job_id;
   try {
-    const r = await api('POST', '/api/download', { url, quality: S.quality, output_path: output });
-    S.dlJobId = r.job_id;
-    const sse = new EventSource(`${API}/api/download/${S.dlJobId}/stream`);
-    S.dlSse = sse;
-    sse.onmessage = e => {
-      const d = JSON.parse(e.data);
-      if (d.line) {
-        const div = document.createElement('div');
-        div.textContent = d.line;
-        $('dl-log').appendChild(div);
-        $('dl-log').scrollTop = $('dl-log').scrollHeight;
+    ({ job_id } = await api('POST', '/api/download', { url, quality: S.quality, output_path: output }));
+  } catch (error) {
+    logDiv.textContent = 'Error: ' + error.message;
+    $('dl-status').innerHTML = '<span class="badge badge-danger">Error ✗</span>';
+    return;
+  }
+  S.dlJobId = job_id;
+
+  S.dlStreamAbort = openEventStream(`/api/download/${job_id}/stream`, d => {
+    if (d.line) {
+      const div = document.createElement('div');
+      div.textContent = d.line;
+      logDiv.appendChild(div);
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+    if (d.done) {
+      S.dlStreamAbort = null;
+      const ok = d.exit_code === 0;
+      $('dl-status').innerHTML = ok
+        ? '<span class="badge badge-success">Done ✓</span>'
+        : '<span class="badge badge-danger">Error ✗</span>';
+      $('dl-scan-btn').style.display = 'inline-flex';
+      if (ok && $('dl-organize-date').checked) {
+        organizeByDate(output, logDiv);
       }
-      if (d.done) {
-        sse.close();
-        const ok = d.exit_code === 0;
-        $('dl-status').innerHTML = ok
-          ? '<span class="badge badge-success">Done ✓</span>'
-          : '<span class="badge badge-danger">Error ✗</span>';
-        $('dl-scan-btn').style.display = 'inline-flex';
-      }
-    };
-    sse.onerror = () => { sse.close(); $('dl-status').innerHTML = '<span class="badge badge-danger">Connection error</span>'; };
-  } catch (e) { alert('Failed to start download: ' + e.message); }
+    }
+  }, error => {
+    S.dlStreamAbort = null;
+    $('dl-status').innerHTML = `<span class="badge badge-danger">${escapeHtml(error.message)}</span>`;
+  });
+}
+
+async function organizeByDate(sourceFolder, logDiv) {
+  if (!logDiv) logDiv = $('dl-log');
+  const info = document.createElement('div');
+  info.textContent = '⏳ Organizing files into date subfolders…';
+  info.style.color = '#f59e0b';
+  logDiv.appendChild(info);
+  logDiv.scrollTop = logDiv.scrollHeight;
+  try {
+    const r = await api('POST', '/api/organize-by-date', { source_folder: sourceFolder });
+    info.textContent = `📁 Organized ${r.organized} files into: ${r.folders.join(', ') || 'none'}`;
+    info.style.color = '#4ade80';
+  } catch (e) {
+    info.textContent = 'Organize by date failed: ' + e.message;
+    info.style.color = '#f87171';
+  }
+  logDiv.scrollTop = logDiv.scrollHeight;
 }
 
 // ── Organize ──────────────────────────────────────────────────────────────────
+function renderConsolidateSourceList() {
+  const container = $('org-consolidate-sources');
+  const count = $('org-consolidate-count');
+  if (!container || !count) return;
+
+  const activeFolders = new Set(S.librarySources.map(source => source.folder));
+  [...S.consolidateSourceFolders].forEach(folder => {
+    if (!activeFolders.has(folder)) {
+      S.consolidateSourceFolders.delete(folder);
+    }
+  });
+
+  if (!S.librarySources.length) {
+    container.innerHTML = '<div class="text-sm text-muted">No scanned library sources available yet.</div>';
+    count.textContent = '0 sources selected';
+    return;
+  }
+
+  container.innerHTML = S.librarySources.map(source => `
+    <label class="source-check-item">
+      <span class="flex items-center gap-8" style="min-width:0">
+        <input type="checkbox" ${S.consolidateSourceFolders.has(source.folder) ? 'checked' : ''} onchange="toggleConsolidateSource('${escapeJsString(source.folder)}', this.checked)"/>
+        <span class="text-ellipsis" title="${escapeHtml(source.folder)}">${escapeHtml(source.folder)}</span>
+      </span>
+      <span class="text-xs text-muted">${source.track_count}</span>
+    </label>
+  `).join('');
+
+  const selectedCount = S.librarySources.filter(source => S.consolidateSourceFolders.has(source.folder)).length;
+  count.textContent = `${selectedCount} of ${S.librarySources.length} source folders selected`;
+}
+
+function toggleConsolidateSource(folder, checked) {
+  if (checked) S.consolidateSourceFolders.add(folder);
+  else S.consolidateSourceFolders.delete(folder);
+  renderConsolidateSourceList();
+}
+
+function selectAllConsolidateSources() {
+  S.librarySources.forEach(source => S.consolidateSourceFolders.add(source.folder));
+  renderConsolidateSourceList();
+}
+
+function deselectAllConsolidateSources() {
+  S.consolidateSourceFolders.clear();
+  renderConsolidateSourceList();
+}
+
+function setConsolidateMode(mode, button) {
+  S.consolidateMode = mode;
+  document.querySelectorAll('#consolidate-mode-pills .pill').forEach(pill => pill.classList.remove('active'));
+  button.classList.add('active');
+  updateConsolidatePreview();
+}
+
+function updateConsolidatePreview() {
+  const out = $('consolidate-output').value || 'D:/Music/Consolidated';
+  const sourceName = S.librarySources[0]?.folder.split(/[/\\]/).pop() || 'F8';
+  let preview = `📁 ${out}/<br>&nbsp;&nbsp;🎵 Artist - Title.flac`;
+  if (S.consolidateMode === 'by_source') {
+    preview = `📁 ${out}/${sourceName}/<br>&nbsp;&nbsp;🎵 Artist - Title.flac`;
+  } else if (S.consolidateMode === 'organized') {
+    preview = `📁 ${out}/8A/<br>&nbsp;&nbsp;🎵 Artist - Title (126bpm).flac`;
+  }
+  $('consolidate-preview').innerHTML = preview;
+}
+
+async function runConsolidate() {
+  const source_folders = [...S.consolidateSourceFolders];
+  const output_folder = $('consolidate-output').value.trim();
+  if (!source_folders.length) { alert('Select at least one source folder.'); return; }
+  if (!output_folder) { alert('Enter an output folder.'); return; }
+
+  if (S.consolidateStreamAbort) {
+    S.consolidateStreamAbort.abort();
+    S.consolidateStreamAbort = null;
+  }
+
+  $('consolidate-progress-wrap').style.display = 'block';
+  $('consolidate-result').style.display = 'none';
+  $('consolidate-actions').style.display = 'none';
+  $('consolidate-bar').style.width = '0%';
+  $('consolidate-status').textContent = 'Starting consolidation...';
+  S.consolidateOutputFolder = output_folder;
+
+  try {
+    const { job_id } = await api('POST', '/api/consolidate', {
+      source_folders,
+      output_folder,
+      mode: S.consolidateMode,
+    });
+    S.consolidateJobId = job_id;
+
+    S.consolidateStreamAbort = openEventStream(`/api/consolidate/${job_id}/status`, data => {
+      const pct = data.total > 0 ? Math.round((data.processed / data.total) * 100) : 100;
+      $('consolidate-bar').style.width = `${pct}%`;
+      $('consolidate-status').textContent = data.done
+        ? (data.error
+            ? `Error: ${data.error}`
+            : `Done — ${data.copied} copied, ${data.skipped} skipped`)
+        : `${data.processed}/${data.total} — ${data.current || 'Preparing...'}`;
+
+      if (data.done) {
+        S.consolidateStreamAbort = null;
+        $('consolidate-result').style.display = 'block';
+        if (data.error) {
+          $('consolidate-result').innerHTML = `<span class="badge badge-danger">Error</span> ${escapeHtml(data.error)}`;
+          $('consolidate-actions').style.display = 'none';
+        } else {
+          $('consolidate-result').innerHTML = `<span class="badge badge-success">✓ Copied ${data.copied}</span> <span class="badge badge-warning">Skipped ${data.skipped}</span>`;
+          $('consolidate-actions').style.display = 'flex';
+        }
+      }
+    }, error => {
+      S.consolidateStreamAbort = null;
+      $('consolidate-status').textContent = `Consolidation stream error: ${error.message}`;
+    });
+  } catch (error) {
+    $('consolidate-status').textContent = `Error: ${parseApiErrorMessage(error)}`;
+    alert(`Consolidation failed: ${parseApiErrorMessage(error)}`);
+  }
+}
+
+function addConsolidatedFolderToLibrary() {
+  const folder = S.consolidateOutputFolder || $('consolidate-output').value.trim();
+  if (!folder) return;
+  if (!S.scanFolders.includes(folder)) {
+    S.scanFolders.push(folder);
+    renderScanFolders();
+  }
+  if (!$('consolidate-result').innerHTML.includes('Added to scan sources')) {
+    $('consolidate-result').innerHTML += '<br><span class="text-xs text-muted">Added to scan sources.</span>';
+  }
+}
+
+function scanConsolidatedFolderNow() {
+  addConsolidatedFolderToLibrary();
+  showTab('library');
+  setTimeout(startScan, 150);
+}
+
 async function initOrganize() {
   try {
     const pls = await api('GET', '/api/playlists');
@@ -1048,6 +2850,12 @@ async function initOrganize() {
     // also populate from stats
     const s = await api('GET', '/api/tracks/stats');
     $('org-track-count').textContent = `${s.total_tracks} total tracks in library`;
+    S.librarySources = await api('GET', '/api/sources');
+    if (!S.consolidateInitialized) {
+      S.librarySources.forEach(source => S.consolidateSourceFolders.add(source.folder));
+      S.consolidateInitialized = true;
+    }
+    renderConsolidateSourceList();
   } catch (e) {}
 
   document.querySelectorAll('[name=org-source]').forEach(r => {
@@ -1057,7 +2865,14 @@ async function initOrganize() {
     };
   });
   const cfg = await api('GET', '/api/settings').catch(() => ({}));
-  if (cfg.default_download_path) $('org-output').value = cfg.default_download_path.replace('DeezerDownloads', 'Organized');
+  if (cfg.default_download_path) {
+    $('org-output').value = cfg.default_download_path.replace('DeezerDownloads', 'Organized');
+    $('org-date-folder').value = cfg.default_download_path;
+    if (!$('consolidate-output').value) {
+      $('consolidate-output').value = cfg.default_download_path.replace('DeezerDownloads', 'Consolidated');
+    }
+  }
+  updateConsolidatePreview();
 }
 function updateOrganizePreview() {
   const out = $('org-output').value || 'D:/MusicOrganized';
@@ -1099,28 +2914,73 @@ async function runOrganize() {
   }
 }
 
+async function runOrganizeByDate() {
+  const folder = $('org-date-folder').value.trim();
+  if (!folder) { alert('Enter a folder path.'); return; }
+  const res = $('org-date-result');
+  res.style.display = 'block';
+  res.textContent = 'Running…';
+  try {
+    const r = await api('POST', '/api/organize-by-date', { source_folder: folder });
+    res.innerHTML = `<span class="badge badge-success">✓ ${r.organized} files organized</span> into: ${r.folders.map(f => `<code>${f}</code>`).join(', ') || 'none'}`;
+  } catch (e) {
+    res.innerHTML = `<span class="badge badge-danger">Error</span> ${e.message}`;
+  }
+}
+
 // ── Settings ──────────────────────────────────────────────────────────────────
+async function computeEmbeddings() {
+  if (S.embeddingComputeActive) return;
+  S.embeddingComputeActive = true;
+  S.embeddingStatusMessage = '';
+  renderEmbeddingsCard();
+  startEmbeddingPolling();
+
+  try {
+    const result = await api('POST', '/api/tracks/compute-embeddings');
+    await loadStats();
+    S.embeddingStatusMessage = `Done — ${result.computed} computed, ${result.already_had} already had embeddings.`;
+  } catch (error) {
+    S.embeddingStatusMessage = `Error: ${parseApiErrorMessage(error)}`;
+    alert(`Compute Embeddings failed: ${parseApiErrorMessage(error)}`);
+  } finally {
+    S.embeddingComputeActive = false;
+    stopEmbeddingPolling();
+    renderEmbeddingsCard();
+  }
+}
+
 async function loadSettings() {
   try {
     const cfg = await api('GET', '/api/settings');
+    S.scanFolders = Array.isArray(cfg.library_folders) ? [...cfg.library_folders] : [];
+    renderScanFolders();
+    S.autoScanStartup = cfg.auto_scan_startup !== false;
     $('s-dl-path').value = cfg.default_download_path || '';
     $('s-quality').value = cfg.default_quality || 'FLAC';
     $('s-port').value = cfg.port || 7337;
     $('s-arl').value = cfg.arl_token || '';
+    $('s-auto-scan').checked = S.autoScanStartup;
     window._savedPort = cfg.port || 7337;
     $('s-db-path').textContent = 'Database: musicden.db in project root';
   } catch (e) {}
+  await loadSources();
+  if (S.stats) renderEmbeddingsCard(S.stats);
 }
 async function saveSettings() {
   const port = parseInt($('s-port').value) || 7337;
   if (port < 1024 || port > 65535) { alert('Port must be between 1024 and 65535.'); return; }
   const prevPort = window._savedPort || 7337;
-  await api('PUT', '/api/settings', {
+  const saved = await api('PUT', '/api/settings', {
     default_download_path: $('s-dl-path').value,
     default_quality: $('s-quality').value,
+    library_folders: S.scanFolders,
+    auto_scan_startup: $('s-auto-scan').checked,
     port,
     arl_token: $('s-arl').value,
   });
+  $('s-arl').value = saved.arl_token || '';
+  S.autoScanStartup = saved.auto_scan_startup !== false;
   window._savedPort = port;
   const msg = port !== prevPort ? 'Settings saved. Restart required for port change to take effect.' : 'Settings saved.';
   alert(msg);
@@ -1133,26 +2993,577 @@ async function clearDatabase() {
   });
 }
 
+async function loadSources() {
+  try {
+    const sources = await api('GET', '/api/sources');
+    S.librarySources = sources;
+    if (document.getElementById('org-consolidate-sources')) {
+      if (!S.consolidateInitialized) {
+        sources.forEach(source => S.consolidateSourceFolders.add(source.folder));
+        S.consolidateInitialized = true;
+      }
+      renderConsolidateSourceList();
+    }
+    const tbody = $('sources-tbody');
+    const empty = $('sources-empty');
+    if (!sources.length) {
+      tbody.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+    tbody.innerHTML = sources.map(s => {
+      const scanned = s.last_scanned ? new Date(s.last_scanned * 1000).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+      const encoded = encodeURIComponent(s.folder);
+      return `<tr style="border-bottom:1px solid var(--border)">
+        <td style="padding:8px;color:var(--text-dim);font-size:12px;word-break:break-all">${s.folder}</td>
+        <td style="padding:8px;text-align:right;color:var(--text-muted)">${s.track_count}</td>
+        <td style="padding:8px;color:var(--text-muted);font-size:11px">${scanned}</td>
+        <td style="padding:8px">
+          <div class="flex gap-4">
+            <button class="btn btn-secondary btn-sm" onclick="rescanSource('${s.folder.replace(/'/g,"\\'")}')">Rescan</button>
+            <button class="btn btn-danger btn-sm" onclick="removeSource('${s.folder.replace(/'/g,"\\'")}',${s.track_count})">Remove</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+  } catch (e) { console.error(e); }
+}
+
+async function rescanSource(folder) {
+  if (!S.scanFolders.includes(folder)) S.scanFolders.push(folder);
+  renderScanFolders();
+  showTab('library');
+  setTimeout(startScan, 150);
+}
+
+async function removeSource(folder, trackCount) {
+  showModal(
+    'Remove Source',
+    `Remove "${folder}" from library? This deletes ${trackCount} track(s) from the database but does NOT touch your files.`,
+    async () => {
+      await api('DELETE', `/api/sources/${encodeURIComponent(folder)}`);
+      await loadSources();
+      await loadTracks();
+      await loadStats();
+    }
+  );
+}
+
+async function resetLibrary(mode) {
+  const label = mode === 'everything' ? 'Clear Everything' : 'Clear All Tracks';
+  const detail = mode === 'everything'
+    ? 'This will delete all tracks, playlists, and settings. Cannot be undone.'
+    : 'This will delete all tracks and playlist links (playlists stay). Cannot be undone.';
+  showModal(label, detail, async () => {
+    const r = await api('POST', '/api/library/reset', { mode });
+    alert(`Cleared ${r.cleared} tracks.`);
+    await loadSources();
+    await loadTracks();
+    await loadStats();
+    if (mode === 'everything') await loadSettings();
+  });
+}
+
 // ── Player ────────────────────────────────────────────────────────────────────
-const P = { queue: [], idx: 0, seeking: false };
+function buildTrackQueryParams(page = S.page, perPage = S.perPage) {
+  const params = new URLSearchParams();
+  params.set('page', page);
+  params.set('per_page', perPage);
+  params.set('sort_by', $('sort-by').value);
+  params.set('sort_dir', S.sortDir);
+  if (S.bpmMin > 60) params.set('bpm_min', S.bpmMin);
+  if (S.bpmMax < 200) params.set('bpm_max', S.bpmMax);
+  if (S.activeKeys.size) params.set('camelot_key', [...S.activeKeys].join(','));
+  const { from, to } = getActiveDateRange();
+  if (from != null) params.set('date_from', from);
+  if (to != null) params.set('date_to', to);
+  const sourceFolder = $('source-folder').value;
+  if (sourceFolder) params.set('source_folder', sourceFolder);
+  const search = $('search-input').value.trim();
+  if (search) params.set('search', search);
+  return params;
+}
+
+let _usbPreviewTimer = null;
+
+function queueUsbPreviewRefresh() {
+  clearTimeout(_usbPreviewTimer);
+  _usbPreviewTimer = setTimeout(() => {
+    refreshUsbPreview().catch(error => console.error(error));
+  }, 120);
+}
+
+function normalizeUsbPreviewTracks(tracks) {
+  const seen = new Set();
+  return (tracks || []).filter(track => {
+    const trackId = Number(track.id);
+    if (!trackId || seen.has(trackId)) return false;
+    seen.add(trackId);
+    return true;
+  });
+}
+
+async function loadTracks() {
+  if (S.semanticMode) {
+    const filtered = sortTracksClientSide(filterSemanticResults(S.semanticResults));
+    S.total = filtered.length;
+    const start = (S.page - 1) * S.perPage;
+    S.tracks = filtered.slice(start, start + S.perPage);
+    updateSemanticSummary(filtered.length);
+    renderTrackTable();
+    if (S.usbSourceMode === 'filter' && $('page-usb').classList.contains('active')) queueUsbPreviewRefresh();
+    return;
+  }
+
+  if ($('sort-by').value === 'similarity') {
+    $('sort-by').value = 'file_date';
+    S.sortDir = 'desc';
+    $('sort-dir-btn').textContent = 'â†“ Desc';
+  }
+
+  try {
+    const data = await api('GET', `/api/tracks?${buildTrackQueryParams()}`);
+    S.tracks = data.tracks;
+    S.total = data.total;
+    updateSemanticSummary();
+    renderTrackTable();
+    if (S.usbSourceMode === 'filter' && $('page-usb').classList.contains('active')) queueUsbPreviewRefresh();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function findSimilarTracks(trackId) {
+  const sourceTrack = S.tracks.find(track => track.id === trackId) || null;
+  $('semantic-summary').textContent = 'Finding similar tracks...';
+  try {
+    const data = await api('GET', `/api/tracks/${trackId}/similar?limit=20`);
+    await populateSimilarPlaylistSelect();
+    openSimilarModal(sourceTrack, data.tracks || []);
+    $('semantic-summary').textContent = `Found ${(data.tracks || []).length} similar tracks`;
+  } catch (error) {
+    $('semantic-summary').textContent = 'Unable to find similar tracks';
+    alert(parseApiErrorMessage(error));
+  }
+}
+
+function toggleTrack(id, row) {
+  const selected = !S.selectedIds.has(id);
+  if (selected) S.selectedIds.add(id);
+  else S.selectedIds.delete(id);
+
+  if (row) {
+    row.classList.toggle('selected', selected);
+    const checkbox = row.querySelector('input[type="checkbox"]');
+    if (checkbox) checkbox.checked = selected;
+  }
+
+  updateSelectionToolbar();
+  if (S.usbSourceMode === 'selected') queueUsbPreviewRefresh();
+}
+
+function clearSelection() {
+  S.selectedIds.clear();
+  renderTrackTable();
+  if (S.usbSourceMode === 'selected') queueUsbPreviewRefresh();
+}
+
+async function loadPlaylistsDropdown() {
+  try {
+    const playlists = await api('GET', '/api/playlists');
+    const addSelect = $('add-to-pl-select');
+    addSelect.innerHTML = '<option value="">Add to playlistâ€¦</option>' +
+      playlists.map(playlist => `<option value="${playlist.id}">${playlist.name}</option>`).join('') +
+      '<option value="__new__">+ New playlistâ€¦</option>';
+
+    const usbSelect = $('usb-playlist-select');
+    if (usbSelect) {
+      const preferred = String(usbSelect.value || S.currentPlaylist?.id || '');
+      usbSelect.innerHTML = '<option value="">Select playlistâ€¦</option>' +
+        playlists.map(playlist => `<option value="${playlist.id}">${escapeHtml(playlist.name)}</option>`).join('');
+      if (preferred && usbSelect.querySelector(`option[value="${preferred}"]`)) {
+        usbSelect.value = preferred;
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function selectPlaylist(id) {
+  try {
+    const playlist = await api('GET', `/api/playlists/${id}`);
+    S.currentPlaylist = playlist;
+    $('pl-empty').style.display = 'none';
+    $('pl-detail').style.display = 'flex';
+    renderPlaylistDetail(playlist);
+    loadPlaylists();
+    if (S.usbSourceMode === 'playlist') queueUsbPreviewRefresh();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function playSimilarMapTrack(trackId) {
+  const tracks = S.similarMapData?.similar || [];
+  const index = tracks.findIndex(track => track.track_id === trackId);
+  if (index < 0) return;
+  P.queue = tracks.map(track => ({ ...track, id: track.track_id }));
+  playFromQueue(index);
+}
+
+function getSelectedUsbPlaylistId() {
+  const select = $('usb-playlist-select');
+  return String(select?.value || S.currentPlaylist?.id || '');
+}
+
+function setUsbSourceMode(mode) {
+  S.usbSourceMode = mode;
+  document.querySelectorAll('input[name="usb-source"]').forEach(input => {
+    input.checked = input.value === mode;
+  });
+  $('usb-playlist-row').style.display = mode === 'playlist' ? 'block' : 'none';
+  queueUsbPreviewRefresh();
+}
+
+function setUsbStructure(mode, button) {
+  S.usbStructure = mode;
+  document.querySelectorAll('#usb-structure-pills .pill').forEach(pill => pill.classList.remove('active'));
+  if (button) button.classList.add('active');
+  updateUsbStructurePreview();
+  updateUsbExportButton();
+}
+
+function updateUsbStructurePreview() {
+  const preview = $('usb-structure-preview');
+  if (!preview) return;
+  if (S.usbStructure === 'flat') {
+    preview.innerHTML = 'Artist - Title.flac';
+    return;
+  }
+  if (S.usbStructure === 'by_key') {
+    preview.innerHTML = '8A/ -> Artist - Title.flac';
+    return;
+  }
+  preview.innerHTML = '8A/ -> Artist - Title (126bpm).flac';
+}
+
+function updateUsbPathPreview() {
+  const drive = $('usb-drive').value;
+  const folderName = ($('usb-folder-name').value || '').trim() || 'MusicDen_Export';
+  $('usb-path-preview').textContent = drive ? `${drive.replace(/[\\/]+$/, '/')}${folderName}` : 'â€”';
+}
+
+function updateUsbExportButton() {
+  const button = $('usb-export-btn');
+  if (!button) return;
+  const busy = !!S.usbExportStreamAbort;
+  const hasDrive = !!$('usb-drive').value;
+  const hasTracks = S.usbPreviewTracks.length > 0;
+  button.disabled = busy || !hasDrive || !hasTracks;
+  button.textContent = busy ? 'Exporting...' : 'Export to USB';
+}
+
+async function resolveUsbPreviewTracks() {
+  if (S.usbSourceMode === 'playlist') {
+    const playlistId = getSelectedUsbPlaylistId();
+    if (!playlistId) return [];
+    const playlist = await api('GET', `/api/playlists/${playlistId}`);
+    return playlist.tracks || [];
+  }
+
+  if (S.usbSourceMode === 'selected') {
+    if (!S.selectedIds.size) return [];
+    const data = await api('POST', '/api/tracks/resolve', { track_ids: [...S.selectedIds] });
+    return data.tracks || [];
+  }
+
+  if (S.semanticMode) {
+    return sortTracksClientSide(filterSemanticResults(S.semanticResults));
+  }
+
+  const perPage = Math.max(S.total || 0, 10000);
+  const data = await api('GET', `/api/tracks?${buildTrackQueryParams(1, perPage)}`);
+  return data.tracks || [];
+}
+
+async function refreshUsbPreview() {
+  try {
+    const tracks = normalizeUsbPreviewTracks(await resolveUsbPreviewTracks());
+    S.usbPreviewTracks = tracks;
+    const totalBytes = tracks.reduce((sum, track) => sum + Number(track.file_size || 0), 0);
+    $('usb-track-count').textContent = `${tracks.length} track${tracks.length === 1 ? '' : 's'} selected`;
+    $('usb-size-estimate').textContent = tracks.length ? `${fmtBytes(totalBytes)} estimated` : '0 GB estimated';
+  } catch (error) {
+    console.error(error);
+    S.usbPreviewTracks = [];
+    $('usb-track-count').textContent = '0 tracks selected';
+    $('usb-size-estimate').textContent = 'Unable to estimate selection';
+  }
+  updateUsbExportButton();
+}
+
+async function initUsbExport() {
+  const driveSelect = $('usb-drive');
+  const previousDrive = driveSelect.value;
+  try {
+    const drivesResponse = await api('GET', '/api/drives');
+    S.usbDrives = drivesResponse.drives || [];
+  } catch (error) {
+    console.error(error);
+    S.usbDrives = [];
+  }
+
+  driveSelect.innerHTML = '<option value="">Select driveâ€¦</option>' +
+    S.usbDrives.map(drive => `<option value="${drive.letter}">${drive.letter} â€” ${drive.free_gb} GB free / ${drive.total_gb} GB</option>`).join('');
+  if (previousDrive && driveSelect.querySelector(`option[value="${previousDrive}"]`)) {
+    driveSelect.value = previousDrive;
+  }
+
+  await loadPlaylistsDropdown();
+  if (!S.usbInitialized && S.currentPlaylist?.id) {
+    $('usb-playlist-select').value = String(S.currentPlaylist.id);
+  }
+  S.usbInitialized = true;
+  $('usb-playlist-row').style.display = S.usbSourceMode === 'playlist' ? 'block' : 'none';
+  updateUsbPathPreview();
+  updateUsbStructurePreview();
+  await refreshUsbPreview();
+}
+
+async function startUsbExport() {
+  await refreshUsbPreview();
+  const drive = $('usb-drive').value;
+  if (!drive) {
+    alert('Select a USB drive first.');
+    return;
+  }
+  if (!S.usbPreviewTracks.length) {
+    alert('No tracks selected for export.');
+    return;
+  }
+
+  const folderName = ($('usb-folder-name').value || '').trim() || 'MusicDen_Export';
+  const payload = {
+    drive,
+    folder_name: folderName,
+    structure: S.usbStructure,
+    include_rekordbox_xml: $('usb-include-xml').checked,
+  };
+
+  if (S.usbSourceMode === 'playlist') {
+    const playlistId = getSelectedUsbPlaylistId();
+    if (!playlistId) {
+      alert('Select a playlist to export.');
+      return;
+    }
+    payload.playlist_id = Number(playlistId);
+  } else {
+    payload.track_ids = S.usbPreviewTracks.map(track => track.id);
+  }
+
+  if (S.usbExportStreamAbort) {
+    S.usbExportStreamAbort.abort();
+    S.usbExportStreamAbort = null;
+  }
+
+  $('usb-progress-wrap').style.display = 'block';
+  $('usb-progress-bar').style.width = '0%';
+  $('usb-progress-status').textContent = 'Starting export...';
+  $('usb-progress-eta').textContent = '';
+  $('usb-progress-result').textContent = '';
+  S.usbExportStartedAt = Date.now();
+  updateUsbExportButton();
+
+  try {
+    const { job_id } = await api('POST', '/api/export/usb', payload);
+    S.usbExportJobId = job_id;
+    updateUsbExportButton();
+
+    S.usbExportStreamAbort = openEventStream(`/api/export/usb/${job_id}/status`, data => {
+      const processed = Number(data.processed || data.copied || 0);
+      const total = Number(data.total || S.usbPreviewTracks.length || 0);
+      const pct = total ? Math.round((processed / total) * 100) : 100;
+      $('usb-progress-bar').style.width = `${pct}%`;
+      $('usb-progress-status').textContent = data.done
+        ? (data.errors?.length
+            ? `Finished with ${data.errors.length} error${data.errors.length === 1 ? '' : 's'}`
+            : `Done - copied ${data.copied || 0}, skipped ${data.skipped || 0}`)
+        : `Copying ${processed}/${total} - ${data.current || 'Preparing...'}`;
+
+      if (!data.done && processed > 0) {
+        const elapsedSec = (Date.now() - S.usbExportStartedAt) / 1000;
+        const rate = processed / Math.max(elapsedSec, 0.1);
+        const remaining = Math.max(0, total - processed);
+        $('usb-progress-eta').textContent = `Estimated time remaining: ${fmtEta(remaining / Math.max(rate, 0.1))}`;
+      } else if (data.done) {
+        $('usb-progress-eta').textContent = '';
+      }
+
+      if (data.done) {
+        S.usbExportStreamAbort = null;
+        S.usbExportJobId = null;
+        updateUsbExportButton();
+        const exportPath = data.output_base || `${drive.replace(/[\\/]+$/, '/')}${folderName}`;
+        $('usb-progress-result').innerHTML = `
+          <div><strong>Exported ${data.copied || 0} track${(data.copied || 0) === 1 ? '' : 's'}</strong> to ${escapeHtml(exportPath)}</div>
+          <div class="text-xs text-muted mt-8">Skipped ${data.skipped || 0} duplicate or existing file${(data.skipped || 0) === 1 ? '' : 's'}.</div>
+          ${data.rekordbox_xml_written ? '<div class="text-xs mt-8">Rekordbox XML written.</div>' : ''}
+          ${data.errors?.length ? `<div class="text-xs text-danger mt-8">${data.errors.length} error(s) were reported.</div>` : ''}
+        `;
+      }
+    }, error => {
+      S.usbExportStreamAbort = null;
+      S.usbExportJobId = null;
+      updateUsbExportButton();
+      $('usb-progress-status').textContent = `Export failed: ${error.message}`;
+      $('usb-progress-eta').textContent = '';
+    });
+  } catch (error) {
+    S.usbExportJobId = null;
+    updateUsbExportButton();
+    $('usb-progress-status').textContent = `Export failed: ${parseApiErrorMessage(error)}`;
+    alert(`USB export failed: ${parseApiErrorMessage(error)}`);
+  }
+}
+
+const P = { queue: [], idx: 0, seeking: false, objectUrl: null, requestId: 0, fadeTimer: null };
 const _audio = () => $('player-audio');
+let currentVolume = volumeToAudioLevel(70);
+let preMuteVolume = currentVolume;
+let preMuteSliderValue = 70;
+let isMuted = false;
+
+function releasePlayerUrl() {
+  if (P.objectUrl) {
+    URL.revokeObjectURL(P.objectUrl);
+    P.objectUrl = null;
+  }
+}
+
+function clearFadeTimer() {
+  if (P.fadeTimer) {
+    clearInterval(P.fadeTimer);
+    P.fadeTimer = null;
+  }
+}
 
 function showPlayer() {
   $('player-bar').style.display = 'flex';
   document.body.classList.add('player-active');
 }
 
-function playFromQueue(idx) {
+function highlightPlayingRow() {
+  document.querySelectorAll('#track-tbody tr.playing-row').forEach(r => r.classList.remove('playing-row'));
+  if (!P.queue.length) return;
+  const current = P.queue[P.idx];
+  if (!current) return;
+  const row = document.querySelector(`#track-tbody tr[data-track-id="${current.id}"]`);
+  if (row) { row.classList.add('playing-row'); row.scrollIntoView({ block: 'nearest' }); }
+}
+
+function syncVolumeUi(sliderValue = parseFloat($('vol-bar').value || 0)) {
+  const muted = isMuted || currentVolume === 0;
+  $('vol-toggle').textContent = muted ? '🔇' : '🔊';
+  $('vol-toggle').title = muted ? 'Unmute' : 'Mute';
+  $('vol-pct').textContent = `${Math.round(sliderValue)}%`;
+}
+
+function applyCurrentVolume() {
+  _audio().volume = isMuted ? 0 : currentVolume;
+  syncVolumeUi();
+}
+
+function toggleMute() {
+  const audio = _audio();
+  const volumeSlider = $('vol-bar');
+  const sliderValue = parseFloat(volumeSlider.value);
+
+  if (isMuted || currentVolume === 0) {
+    if (sliderValue === 0 && preMuteSliderValue > 0) {
+      volumeSlider.value = preMuteSliderValue;
+      currentVolume = preMuteVolume;
+    }
+    isMuted = false;
+    audio.volume = currentVolume;
+  } else {
+    preMuteVolume = currentVolume;
+    preMuteSliderValue = sliderValue;
+    isMuted = true;
+    audio.volume = 0;
+  }
+
+  syncVolumeUi(parseFloat(volumeSlider.value));
+}
+
+function fadeAndNext() {
+  if (P.idx >= P.queue.length - 1) return;
+  const audio = _audio();
+  const step = 0.05;
+  clearFadeTimer();
+  P.fadeTimer = setInterval(() => {
+    if (audio.volume > step) {
+      audio.volume = Math.max(0, audio.volume - step);
+    } else {
+      clearFadeTimer();
+      audio.volume = 0;
+      nextTrack({ preserveSilence: true, restoreOnCanPlay: true });
+    }
+  }, 50);
+}
+
+async function fetchTrackAudioUrl(trackId) {
+  const response = await authorizedFetch(`/api/stream/${trackId}`);
+  if (!response.ok) throw new Error(await readError(response));
+  const blob = await response.blob();
+  return URL.createObjectURL(blob);
+}
+
+function noteTrackPlayed(trackId) {
+  authorizedFetch(`/api/tracks/${trackId}/played`, { method: 'POST' })
+    .then(() => loadHistory())
+    .catch(() => {});
+}
+
+async function playFromQueue(idx, options = {}) {
   if (idx < 0 || idx >= P.queue.length) return;
+  const { preserveSilence = false, restoreOnCanPlay = false } = options;
+  clearFadeTimer();
   P.idx = idx;
   const t = P.queue[idx];
   $('player-title').textContent = t.title || t.filename || 'Unknown';
   $('player-artist').textContent = t.artist || '';
-  const a = _audio();
-  a.src = `${API}/api/stream/${t.id}`;
-  a.load();
-  a.play().catch(() => {});
+  setImageToTrackCover($('player-cover'), t.id);
   showPlayer();
+  highlightPlayingRow();
+
+  const requestId = ++P.requestId;
+  releasePlayerUrl();
+
+  try {
+    const url = await fetchTrackAudioUrl(t.id);
+    if (requestId !== P.requestId) {
+      URL.revokeObjectURL(url);
+      return;
+    }
+    P.objectUrl = url;
+    const a = _audio();
+    if (!preserveSilence) {
+      a.volume = isMuted ? 0 : currentVolume;
+    }
+    if (restoreOnCanPlay) {
+      a.addEventListener('canplay', function restoreVol() {
+        a.volume = isMuted ? 0 : currentVolume;
+        a.removeEventListener('canplay', restoreVol);
+      });
+    }
+    a.src = url;
+    a.load();
+    a.play().then(() => noteTrackPlayed(t.id)).catch(() => {});
+  } catch (error) {
+    alert(`Playback failed: ${error.message}`);
+  }
 }
 
 function rowPlayTrack(id, idx) {
@@ -1171,19 +3582,26 @@ function togglePlay() {
   if (a.paused) a.play().catch(() => {}); else a.pause();
 }
 function prevTrack() { playFromQueue(P.idx - 1); }
-function nextTrack() { playFromQueue(P.idx + 1); }
+function nextTrack(options = {}) { playFromQueue(P.idx + 1, options); }
 function seekAudio(val) {
   const a = _audio();
   if (a.duration) a.currentTime = (val / 100) * a.duration;
 }
 function initPlayer() {
   const a = _audio();
-  a.volume = 0.8;
-  $('vol-bar').value = 80;
+  const volumeSlider = $('vol-bar');
+  const volumeDisplay = $('vol-pct');
+  volumeSlider.value = 70;
+  currentVolume = volumeToAudioLevel(70);
+  preMuteVolume = currentVolume;
+  preMuteSliderValue = 70;
+  a.volume = currentVolume;
+  volumeDisplay.textContent = '70%';
+  syncVolumeUi(70);
 
   a.addEventListener('play', () => { $('play-btn').textContent = '⏸'; });
   a.addEventListener('pause', () => { $('play-btn').textContent = '▶'; });
-  a.addEventListener('ended', () => nextTrack());
+  a.addEventListener('ended', () => fadeAndNext());
   a.addEventListener('timeupdate', () => {
     if (P.seeking) return;
     const pct = a.duration ? (a.currentTime / a.duration) * 100 : 0;
@@ -1194,18 +3612,179 @@ function initPlayer() {
   const sb = $('seek-bar');
   sb.addEventListener('mousedown', () => { P.seeking = true; });
   sb.addEventListener('change', e => { P.seeking = false; seekAudio(e.target.value); });
-  $('vol-bar').addEventListener('input', e => {
-    _audio().volume = parseFloat(e.target.value) / 100;
+  volumeSlider.addEventListener('input', function() {
+    const val = parseFloat(this.value);
+    if (val === 0) {
+      currentVolume = 0;
+      if (!isMuted) {
+        a.volume = 0;
+      }
+    } else {
+      currentVolume = volumeToAudioLevel(val);
+      if (!isMuted) {
+        a.volume = currentVolume;
+      }
+      preMuteVolume = currentVolume;
+      preMuteSliderValue = val;
+    }
+    const pct = Math.round(val);
+    volumeDisplay.textContent = pct + '%';
+    syncVolumeUi(val);
   });
   document.addEventListener('keydown', e => {
+    if (e.code === 'Escape') {
+      e.preventDefault();
+      closeTopModalOrSelection();
+      return;
+    }
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
     if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
     if (e.code === 'ArrowLeft') { const a = _audio(); a.currentTime = Math.max(0, a.currentTime - 10); }
     if (e.code === 'ArrowRight') { const a = _audio(); a.currentTime = Math.min(a.duration || 0, a.currentTime + 10); }
+    if (e.code === 'KeyN') { e.preventDefault(); nextTrack(); }
+    if (e.code === 'KeyP') { e.preventDefault(); prevTrack(); }
+    if (e.code === 'KeyF') {
+      e.preventDefault();
+      showTab('library');
+      $('search-input').focus();
+      $('search-input').select();
+    }
+    if (e.key === '?') {
+      e.preventDefault();
+      openShortcutsModal();
+    }
   });
 }
 
 // ── Analysis helpers ──────────────────────────────────────────────────────────
+async function playFromQueue(idx, options = {}) {
+  if (idx < 0 || idx >= P.queue.length) return;
+  const { preserveSilence = false, restoreOnCanPlay = false } = options;
+  clearFadeTimer();
+  P.idx = idx;
+  const track = P.queue[idx];
+  $('player-title').textContent = track.title || track.filename || 'Unknown';
+  $('player-artist').textContent = track.artist || '';
+  setImageToTrackCover($('player-cover'), track.id);
+  showPlayer();
+  highlightPlayingRow();
+  $('player-cur').textContent = '0:00';
+  $('player-dur').textContent = fmtDur(track.duration_sec) || '0:00';
+  S.currentWaveform = [];
+  renderPlayerWaveform();
+  loadPlayerWaveform(track.id);
+
+  const requestId = ++P.requestId;
+  releasePlayerUrl();
+
+  try {
+    const url = await fetchTrackAudioUrl(track.id);
+    if (requestId !== P.requestId) {
+      URL.revokeObjectURL(url);
+      return;
+    }
+
+    P.objectUrl = url;
+    const audio = _audio();
+    if (!preserveSilence) {
+      audio.volume = isMuted ? 0 : currentVolume;
+    }
+    if (restoreOnCanPlay) {
+      audio.addEventListener('canplay', function restoreVol() {
+        audio.volume = isMuted ? 0 : currentVolume;
+        audio.removeEventListener('canplay', restoreVol);
+      });
+    }
+    audio.src = url;
+    audio.load();
+    audio.play().then(() => noteTrackPlayed(track.id)).catch(() => {});
+  } catch (error) {
+    alert(`Playback failed: ${error.message}`);
+  }
+}
+
+function seekAudio(ratio) {
+  const audio = _audio();
+  if (!audio.duration) return;
+  audio.currentTime = Math.max(0, Math.min(audio.duration, ratio * audio.duration));
+  renderPlayerWaveform();
+}
+
+function initPlayer() {
+  const audio = _audio();
+  const volumeSlider = $('vol-bar');
+  const volumeDisplay = $('vol-pct');
+  const waveformCanvas = $('waveformCanvas');
+  volumeSlider.value = 70;
+  currentVolume = volumeToAudioLevel(70);
+  preMuteVolume = currentVolume;
+  preMuteSliderValue = 70;
+  audio.volume = currentVolume;
+  volumeDisplay.textContent = '70%';
+  syncVolumeUi(70);
+  renderPlayerWaveform();
+
+  const syncPlayerTime = () => {
+    $('player-cur').textContent = fmtDur(audio.currentTime);
+    $('player-dur').textContent = audio.duration ? fmtDur(audio.duration) : '0:00';
+    renderPlayerWaveform();
+  };
+
+  audio.addEventListener('play', () => { $('play-btn').textContent = 'â¸'; });
+  audio.addEventListener('pause', () => { $('play-btn').textContent = 'â–¶'; });
+  audio.addEventListener('ended', () => fadeAndNext());
+  audio.addEventListener('loadedmetadata', syncPlayerTime);
+  audio.addEventListener('canplay', syncPlayerTime);
+  audio.addEventListener('timeupdate', syncPlayerTime);
+  audio.addEventListener('seeking', renderPlayerWaveform);
+  audio.addEventListener('seeked', syncPlayerTime);
+
+  waveformCanvas.addEventListener('click', event => {
+    const rect = waveformCanvas.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+    seekAudio(ratio);
+  });
+
+  volumeSlider.addEventListener('input', function() {
+    const value = parseFloat(this.value);
+    if (value === 0) {
+      currentVolume = 0;
+      if (!isMuted) audio.volume = 0;
+    } else {
+      currentVolume = volumeToAudioLevel(value);
+      if (!isMuted) audio.volume = currentVolume;
+      preMuteVolume = currentVolume;
+      preMuteSliderValue = value;
+    }
+    volumeDisplay.textContent = `${Math.round(value)}%`;
+    syncVolumeUi(value);
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.code === 'Escape') {
+      event.preventDefault();
+      closeTopModalOrSelection();
+      return;
+    }
+    if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA' || event.target.tagName === 'SELECT') return;
+    if (event.code === 'Space') { event.preventDefault(); togglePlay(); }
+    if (event.code === 'ArrowLeft') { audio.currentTime = Math.max(0, audio.currentTime - 10); }
+    if (event.code === 'ArrowRight') { audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 10); }
+    if (event.code === 'KeyN') { event.preventDefault(); nextTrack(); }
+    if (event.code === 'KeyP') { event.preventDefault(); prevTrack(); }
+    if (event.code === 'KeyF') {
+      event.preventDefault();
+      showTab('library');
+      $('search-input').focus();
+      $('search-input').select();
+    }
+    if (event.key === '?') {
+      event.preventDefault();
+      openShortcutsModal();
+    }
+  });
+}
+
 async function reanalyzeKeys(btn) {
   btn.disabled = true;
   const orig = btn.textContent;
@@ -1217,6 +3796,24 @@ async function reanalyzeKeys(btn) {
     $('rekey-status').textContent = `Done — ${r.updated} tracks updated.`;
     loadTracks();
     loadStats();
+  } catch (e) {
+    $('rekey-status').textContent = 'Error: ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = orig;
+  }
+}
+
+async function reanalyzeEnergy(btn) {
+  btn.disabled = true;
+  const orig = btn.textContent;
+  btn.textContent = 'Re-analyzing…';
+  $('rekey-status').style.display = 'block';
+  $('rekey-status').textContent = 'Recomputing energy for all tracks…';
+  try {
+    const r = await api('POST', '/api/tracks/reanalyze-energy');
+    $('rekey-status').textContent = `Done — ${r.updated} tracks updated.`;
+    loadTracks();
   } catch (e) {
     $('rekey-status').textContent = 'Error: ' + e.message;
   } finally {
@@ -1247,12 +3844,40 @@ function scanDownloadFolder() {
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
-buildKeyGrid();
-updateBpmSlider();
-loadTracks();
-loadStats();
-loadPlaylistsDropdown();
-initPlayer();
+async function boot() {
+  try {
+    await initAuth();
+  } catch (error) {
+    alert(`Failed to initialize MusicDen auth: ${error.message}`);
+    return;
+  }
+  try {
+    const cfg = await api('GET', '/api/settings');
+    S.scanFolders = Array.isArray(cfg.library_folders) ? [...cfg.library_folders] : [];
+    S.autoScanStartup = cfg.auto_scan_startup !== false;
+  } catch (error) {
+    console.error(error);
+  }
+  buildKeyGrid();
+  renderScanFolders();
+  renderHistory();
+  updateSemanticSummary();
+  updateBpmSlider();
+  setImageToTrackCover($('player-cover'), null);
+  updateUsbPathPreview();
+  updateUsbStructurePreview();
+  loadStats();
+  loadHistory();
+  loadTracks();
+  loadPlaylistsDropdown();
+  initPlayer();
+  const similarityMap = $('similarityMap');
+  similarityMap.addEventListener('mousemove', handleSimilarityMapMove);
+  similarityMap.addEventListener('mouseleave', handleSimilarityMapLeave);
+  similarityMap.addEventListener('click', handleSimilarityMapClick);
+}
+
+boot();
 </script>
 </body>
 </html>

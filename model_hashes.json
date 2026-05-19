@@ -1,0 +1,8 @@
+{
+  "laion/clap-htsat-unfused": {
+    "revision": "25c14ec96c0ce7a0740dd55a2e877f3b755228e1",
+    "files": {
+      "pytorch_model.bin": "1cd3c601bc4afe0fa87be3de4c13dd2cfadd249fac1e29acf74a9b296c3219bb"
+    }
+  }
+}
